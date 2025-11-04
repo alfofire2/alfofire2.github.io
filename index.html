@@ -367,6 +367,8 @@
         <p>&copy; 2025 Prezzone & Prodigeek. Tutti i diritti riservati.</p>
     </footer>
 
+    <script type="application/ld+json" id="coupons-json-ld"></script>
+
     <script>
         const coupons = {
             esclusiviProdigeek: [
@@ -543,7 +545,10 @@
                 }
             };
 
-            document.getElementById('coupons-json-ld').textContent = JSON.stringify(jsonLd);
+            const jsonLdScript = document.getElementById('coupons-json-ld');
+            if(jsonLdScript) {
+                jsonLdScript.textContent = JSON.stringify(jsonLd);
+            }
         }
         
         function setupIntersectionObserver() {
