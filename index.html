@@ -565,19 +565,32 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
+            const originalCoupons = JSON.parse(JSON.stringify(coupons));
+            let isSortedByConvenience = false;
+
             renderCoupons();
             generateJsonLd();
             setupIntersectionObserver();
 
             const sortButton = document.getElementById('sort-button');
             sortButton.addEventListener('click', () => {
-                // Sort all coupon arrays
-                for (const category in coupons) {
-                    coupons[category].sort((a, b) => {
-                        const percentageA = (a.discount / a.min);
-                        const percentageB = (b.discount / b.min);
-                        return percentageB - percentageA;
-                    });
+                isSortedByConvenience = !isSortedByConvenience; // Toggle the state
+
+                if (isSortedByConvenience) {
+                    sortButton.textContent = 'Ordina normalmente';
+                    for (const category in coupons) {
+                        coupons[category].sort((a, b) => {
+                            const percentageA = (a.discount / a.min);
+                            const percentageB = (b.discount / b.min);
+                            return percentageB - percentageA;
+                        });
+                    }
+                } else {
+                    sortButton.textContent = 'Ordina per convenienza';
+                    // Restore original order by deep copying
+                    for (const category in originalCoupons) {
+                        coupons[category] = JSON.parse(JSON.stringify(originalCoupons[category]));
+                    }
                 }
 
                 // Clear existing coupons from the DOM
