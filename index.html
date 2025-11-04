@@ -367,8 +367,6 @@
         <p>&copy; 2025 Prezzone & Prodigeek. Tutti i diritti riservati.</p>
     </footer>
 
-    <script type="application/ld+json" id="coupons-json-ld"></script>
-
     <script>
         const coupons = {
             esclusiviProdigeek: [
@@ -430,7 +428,6 @@
             const textArea = document.createElement("textarea");
             textArea.value = text;
             
-            // Avoid scrolling to bottom
             textArea.style.top = "0";
             textArea.style.left = "0";
             textArea.style.position = "fixed";
@@ -510,6 +507,7 @@
             for (const listId in lists) {
                 const container = document.getElementById(listId);
                 if (container) {
+                    container.innerHTML = ''; // Clear previous content before rendering
                     lists[listId].forEach(coupon => {
                         container.appendChild(createCouponCard(coupon));
                     });
@@ -565,6 +563,8 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
+            const mainContainer = document.querySelector('main.container');
+            const originalSections = Array.from(mainContainer.querySelectorAll('section'));
             const originalCoupons = JSON.parse(JSON.stringify(coupons));
             let isSortedByConvenience = false;
 
@@ -574,32 +574,52 @@
 
             const sortButton = document.getElementById('sort-button');
             sortButton.addEventListener('click', () => {
-                isSortedByConvenience = !isSortedByConvenience; // Toggle the state
+                isSortedByConvenience = !isSortedByConvenience;
 
                 if (isSortedByConvenience) {
                     sortButton.textContent = 'Ordina normalmente';
+
+                    // Sort coupons within each category first
                     for (const category in coupons) {
-                        coupons[category].sort((a, b) => {
-                            const percentageA = (a.discount / a.min);
-                            const percentageB = (b.discount / b.min);
-                            return percentageB - percentageA;
-                        });
+                        coupons[category].sort((a, b) => (b.discount / b.min) - (a.discount / a.min));
                     }
+
+                    // Now sort the sections based on the best coupon they contain
+                    const idToKeyMap = {
+                        'esclusivi-prodigeek-coupons': 'esclusiviProdigeek',
+                        'altri-esclusivi-prodigeek-coupons': 'altriEsclusiviProdigeek',
+                        'standard-prodigeek-coupons': 'standardProdigeek',
+                        'generici-coupons': 'generici'
+                    };
+                    
+                    const sections = Array.from(mainContainer.querySelectorAll('section'));
+                    sections.sort((a, b) => {
+                        const couponKeyA = idToKeyMap[a.id];
+                        const couponDataA = coupons[couponKeyA] || [];
+                        const maxPercA = couponDataA.length > 0 ? (couponDataA[0].discount / couponDataA[0].min) : 0;
+
+                        const couponKeyB = idToKeyMap[b.id];
+                        const couponDataB = coupons[couponKeyB] || [];
+                        const maxPercB = couponDataB.length > 0 ? (couponDataB[0].discount / couponDataB[0].min) : 0;
+
+                        return maxPercB - maxPercA;
+                    });
+
+                    sections.forEach(section => mainContainer.appendChild(section));
+
                 } else {
                     sortButton.textContent = 'Ordina per convenienza';
-                    // Restore original order by deep copying
+                    
+                    // Restore original coupon order
                     for (const category in originalCoupons) {
                         coupons[category] = JSON.parse(JSON.stringify(originalCoupons[category]));
                     }
+
+                    // Restore original section order
+                    originalSections.forEach(section => mainContainer.appendChild(section));
                 }
 
-                // Clear existing coupons from the DOM
-                const couponLists = document.querySelectorAll('.coupon-list');
-                couponLists.forEach(list => {
-                    list.innerHTML = '';
-                });
-
-                // Re-render and re-observe
+                // Re-render coupons in the (possibly new) section order
                 renderCoupons();
                 setupIntersectionObserver();
             });
