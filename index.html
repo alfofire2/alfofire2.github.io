@@ -160,6 +160,16 @@
             transform: translateY(-8px);
             box-shadow: 0 8px 25px rgba(0,0,0,0.12);
         }
+
+        .copy-animation {
+            animation: copy-shake 0.4s ease-in-out;
+        }
+
+        @keyframes copy-shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-4px); }
+            40%, 80% { transform: translateX(4px); }
+        }
         .coupon-header {
             display: flex;
             justify-content: space-between;
@@ -213,7 +223,7 @@
             white-space: nowrap;
         }
         .copy-feedback {
-            background-color: var(--success);
+            background-color: var(--orange);
             color: white;
             border: none;
             padding: 8px 12px;
@@ -455,6 +465,10 @@
 
             codeContainer.addEventListener('click', () => {
                 copyCode(coupon.code, copyFeedback);
+                card.classList.add('copy-animation');
+                card.addEventListener('animationend', () => {
+                    card.classList.remove('copy-animation');
+                }, { once: true });
             });
 
             return card;
