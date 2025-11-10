@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estensione Browser - Coupon Sconto AliExpress</title>
+    <meta name="description" content="Installa l'estensione browser di Prodigeek & Prezzone per trovare e applicare automaticamente i migliori coupon e codici sconto per AliExpress.">
+    
+    <link rel="icon" type="image/png" href="favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="shortcut icon" href="favicon.ico">
+    
+    <style>
+        :root {
+            --orange: #e47b2c;
+            --turquoise: #60b3b0;
+            --creamy-white: #fffffb;
+            --dark-grey: #2c3e50;
+            --light-grey: #ecf0f1;
+            --white: #ffffff;
+            --info-bg: #eaf2f8;
+            --info-border: #aed6f1;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--creamy-white);
+            color: var(--dark-grey);
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .header-content {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .logo {
+            width: 80px;
+            height: auto;
+            flex-shrink: 0;
+        }
+        .container {
+            width: 100%;
+            max-width: 900px;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+        h1, h2 {
+            color: var(--orange);
+            text-align: left;
+            font-weight: 700;
+            border-bottom: 2px solid var(--light-grey);
+            padding-bottom: 10px;
+            margin-top: 40px;
+        }
+        h1 {
+            font-size: 2em;
+            text-align: center;
+        }
+        h2 {
+            font-size: 1.8em;
+            color: var(--turquoise);
+        }
+        p, li {
+            line-height: 1.7;
+            font-size: 1.1em;
+        }
+        a {
+            color: var(--orange);
+            text-decoration: none;
+            font-weight: bold;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .disclaimer {
+            background-color: var(--info-bg);
+            border: 1px solid var(--info-border);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 30px 0;
+            text-align: center;
+            font-size: 1em;
+        }
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 40px 0;
+            flex-wrap: wrap;
+        }
+        .download-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 25px;
+            border-radius: 8px;
+            font-size: 1.2em;
+            font-weight: bold;
+            text-decoration: none;
+            color: var(--white);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .download-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            text-decoration: none;
+        }
+        .firefox-btn {
+            background-color: #ff7139;
+        }
+        .chrome-btn {
+            background-color: #4285F4;
+        }
+        .download-button svg {
+            width: 24px;
+            height: 24px;
+            fill: currentColor;
+        }
+        code {
+            background-color: #e0e6e7;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: "Consolas", "Courier New", monospace;
+        }
+        hr {
+            border: none;
+            border-top: 1px solid var(--light-grey);
+            margin: 40px 0;
+        }
+        footer {
+            width: 90%;
+            max-width: 800px;
+            background-color: var(--dark-grey);
+            color: var(--light-grey);
+            text-align: center;
+            padding: 25px;
+            margin: 50px auto 30px auto;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-content">
+            <a href="index.html"><img src="assets/logo.svg" alt="Prezzone Logo" class="logo"></a>
+        </div>
+    </header>
+
+    <main class="container">
+        <h1>🧩 AliExpress Coupon Finder</h1>
+        <p>Trova, applica e risparmia in automatico su AliExpress! Con la nostra estensione puoi visualizzare tutti i coupon disponibili direttamente nelle pagine dei prodotti e nel checkout, e applicarli con un solo clic.</p>
+        <p>Inoltre, ogni acquisto effettuato con l’estensione supporta i progetti <strong>Prezzone</strong> e <strong>Prodigeek</strong>, senza alcun costo aggiuntivo per te.</p>
+
+        <div class="disclaimer">
+            L’estensione è in attesa di approvazione sugli store ufficiali. Puoi provarla in anteprima installandola manualmente. Nessun dato personale viene raccolto o condiviso.
+        </div>
+
+        <div class="button-container">
+            <a href="https://addons.mozilla.org/firefox/downloads/file/4616974/aliexpress_prodigeek_coupons-0.1.0.xpi" class="download-button firefox-btn">
+                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/><path d="M0 0h24v24H0z" fill="none"/><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.17 13.83c-.39.39-1.02.39-1.41 0L12 13.41l-2.76 2.42c-.39.39-1.02.39-1.41 0-.39-.39-.39-1.02 0-1.41L10.59 12 7.83 9.58c-.39-.39-.39-1.02 0-1.41.39-.39 1.02-.39 1.41 0L12 10.59l2.76-2.42c.39-.39 1.02-.39 1.41 0 .39.39.39 1.02 0 1.41L13.41 12l2.76 2.42c.39.39.39 1.02 0 1.41z"/></svg>
+                Aggiungi a Firefox
+            </a>
+            <a href="https://alfofire2.github.io/aliexpress_prodigeek_coupons-0.1.0.zip" class="download-button chrome-btn">
+                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/><path d="M0 0h24v24H0z" fill="none"/><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1.08 14.45l-3.82-3.82 1.41-1.41 2.41 2.41 5.1-5.1 1.41 1.41-6.51 6.51z"/></svg>
+                Scarica per Chrome
+            </a>
+        </div>
+
+        <hr>
+
+        <section>
+            <h2>🦊 Installazione su Firefox</h2>
+            <ol>
+                <li>Clicca sul pulsante <strong>Aggiungi a Firefox</strong> qui sopra.</li>
+                <li>Nella finestra che si apre, clicca su <strong>“Aggiungi”</strong> per confermare.</li>
+                <li>L’estensione apparirà subito nella barra in alto del browser.</li>
+            </ol>
+            <p>Una volta installata, potrai vedere i coupon attivi direttamente su <strong>AliExpress</strong> e applicarli automaticamente con un clic.</p>
+        </section>
+
+        <hr>
+
+        <section>
+            <h2>🧠 Installazione su Chrome (versione in anteprima)</h2>
+            <p>In attesa della pubblicazione ufficiale sul Chrome Web Store, puoi installare la versione <strong>ZIP</strong> in modalità sviluppatore:</p>
+            <ol>
+                <li>Scarica l’estensione cliccando sul pulsante <strong>Scarica per Chrome</strong> qui sopra.</li>
+                <li>Estrai il file <code>.zip</code> sul tuo computer in una cartella che non sposterai (es. in Documenti).</li>
+                <li>Apri Chrome e vai all'indirizzo <code>chrome://extensions</code></li>
+                <li>Attiva in alto a destra la voce <strong>“Modalità sviluppatore”</strong>.</li>
+                <li>Clicca su <strong>“Carica estensione non pacchettizzata”</strong>.</li>
+                <li>Seleziona la cartella che hai estratto dal file ZIP.</li>
+            </ol>
+            <p>L’estensione verrà aggiunta subito a Chrome e potrai usarla normalmente. Quando sarà approvata sul Chrome Web Store, riceverai l’aggiornamento automatico alla versione ufficiale.</p>
+        </section>
+
+        <hr>
+
+        <section>
+            <h2>💡 Come funziona</h2>
+            <ul>
+                <li>Mostra automaticamente i coupon validi su <strong>AliExpress</strong> mentre navighi.</li>
+                <li>Ti segnala i codici applicabili al tuo carrello al checkout.</li>
+                <li>Puoi applicarli con un solo clic.</li>
+                <li>Cliccando sull’icona dell’estensione puoi consultare la lista completa dei coupon attivi, sempre aggiornata.</li>
+            </ul>
+        </section>
+
+        <hr>
+
+        <section>
+            <h2>❤️ Supporta il progetto</h2>
+            <p>Usando l’estensione durante i tuoi acquisti, una piccola percentuale del cashback viene riconosciuta a <strong>Prezzone</strong> e <strong>Prodigeek</strong>, senza alcun costo per te. È un modo semplice per sostenere la community e continuare a ricevere offerte, coupon e aggiornamenti.</p>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Prezzone & Prodigeek. Tutti i diritti riservati. | <a href="privacy.html">Informativa sulla Privacy</a></p>
+    </footer>
+
+</body>
+</html>
