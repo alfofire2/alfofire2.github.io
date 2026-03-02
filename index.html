@@ -30,13 +30,19 @@
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
     <meta name="apple-mobile-web-app-title" content="Ali Coupons">
     <link rel="manifest" href="site.webmanifest">
-    <meta name="theme-color" content="#e47b2c">
-    
+    <meta name="theme-color" content="#f07828">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
     <style>
         :root {
-            --orange: #e47b2c;
-            --turquoise: #60b3b0;
-            --creamy-white: #fffffb;
+            --orange: #f07828;
+            --coral: #e84847;
+            --turquoise: #1baeb0;
+            --turquoise-dark: #148a8c;
+            --creamy-white: #faf9f6;
             --dark-grey: #2c3e50;
             --light-grey: #ecf0f1;
             --white: #ffffff;
@@ -46,7 +52,7 @@
             scroll-behavior: smooth;
         }
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--creamy-white);
             color: var(--dark-grey);
             margin: 0;
@@ -62,17 +68,17 @@
         }
         .banner a {
             display: inline-block;
-            background-color: var(--dark-grey);
+            background: linear-gradient(160deg, #ff4747 0%, #ff8e53 100%);
             padding: 20px;
             border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 8px 32px rgba(255,71,71,0.35);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             text-decoration: none;
             max-width: 100%;
         }
         .banner a:hover {
             transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            box-shadow: 0 12px 40px rgba(255,71,71,0.45);
         }
         .banner img {
             max-width: 100%;
@@ -83,8 +89,9 @@
             border-radius: 8px;
         }
         .banner-subtext {
-            color: var(--light-grey);
+            color: rgba(255,255,255,0.9);
             font-size: 0.9em;
+            font-weight: 600;
             margin-top: 10px;
         }
         header {
@@ -94,6 +101,7 @@
             width: 100%;
             padding: 20px;
             box-sizing: border-box;
+            background: linear-gradient(135deg, var(--orange) 0%, var(--coral) 100%);
         }
         .header-content {
             display: flex;
@@ -104,6 +112,7 @@
             width: 80px;
             height: auto;
             flex-shrink: 0;
+            filter: brightness(0) invert(1);
         }
         .container {
             width: 100%;
@@ -112,11 +121,11 @@
             box-sizing: border-box;
         }
         h1 {
-            color: var(--orange);
+            color: var(--white);
             text-align: left;
             font-size: 1.8em;
             margin: 0;
-            font-weight: 700;
+            font-weight: 800;
         }
 
         .sort-container {
@@ -125,25 +134,28 @@
         }
 
         #sort-button {
-            background-color: var(--turquoise);
+            background: linear-gradient(135deg, var(--orange) 0%, var(--coral) 100%);
             color: var(--white);
             border: none;
-            padding: 12px 20px;
+            padding: 12px 24px;
             font-size: 1em;
-            font-weight: bold;
+            font-weight: 700;
+            letter-spacing: 0.3px;
             border-radius: 8px;
             cursor: pointer;
-            transition: background-color 0.3s, transform 0.3s;
+            box-shadow: 0 4px 12px rgba(240,120,40,0.35);
+            transition: opacity 0.2s, transform 0.3s;
         }
 
         #sort-button:hover {
-            background-color: #55a09d;
+            opacity: 0.9;
             transform: translateY(-2px);
         }
         h2 {
              color: var(--turquoise);
              text-align: center;
              font-size: 1.8em;
+             font-weight: 800;
              margin-top: 40px;
              margin-bottom: 20px;
              border-bottom: 2px solid var(--light-grey);
@@ -158,11 +170,12 @@
         .coupon-card {
             background-color: var(--white);
             border-radius: 10px;
+            border-left: 3px solid var(--orange);
             padding: 20px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            box-shadow: 0 4px 16px rgba(240,120,40,0.1);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             opacity: 0;
             transform: translateY(20px);
@@ -180,17 +193,17 @@
         }
         .coupon-card:hover {
             transform: translateY(-8px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+            box-shadow: 0 10px 28px rgba(240,120,40,0.18);
         }
 
         .copy-animation {
-            animation: copy-shake 0.4s ease-in-out;
+            animation: copy-pulse 0.4s ease-out;
         }
 
-        @keyframes copy-shake {
-            0%, 100% { transform: translateX(0); }
-            20%, 60% { transform: translateX(-4px); }
-            40%, 80% { transform: translateX(4px); }
+        @keyframes copy-pulse {
+            0%   { transform: scale(1) translateY(0); }
+            40%  { transform: scale(1.04) translateY(-4px); }
+            100% { transform: scale(1) translateY(0); }
         }
         .coupon-header {
             display: flex;
@@ -199,20 +212,22 @@
             margin-bottom: 15px;
         }
         .discount-value {
-            font-size: 2.2em;
-            font-weight: 700;
-            color: var(--dark-grey);
+            font-size: 2.8em;
+            font-weight: 900;
+            color: var(--orange);
             line-height: 1;
+            letter-spacing: -1.5px;
         }
         .discount-value span {
             font-size: 0.5em;
             font-weight: 400;
+            letter-spacing: 0;
         }
         .percentage {
             font-size: 0.8em;
             font-weight: 700;
             color: var(--orange);
-            background-color: rgba(228, 123, 44, 0.1);
+            background-color: rgba(240, 120, 40, 0.1);
             padding: 5px 10px;
             border-radius: 20px;
         }
@@ -225,33 +240,34 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background-color: var(--light-grey);
-            border: 2px dashed var(--turquoise);
+            background: linear-gradient(135deg, var(--turquoise) 0%, var(--turquoise-dark) 100%);
             border-radius: 8px;
             padding: 12px;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: opacity 0.2s;
         }
         .coupon-code-container:hover {
-            background-color: #e0e6e7;
+            opacity: 0.9;
         }
         .coupon-code {
             font-family: "Consolas", "Courier New", monospace;
-            font-weight: bold;
+            font-weight: 700;
             font-size: 1.3em;
-            color: var(--turquoise);
+            color: var(--white);
+            letter-spacing: 1.5px;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
         }
         .copy-feedback {
-            background-color: var(--orange);
+            background-color: rgba(255,255,255,0.25);
             color: white;
             border: none;
-            padding: 8px 12px;
+            padding: 6px 12px;
             border-radius: 5px;
-            font-size: 0.9em;
-            font-weight: bold;
+            font-size: 0.85em;
+            font-weight: 700;
+            white-space: nowrap;
         }
         footer {
             width: 90%;
