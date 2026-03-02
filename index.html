@@ -323,14 +323,167 @@
                 font-size: 1.5em;
             }
         }
+
+        /* ─── Squad popup ─── */
+        #squad-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.45);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.3s ease;
+        }
+
+        .squad-card {
+            position: relative;
+            width: 88%;
+            max-width: 400px;
+            background: linear-gradient(160deg, #ff4747 0%, #ff8e53 100%);
+            border-radius: 22px;
+            box-shadow: 0 14px 50px rgba(255,71,71,0.5);
+            padding: 32px 28px 28px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            text-decoration: none;
+            animation: squad-bounce-in 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transition: transform 0.2s ease;
+        }
+
+        @keyframes squad-bounce-in {
+            from { transform: scale(0.8); opacity: 0; }
+            to   { transform: scale(1);   opacity: 1; }
+        }
+
+        .squad-card:hover { transform: scale(1.02); }
+
+        .squad-card-img {
+            height: 80px;
+            width: auto;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.2);
+            flex-shrink: 0;
+        }
+
+        .squad-card-text {
+            width: 100%;
+            margin-bottom: 22px;
+        }
+
+        .squad-card-title {
+            color: white;
+            font-weight: 800;
+            font-size: 1.25em;
+            line-height: 1.2;
+            margin-bottom: 10px;
+            letter-spacing: 0.2px;
+        }
+
+        .squad-card-subtitle {
+            color: white;
+            font-size: 0.95em;
+            opacity: 0.95;
+            line-height: 1.4;
+        }
+
+        .squad-card-amount {
+            font-weight: 900;
+            color: #ffeb3b;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        }
+
+        .squad-card-cta {
+            background: white;
+            color: #ff4747;
+            padding: 13px 32px;
+            border-radius: 25px;
+            font-weight: 800;
+            font-size: 0.95em;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            flex-shrink: 0;
+        }
+
+        .squad-card-close {
+            position: absolute;
+            top: 12px;
+            right: 14px;
+            width: 30px;
+            height: 30px;
+            background: rgba(255,255,255,0.25);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: white;
+            font-size: 20px;
+            line-height: 1;
+            transition: background 0.15s ease;
+        }
+
+        .squad-card-close:hover { background: rgba(255,255,255,0.4); }
+
+        /* ─── Squad compact strip ─── */
+        #squad-strip {
+            width: 100%;
+            padding: 8px 20px;
+            box-sizing: border-box;
+        }
+
+        .squad-compact {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            background: linear-gradient(90deg, #ff4747 0%, #ff8e53 100%);
+            border-radius: 10px;
+            text-decoration: none;
+            transition: opacity 0.2s ease;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .squad-compact:hover { opacity: 0.9; }
+
+        .squad-compact-img {
+            height: 30px;
+            width: auto;
+            flex-shrink: 0;
+        }
+
+        .squad-compact-text {
+            flex-grow: 1;
+            color: white;
+            font-size: 0.9em;
+            font-weight: 700;
+            line-height: 1.3;
+        }
+
+        .squad-compact-arrow {
+            color: rgba(255,255,255,0.85);
+            font-size: 20px;
+            flex-shrink: 0;
+        }
     </style>
 </head>
 <body>
 
-    <div class="banner">
-        <a href="https://s.click.aliexpress.com/e/_c3zY9Q3t" target="_blank" rel="noopener noreferrer">
-            <img src="assets/squad.png" alt="Entra nella squadra Prodigeek su AliExpress">
-            <p class="banner-subtext">Clicca per unirti alla squadra Prodigeek!</p>
+    <div id="squad-backdrop">
+        <a href="https://s.click.aliexpress.com/e/_c3zY9Q3t" target="_blank" rel="noopener noreferrer" class="squad-card">
+            <img src="assets/squad.png" alt="Squadra Prodigeek" class="squad-card-img">
+            <div class="squad-card-text">
+                <div class="squad-card-title">Entra nella Squadra Prodigeek</div>
+                <div class="squad-card-subtitle">Ottieni il <span class="squad-card-amount">9% di Cashback</span> su tutti i tuoi acquisti AliExpress</div>
+            </div>
+            <div class="squad-card-cta">APPROFITTANE</div>
+            <span class="squad-card-close" id="squad-close">×</span>
         </a>
     </div>
 
@@ -340,6 +493,14 @@
             <h1>Coupon Sconto AliExpress di Prezzone & Prodigeek</h1>
         </div>
     </header>
+
+    <div id="squad-strip" style="display:none; opacity:0;">
+        <a href="https://s.click.aliexpress.com/e/_c3zY9Q3t" target="_blank" rel="noopener noreferrer" class="squad-compact">
+            <img src="assets/prodigeek.svg" alt="Prodigeek" class="squad-compact-img">
+            <span class="squad-compact-text">Entra nella squadra Prodigeek · 9% di Cashback</span>
+            <span class="squad-compact-arrow">›</span>
+        </a>
+    </div>
 
     <main class="container">
         <div class="sort-container">
@@ -584,6 +745,26 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
+            // Squad popup dismiss
+            const squadBackdrop = document.getElementById('squad-backdrop');
+            const squadStrip    = document.getElementById('squad-strip');
+            const squadCloseBtn = document.getElementById('squad-close');
+
+            squadCloseBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                squadCloseBtn.style.pointerEvents = 'none';
+                squadBackdrop.style.opacity = '0';
+                setTimeout(() => {
+                    squadBackdrop.style.display = 'none';
+                    squadStrip.style.display = 'block';
+                    requestAnimationFrame(() => {
+                        squadStrip.style.transition = 'opacity 0.3s ease';
+                        squadStrip.style.opacity = '1';
+                    });
+                }, 300);
+            });
+
             const mainContainer = document.querySelector('main.container');
             const originalSections = Array.from(mainContainer.querySelectorAll('section'));
             const originalCoupons = JSON.parse(JSON.stringify(coupons));
