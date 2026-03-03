@@ -6,23 +6,35 @@
     <title>Codici Sconto AliExpress 2026 | Coupon Esclusivi (Aggiornati)</title>
     <meta name="description" content="Risparmia subito con i migliori coupon e codici sconto per AliExpress. Offerte esclusive Prezzone e Prodigeek, aggiornate e funzionanti!">
     <meta name="keywords" content="coupon, aliexpress, sconti, offerte, prezzone, prodigeek, codici sconto, coupon aliexpress, codici aliexpress">
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+    <meta name="googlebot" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+    <meta name="author" content="Prezzone & Prodigeek">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
     
     <!-- SEO & Social Tags -->
-    <link rel="canonical" href="https://coupon.prodigeek.it">
+    <link rel="canonical" href="https://coupon.prodigeek.it/">
+    <link rel="alternate" hreflang="it-IT" href="https://coupon.prodigeek.it/">
+    <link rel="alternate" hreflang="x-default" href="https://coupon.prodigeek.it/">
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://coupon.prodigeek.it">
+    <meta property="og:url" content="https://coupon.prodigeek.it/">
     <meta property="og:title" content="Codici Sconto AliExpress 2026 | Coupon Esclusivi (Aggiornati)">
     <meta property="og:description" content="Risparmia subito con i migliori coupon e codici sconto per AliExpress. Offerte esclusive Prezzone e Prodigeek, aggiornate e funzionanti!">
     <meta property="og:image" content="https://coupon.prodigeek.it/assets/squad.png">
+    <meta property="og:image:alt" content="Coupon AliExpress aggiornati di Prezzone e Prodigeek">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:locale" content="it_IT">
+    <meta property="og:site_name" content="Ali Coupons">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://coupon.prodigeek.it">
+    <meta property="twitter:url" content="https://coupon.prodigeek.it/">
     <meta property="twitter:title" content="Codici Sconto AliExpress 2026 | Coupon Esclusivi (Aggiornati)">
     <meta property="twitter:description" content="Risparmia subito con i migliori coupon e codici sconto per AliExpress. Offerte esclusive Prezzone e Prodigeek, aggiornate e funzionanti!">
     <meta property="twitter:image" content="https://coupon.prodigeek.it/assets/squad.png">
+    <meta property="twitter:image:alt" content="Coupon AliExpress aggiornati di Prezzone e Prodigeek">
     
     <link rel="icon" type="image/png" href="favicon-96x96.png" sizes="96x96">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
@@ -96,8 +108,10 @@
         }
         header {
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
+            gap: 14px;
             width: 100%;
             padding: 20px;
             box-sizing: border-box;
@@ -120,6 +134,9 @@
             padding: 0 20px;
             box-sizing: border-box;
         }
+        .container > :first-child {
+            margin-top: 18px;
+        }
         h1 {
             color: var(--white);
             text-align: left;
@@ -127,7 +144,40 @@
             margin: 0;
             font-weight: 800;
         }
-
+        .top-nav {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 0;
+        }
+        .top-nav a {
+            text-decoration: none;
+            font-weight: 800;
+            color: var(--white);
+            background: rgba(255, 255, 255, 0.16);
+            padding: 8px 12px;
+            border-radius: 999px;
+        }
+        .top-nav a:hover { opacity: 0.9; }
+        .intro {
+            background: var(--white);
+            border: 1px solid var(--light-grey);
+            border-radius: 12px;
+            padding: 14px 16px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+            margin: 18px 0 14px;
+        }
+        .intro p {
+            margin: 0 0 10px;
+            line-height: 1.6;
+            font-size: 1.02em;
+        }
+        .intro p:last-child { margin-bottom: 0; }
+        .intro a {
+            color: var(--orange);
+            font-weight: 700;
+        }
         .sort-container {
             text-align: center;
             margin: 20px 0;
@@ -156,8 +206,7 @@
              text-align: center;
              font-size: 1.8em;
              font-weight: 800;
-             margin-top: 40px;
-             margin-bottom: 20px;
+             margin: 0 0 20px;
              border-bottom: 2px solid var(--light-grey);
              padding-bottom: 10px;
         }
@@ -312,6 +361,30 @@
             height: 28px;
             fill: var(--creamy-white);
         }
+        .faq {
+            background-color: var(--white);
+            border: 1px solid var(--light-grey);
+            border-radius: 12px;
+            padding: 18px;
+            margin: 40px 0;
+        }
+        details.faq-item {
+            border-top: 1px solid var(--light-grey);
+            padding: 12px 0;
+        }
+        details.faq-item:first-of-type { border-top: none; }
+        details.faq-item summary {
+            cursor: pointer;
+            font-weight: 800;
+            color: var(--dark-grey);
+            list-style: none;
+        }
+        details.faq-item summary::-webkit-details-marker { display: none; }
+        details.faq-item p {
+            margin: 10px 0 0;
+            color: var(--dark-grey);
+            line-height: 1.6;
+        }
 
         @media (max-width: 600px) {
             .header-content {
@@ -337,6 +410,9 @@
             }
             .squad-compact-cta {
                 display: none;
+            }
+            .intro {
+                padding: 15px;
             }
         }
 
@@ -525,7 +601,7 @@
 <body>
 
     <div id="squad-backdrop">
-        <a href="https://s.click.aliexpress.com/e/_c3zY9Q3t" target="_blank" rel="noopener noreferrer" class="squad-card">
+        <a href="https://s.click.aliexpress.com/e/_c3zY9Q3t" target="_blank" rel="sponsored nofollow noopener noreferrer" class="squad-card">
             <img src="https://ae-pic-a1.aliexpress-media.com/kf/S63c57e91c68a4d93b5563febfebd71099.png_220x220.png" alt="Prodigeek" class="squad-card-img">
             <div class="squad-card-text">
                 <div class="squad-card-title">Entra nella Squadra Prodigeek</div>
@@ -541,10 +617,16 @@
             <img src="assets/logo.svg" alt="Prezzone Logo" class="logo">
             <h1>Coupon Sconto AliExpress di Prezzone & Prodigeek</h1>
         </div>
+        <nav class="top-nav" aria-label="Navigazione principale">
+            <a href="index.html" aria-current="page">Coupon</a>
+            <a href="extension.html">Estensione Browser</a>
+            <a href="privacy.html">Privacy</a>
+            <a href="#faq">FAQ</a>
+        </nav>
     </header>
 
     <div id="squad-strip" style="display:none; opacity:0;">
-        <a href="https://s.click.aliexpress.com/e/_c3zY9Q3t" target="_blank" rel="noopener noreferrer" class="squad-compact">
+        <a href="https://s.click.aliexpress.com/e/_c3zY9Q3t" target="_blank" rel="sponsored nofollow noopener noreferrer" class="squad-compact">
             <img src="https://ae-pic-a1.aliexpress-media.com/kf/S63c57e91c68a4d93b5563febfebd71099.png_220x220.png" alt="Prodigeek" class="squad-compact-img">
             <div class="squad-compact-body">
                 <div class="squad-compact-title">Entra nella squadra Prodigeek</div>
@@ -555,27 +637,58 @@
     </div>
 
     <main class="container">
+        <section class="intro" aria-labelledby="intro-title">
+            <h2 id="intro-title">Coupon AliExpress aggiornati</h2>
+            <p>Codici sconto verificati da Prezzone e Prodigeek, ordinabili per convenienza. Vuoi applicarli in automatico? Prova la nostra <a href="extension.html">estensione browser gratuita</a>.</p>
+        </section>
+
         <div class="sort-container">
             <button id="sort-button">Ordina per convenienza</button>
         </div>
-        <section id="standard-prodigeek-coupons">
-            <h2>Coupon Prodigeek</h2>
-            <div class="coupon-list" id="standard-prodigeek-list"></div>
-        </section>
+        <div id="coupon-sections">
+            <section id="standard-prodigeek-coupons">
+                <h2>Coupon Prodigeek</h2>
+                <div class="coupon-list" id="standard-prodigeek-list"></div>
+            </section>
 
-        <section id="esclusivi-prodigeek-coupons">
-            <h2>Coupon Esclusivi Prodigeek ($)</h2>
-            <div class="coupon-list" id="esclusivi-prodigeek-list"></div>
-        </section>
+            <section id="esclusivi-prodigeek-coupons">
+                <h2>Coupon Esclusivi Prodigeek ($)</h2>
+                <div class="coupon-list" id="esclusivi-prodigeek-list"></div>
+            </section>
 
-        <section id="generici-coupons">
-            <h2>Coupon Standard</h2>
-            <div class="coupon-list" id="generici-list"></div>
-        </section>
+            <section id="generici-coupons">
+                <h2>Coupon Standard</h2>
+                <div class="coupon-list" id="generici-list"></div>
+            </section>
 
-        <section id="altri-esclusivi-prodigeek-coupons">
-            <h2>Altri Coupon Standard</h2>
-            <div class="coupon-list" id="altri-esclusivi-prodigeek-list"></div>
+            <section id="altri-esclusivi-prodigeek-coupons">
+                <h2>Altri Coupon Standard</h2>
+                <div class="coupon-list" id="altri-esclusivi-prodigeek-list"></div>
+            </section>
+        </div>
+
+        <section class="faq" id="faq">
+            <h2>Domande frequenti sui coupon AliExpress</h2>
+
+            <details class="faq-item">
+                <summary>I codici coupon sono davvero aggiornati?</summary>
+                <p>Sì. I codici vengono aggiornati regolarmente in base alle campagne attive su AliExpress e ai codici esclusivi condivisi dalla community Prezzone e Prodigeek.</p>
+            </details>
+
+            <details class="faq-item">
+                <summary>Come uso un codice sconto AliExpress?</summary>
+                <p>Copia il codice dalla card, poi incollalo nel checkout AliExpress nel campo coupon. In alternativa usa la nostra <a href="extension.html">estensione browser</a> per applicare il codice migliore in automatico.</p>
+            </details>
+
+            <details class="faq-item">
+                <summary>Posso usare più coupon insieme?</summary>
+                <p>Dipende dalle regole della promozione AliExpress. Di solito puoi combinare coupon negozio, coupon piattaforma e sconti selezionati solo in alcune finestre promozionali.</p>
+            </details>
+
+            <details class="faq-item">
+                <summary>Come guadagnate da questo servizio?</summary>
+                <p>Alcuni link possono essere affiliati: per te il prezzo non cambia, ma riceviamo una piccola commissione che ci aiuta a mantenere il progetto gratuito.</p>
+            </details>
         </section>
     </main>
 
@@ -593,12 +706,14 @@
             <a href="https://www.instagram.com/instaprodigeek/" target="_blank" title="Prodigeek Instagram"><svg viewBox="0 0 24 24"><path d="M7.8,2H16.2C19.4,2 22,4.6 22,7.8V16.2A5.8,5.8 0 0,1 16.2,22H7.8C4.6,22 2,19.4 2,16.2V7.8A5.8,5.8 0 0,1 7.8,2M7.6,4A3.6,3.6 0 0,0 4,7.6V16.4C4,18.39 5.61,20 7.6,20H16.4A3.6,3.6 0 0,0 20,16.4V7.6C20,5.61 18.39,4 16.4,4H7.6M17.25,5.5A1.25,1.25 0 0,1 18.5,6.75A1.25,1.25 0 0,1 17.25,8A1.25,1.25 0 0,1 16,6.75A1.25,1.25 0 0,1 17.25,5.5M12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9Z"/></svg></a>
             <a href="https://www.tiktok.com/@prodigeek" target="_blank" title="Prodigeek TikTok"><svg viewBox="0 0 32 32"><path d="M16.656 1.029c1.637-0.025 3.262-0.012 4.886-0.025 0.054 2.031 0.878 3.859 2.189 5.213l-0.002-0.002c1.411 1.271 3.247 2.095 5.271 2.235l0.028 0.002v5.036c-1.912-0.048-3.71-0.489-5.331-1.247l0.082 0.034c-0.784-0.377-1.447-0.764-2.077-1.196l0.052 0.034c-0.012 3.649 0.012 7.298-0.025 10.934-0.103 1.853-0.719 3.543-1.707 4.954l0.020-0.031c-1.652 2.366-4.328 3.919-7.371 4.011l-0.014 0c-0.123 0.006-0.268 0.009-0.414 0.009-1.73 0-3.347-0.482-4.725-1.319l0.040 0.023c-2.508-1.509-4.238-4.091-4.558-7.094l-0.004-0.041c-0.025-0.625-0.037-1.25-0.012-1.862 0.49-4.779 4.494-8.476 9.361-8.476 0.547 0 1.083 0.047 1.604 0.136l-0.056-0.008c0.025 1.849-0.050 3.699-0.050 5.548-0.423-0.153-0.911-0.242-1.42-0.242-1.868 0-3.457 1.194-4.045 2.861l-0.009 0.030c-0.133 0.427-0.21 0.918-0.21 1.426 0 0.206 0.013 0.41 0.037 0.61l-0.002-0.024c0.332 2.046 2.086 3.59 4.201 3.59 0.061 0 0.121-0.001 0.181-0.004l-0.009 0c1.463-0.044 2.733-0.831 3.451-1.994l0.010-0.018c0.267-0.372 0.45-0.822 0.511-1.311l0.001-0.014c0.125-2.237 0.075-4.461 0.087-6.698 0.012-5.036-0.012-10.060 0.025-15.083z"/></svg></a>
         </div>
-        <p>&copy; 2026 Prezzone & Prodigeek. Tutti i diritti riservati.</p>
+        <p>&copy; 2026 Prezzone &amp; Prodigeek. Tutti i diritti riservati. <a href="extension.html" style="color:#fff; font-weight:700;">Estensione</a> · <a href="privacy.html" style="color:#fff; font-weight:700;">Privacy</a> · <a href="#faq" style="color:#fff; font-weight:700;">FAQ</a></p>
     </footer>
 
     <script type="application/ld+json" id="coupons-json-ld"></script>
 
     <script>
+        const SITE_URL = 'https://coupon.prodigeek.it/';
+        const SITE_LASTMOD = '2026-03-03';
         const coupons = {
             esclusiviProdigeek: [
                 { discount: 70, min: 699, code: 'IFP1PPHM', currency: '$' },
@@ -746,36 +861,133 @@
             }
         }
 
+        function currencySymbolToCode(symbol) {
+            return symbol === '$' ? 'USD' : 'EUR';
+        }
+
         function generateJsonLd() {
-            const allCoupons = Object.values(coupons).flat();
-            const offers = allCoupons.map(coupon => ({
-                "@type": "DiscountOffer",
-                "description": `Sconto di ${coupon.discount}${coupon.currency} su una spesa di ${coupon.min}${coupon.currency}`,
-                "availability": "https://schema.org/Online",
-                "discountCode": coupon.code,
-                "merchant": {
-                    "@type": "Organization",
-                    "name": "AliExpress"
+            const categoryMap = [
+                { key: 'standardProdigeek', label: 'Coupon Prodigeek', anchor: '#standard-prodigeek-coupons' },
+                { key: 'esclusiviProdigeek', label: 'Coupon Esclusivi Prodigeek', anchor: '#esclusivi-prodigeek-coupons' },
+                { key: 'generici', label: 'Coupon Standard', anchor: '#generici-coupons' },
+                { key: 'altriEsclusiviProdigeek', label: 'Altri Coupon Standard', anchor: '#altri-esclusivi-prodigeek-coupons' }
+            ];
+
+            const couponEntries = [];
+            categoryMap.forEach(category => {
+                const list = coupons[category.key] || [];
+                list.forEach(coupon => {
+                    couponEntries.push({
+                        coupon,
+                        category
+                    });
+                });
+            });
+
+            const listItems = couponEntries.map((entry, index) => ({
+                "@type": "ListItem",
+                "position": index + 1,
+                "item": {
+                    "@type": "Offer",
+                    "name": `${entry.category.label} - ${entry.coupon.code}`,
+                    "description": `Sconto di ${entry.coupon.discount}${entry.coupon.currency} su spesa minima di ${entry.coupon.min}${entry.coupon.currency}`,
+                    "url": `${SITE_URL}${entry.category.anchor}`,
+                    "price": "0",
+                    "priceCurrency": currencySymbolToCode(entry.coupon.currency),
+                    "availability": "https://schema.org/InStock",
+                    "seller": {
+                        "@type": "Organization",
+                        "name": "AliExpress"
+                    },
+                    "eligibleTransactionVolume": {
+                        "@type": "PriceSpecification",
+                        "price": entry.coupon.min,
+                        "priceCurrency": currencySymbolToCode(entry.coupon.currency)
+                    }
                 }
             }));
 
+            const faqItems = [
+                {
+                    question: 'I codici coupon sono davvero aggiornati?',
+                    answer: 'Sì. I codici vengono aggiornati regolarmente in base alle campagne attive su AliExpress e ai codici esclusivi condivisi dalla community Prezzone e Prodigeek.'
+                },
+                {
+                    question: 'Come uso un codice sconto AliExpress?',
+                    answer: 'Copia il codice dalla card e incollalo nel checkout AliExpress, oppure usa l’estensione browser per applicare il codice migliore in automatico.'
+                },
+                {
+                    question: 'Posso usare più coupon insieme?',
+                    answer: 'Dipende dalle regole della promozione AliExpress. In molti casi puoi combinare coupon piattaforma e altre offerte compatibili.'
+                },
+                {
+                    question: 'Come guadagnate da questo servizio?',
+                    answer: 'Alcuni link possono essere affiliati: per l’utente il prezzo non cambia e una piccola commissione sostiene il progetto.'
+                }
+            ];
+
             const jsonLd = {
                 "@context": "https://schema.org",
-                "@type": "WebPage",
-                "name": "Coupon Sconto AliExpress - Prezzone & Prodigeek",
-                "description": "Tutti i coupon di sconto per AliExpress. Codici promozionali esclusivi Prezzone e Prodigeek per risparmiare.",
-                "mainEntity": {
-                    "@type": "ItemList",
-                    "itemListElement": offers.map((offer, index) => ({
-                        "@type": "ListItem",
-                        "position": index + 1,
-                        "item": offer
-                    }))
-                }
+                "@graph": [
+                    {
+                        "@type": "Organization",
+                        "@id": `${SITE_URL}#organization`,
+                        "name": "Prezzone & Prodigeek",
+                        "url": SITE_URL,
+                        "logo": `${SITE_URL}assets/logo.svg`,
+                        "sameAs": [
+                            "https://t.me/prezzone",
+                            "https://t.me/prodigeekOfferte/",
+                            "https://www.youtube.com/@Prodigeek",
+                            "https://www.instagram.com/instaprodigeek/",
+                            "https://www.tiktok.com/@prodigeek"
+                        ]
+                    },
+                    {
+                        "@type": "WebSite",
+                        "@id": `${SITE_URL}#website`,
+                        "url": SITE_URL,
+                        "name": "Ali Coupons",
+                        "inLanguage": "it-IT",
+                        "publisher": { "@id": `${SITE_URL}#organization` }
+                    },
+                    {
+                        "@type": "WebPage",
+                        "@id": `${SITE_URL}#webpage`,
+                        "url": SITE_URL,
+                        "name": "Codici Sconto AliExpress 2026 | Coupon Esclusivi (Aggiornati)",
+                        "description": "Tutti i coupon di sconto per AliExpress. Codici promozionali esclusivi Prezzone e Prodigeek per risparmiare.",
+                        "isPartOf": { "@id": `${SITE_URL}#website` },
+                        "about": { "@id": `${SITE_URL}#organization` },
+                        "mainEntity": { "@id": `${SITE_URL}#coupon-list` },
+                        "dateModified": SITE_LASTMOD,
+                        "inLanguage": "it-IT"
+                    },
+                    {
+                        "@type": "ItemList",
+                        "@id": `${SITE_URL}#coupon-list`,
+                        "name": "Lista coupon AliExpress aggiornati",
+                        "numberOfItems": listItems.length,
+                        "itemListOrder": "https://schema.org/ItemListOrderAscending",
+                        "itemListElement": listItems
+                    },
+                    {
+                        "@type": "FAQPage",
+                        "@id": `${SITE_URL}#faq`,
+                        "mainEntity": faqItems.map(item => ({
+                            "@type": "Question",
+                            "name": item.question,
+                            "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": item.answer
+                            }
+                        }))
+                    }
+                ]
             };
 
             const jsonLdScript = document.getElementById('coupons-json-ld');
-            if(jsonLdScript) {
+            if (jsonLdScript) {
                 jsonLdScript.textContent = JSON.stringify(jsonLd);
             }
         }
@@ -817,7 +1029,7 @@
                 }, 300);
             });
 
-            const mainContainer = document.querySelector('main.container');
+            const mainContainer = document.getElementById('coupon-sections');
             const originalSections = Array.from(mainContainer.querySelectorAll('section'));
             const originalCoupons = JSON.parse(JSON.stringify(coupons));
             let isSortedByConvenience = false;
@@ -881,11 +1093,3 @@
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
-

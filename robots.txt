@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Host: coupon.prodigeek.it
+
+Sitemap: https://coupon.prodigeek.it/sitemap.xml
