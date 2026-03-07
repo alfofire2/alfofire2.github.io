@@ -1,234 +1,188 @@
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@700&display=swap');
 
 :root {
-    /* Brand Colors - Intensified using OKLCH */
     --brand-orange: oklch(75% 0.2 45);
     --brand-coral: oklch(65% 0.25 25);
     --brand-turquoise: oklch(70% 0.15 190);
     --brand-dark: oklch(20% 0.05 20);
-    
-    /* Tinted Neutrals */
     --bg-tinted: oklch(98% 0.01 45);
     --surface: oklch(100% 0 0);
     --border-light: oklch(92% 0.02 45);
     --text-main: oklch(25% 0.02 45);
     --text-muted: oklch(50% 0.02 45);
     
-    /* Shadows - Sharp & Offset "Pop" Shadows */
-    --shadow-sm: 4px 4px 0px oklch(0% 0 0 / 0.08);
-    --shadow-md: 8px 8px 0px oklch(0% 0 0 / 0.1);
-    --shadow-brand: 8px 8px 0px color-mix(in srgb, var(--brand-orange), transparent 70%);
-    
-    --transition-pop: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    --transition-smooth: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    --shadow-pop: 8px 8px 0px var(--brand-dark);
+    --transition-pop: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-html {
-    scroll-behavior: smooth;
-}
+html { scroll-behavior: smooth; }
 
 body {
-    font-family: 'Plus Jakarta Sans', system-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     background-color: var(--bg-tinted);
-    background-image: 
-        radial-gradient(at 0% 0%, oklch(95% 0.02 45) 0px, transparent 50%),
-        radial-gradient(at 100% 100%, oklch(95% 0.02 190) 0px, transparent 50%);
     color: var(--text-main);
     margin: 0;
+    padding: 0;
     line-height: 1.6;
-    overflow-x: hidden;
 }
 
-/* --- Layout Drama --- */
-
+/* --- Header & Navigation --- */
 header {
-    background: linear-gradient(165deg, var(--brand-orange) 0%, var(--brand-coral) 100%);
-    padding: clamp(2rem, 8vw, 4rem) 1.5rem;
+    background: linear-gradient(135deg, var(--brand-orange) 0%, var(--brand-coral) 100%);
+    padding: 2rem 1rem;
     color: white;
-    position: relative;
-    overflow: hidden;
-    clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
-    margin-bottom: -2rem;
-}
-
-header::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-    opacity: 0.15;
-    mix-blend-mode: overlay;
-    pointer-events: none;
+    border-bottom: 4px solid var(--brand-dark);
 }
 
 .header-content {
     max-width: 1100px;
     margin: 0 auto;
     display: flex;
-    flex-direction: column;
-    align-items: flex-start; /* Asymmetric alignment */
-    gap: 2.5rem;
-    position: relative;
-    z-index: 2;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1.5rem;
 }
 
 .logo {
-    width: 140px;
+    width: 120px;
     height: auto;
     filter: brightness(0) invert(1);
-    transition: var(--transition-pop);
 }
 
-.logo:hover {
-    transform: rotate(-5deg) scale(1.1);
+header h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.5rem;
+    margin: 0;
+    line-height: 1;
+    color: white;
+    text-shadow: 3px 3px 0px var(--brand-dark);
+    text-align: left;
 }
 
 .top-nav {
     display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
+    gap: 0.5rem;
 }
 
 .top-nav a {
     text-decoration: none;
     font-weight: 800;
+    font-size: 0.8rem;
     text-transform: uppercase;
-    letter-spacing: 1px;
-    color: var(--white);
-    background: rgba(0, 0, 0, 0.1);
-    padding: 0.75rem 1.5rem;
-    border-radius: 0; /* Brutalist sharp edges */
-    border: 2px solid white;
-    font-size: 0.85rem;
+    color: white;
+    background: var(--brand-dark);
+    padding: 0.6rem 1.2rem;
+    border: 2px solid var(--brand-dark);
     transition: var(--transition-pop);
 }
 
 .top-nav a:hover, .top-nav a[aria-current="page"] {
     background: white;
-    color: var(--brand-coral);
-    transform: translate(-4px, -4px);
-    box-shadow: 4px 4px 0px var(--brand-dark);
+    color: var(--brand-dark);
+    transform: translate(-3px, -3px);
+    box-shadow: 3px 3px 0px var(--brand-dark);
 }
 
+/* --- Squad Strip (Banner) --- */
+#squad-strip {
+    background: var(--brand-dark);
+    color: white;
+    padding: 1rem;
+    text-align: center;
+    font-weight: 800;
+    font-size: 0.9rem;
+    border-bottom: 4px solid var(--brand-orange);
+}
+
+#squad-strip a {
+    color: var(--brand-orange);
+    text-decoration: underline;
+}
+
+/* --- Container --- */
 .container {
     width: 100%;
     max-width: 1100px;
-    margin: 6rem auto;
+    margin: 3rem auto;
     padding: 0 1.5rem;
     box-sizing: border-box;
 }
 
-/* --- Typography Amplification --- */
-
-h1 {
+h1.main-title {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(4rem, 12vw, 8rem);
+    font-size: clamp(3rem, 10vw, 6rem);
     line-height: 0.9;
-    margin: 0;
-    text-align: left;
-    color: white;
-    text-shadow: 4px 4px 0px var(--brand-dark);
+    margin-bottom: 2rem;
+    color: var(--brand-dark);
 }
 
-h2.section-title {
+/* --- Coupon Cards --- */
+.section-title {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(2.5rem, 6vw, 4rem);
-    color: var(--brand-dark);
+    font-size: 3rem;
     margin: 4rem 0 2rem;
     display: flex;
     align-items: center;
     gap: 1rem;
 }
 
-h2.section-title::after {
-    content: '';
-    flex-grow: 1;
-    height: 4px;
-    background: repeating-linear-gradient(90deg, var(--brand-orange), var(--brand-orange) 10px, transparent 10px, transparent 20px);
-}
-
-/* --- Digital Voucher (The Bold Card) --- */
-
 .coupon-list {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 3rem;
-    margin-bottom: 6rem;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
 }
 
 .coupon-card {
-    background-color: var(--surface);
+    background: white;
     border: 3px solid var(--brand-dark);
-    padding: 0; /* Padding handled by internal containers */
+    box-shadow: var(--shadow-pop);
+    transition: var(--transition-pop);
     display: flex;
     flex-direction: column;
-    position: relative;
-    box-shadow: var(--shadow-md);
-    transition: var(--transition-pop);
     opacity: 0;
-    transform: translateY(40px) rotate(2deg);
+    transform: translateY(20px);
 }
-
-/* Ticket "Cutouts" */
-.coupon-card::before, .coupon-card::after {
-    content: '';
-    position: absolute;
-    left: -15px;
-    width: 30px;
-    height: 30px;
-    background: var(--bg-tinted);
-    border: 3px solid var(--brand-dark);
-    border-radius: 50%;
-    z-index: 2;
-}
-.coupon-card::before { top: 60%; }
-.coupon-card::after { left: auto; right: -15px; top: 60%; }
 
 .coupon-card.is-visible {
     opacity: 1;
-    transform: translateY(0) rotate(0deg);
+    transform: translateY(0);
 }
 
 .coupon-card:hover {
-    transform: translate(-8px, -8px);
-    box-shadow: 16px 16px 0px var(--brand-orange);
+    transform: translate(-5px, -5px);
+    box-shadow: 12px 12px 0px var(--brand-orange);
 }
 
 .coupon-header {
-    padding: 2rem;
-    background: oklch(98% 0.01 45);
+    padding: 1.5rem;
     border-bottom: 3px dashed var(--border-light);
     display: flex;
     justify-content: space-between;
-    align-items: flex-end;
+    align-items: center;
 }
 
 .discount-value {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 5rem;
-    font-weight: 900;
+    font-size: 4rem;
     color: var(--brand-orange);
-    line-height: 0.8;
+    line-height: 1;
 }
 
-.discount-value span {
-    font-size: 2rem;
-    margin-left: 0.2rem;
-}
+.discount-value span { font-size: 1.5rem; margin-left: 2px; }
 
 .percentage {
-    font-weight: 800;
-    text-transform: uppercase;
-    font-size: 0.75rem;
     background: var(--brand-dark);
     color: white;
-    padding: 0.4rem 0.8rem;
-    transform: rotate(-5deg);
+    padding: 0.3rem 0.6rem;
+    font-weight: 900;
+    font-size: 0.7rem;
+    transform: rotate(-3deg);
 }
 
 .coupon-details {
-    padding: 1.5rem 2rem;
-    font-weight: 600;
+    padding: 1rem 1.5rem;
+    font-weight: 700;
     font-size: 0.9rem;
     color: var(--text-muted);
 }
@@ -236,198 +190,184 @@ h2.section-title::after {
 .coupon-code-container {
     margin: 0 1.5rem 1.5rem;
     background: var(--brand-dark);
+    color: white;
     padding: 1rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    text-align: center;
     cursor: pointer;
-    transition: var(--transition-pop);
     position: relative;
     overflow: hidden;
 }
 
-.coupon-code-container::before {
-    content: 'CLICK TO COPY';
-    position: absolute;
-    inset: 0;
-    background: var(--brand-turquoise);
-    color: var(--brand-dark);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 900;
-    font-size: 0.8rem;
-    transform: translateY(100%);
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.coupon-code-container:hover::before {
-    transform: translateY(0);
-}
-
 .coupon-code {
     font-family: 'JetBrains Mono', monospace;
-    font-weight: 700;
-    font-size: 1.4rem;
-    color: white;
+    font-size: 1.2rem;
     letter-spacing: 2px;
 }
-
-/* --- Micro-interactions --- */
 
 .copy-feedback {
     position: absolute;
     inset: 0;
-    background: oklch(70% 0.2 145); /* Success Green */
-    color: white;
-    display: flex;
+    background: var(--brand-turquoise);
+    color: var(--brand-dark);
+    display: none;
     align-items: center;
     justify-content: center;
     font-weight: 900;
-    z-index: 10;
 }
 
-.copy-animation {
-    animation: bounce-in 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-@keyframes bounce-in {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05) rotate(1deg); }
-    100% { transform: scale(1); }
-}
-
-/* --- Extension Page Bolder Styles --- */
-
-.hero-desc {
-    font-size: clamp(1.5rem, 4vw, 2.5rem);
-    line-height: 1.2;
-    font-weight: 800;
-    color: var(--brand-dark);
-    max-width: 800px;
-    margin-bottom: 4rem;
-}
-
-.button-container {
-    display: flex;
-    gap: 2rem;
-    flex-wrap: wrap;
-    margin: 4rem 0;
-}
-
-.download-button {
-    flex: 1;
-    min-width: 280px;
-    padding: 2.5rem;
-    border: 4px solid var(--brand-dark);
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 2rem;
+/* --- Squad Popup --- */
+#squad-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    backdrop-filter: blur(10px);
+    z-index: 9999;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    box-shadow: 12px 12px 0px var(--brand-dark);
-    transition: var(--transition-pop);
-}
-
-.download-button:hover {
-    transform: translate(-4px, -4px);
-    box-shadow: 16px 16px 0px var(--accent-color, var(--brand-orange));
-}
-
-.firefox-btn { --accent-color: #ff7139; }
-.chrome-btn { --accent-color: #4285F4; }
-
-.browser-logo {
-    width: 60px;
-    height: 60px;
-    background: white;
-    padding: 10px;
-    border: 3px solid var(--brand-dark);
-}
-
-/* --- Squad Popup Amplification --- */
-
-#squad-backdrop {
-    background: oklch(10% 0.05 20 / 0.8);
-    backdrop-filter: blur(12px) saturate(180%);
+    justify-content: center;
+    padding: 20px;
 }
 
 .squad-card {
-    background: var(--brand-dark);
-    color: white;
-    border: 4px solid white;
-    padding: 4rem 2rem;
-    box-shadow: 30px 30px 0px var(--brand-orange);
+    background: white;
+    border: 4px solid var(--brand-dark);
+    max-width: 450px;
+    width: 100%;
+    padding: 3rem 2rem;
+    text-align: center;
+    position: relative;
+    box-shadow: 20px 20px 0px var(--brand-orange);
+    text-decoration: none;
+    color: var(--brand-dark);
+}
+
+.squad-card-img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 4px solid var(--brand-dark);
+    margin-bottom: 1.5rem;
+}
+
+.squad-card-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.squad-card-subtitle {
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
 }
 
 .squad-card-amount {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 4rem;
-    display: block;
-    color: #ffeb3b;
-    margin: 1rem 0;
+    color: var(--brand-orange);
+    font-size: 1.5rem;
+    font-weight: 900;
 }
 
 .squad-card-cta {
-    background: var(--brand-orange);
-    color: var(--brand-dark);
+    background: var(--brand-dark);
+    color: white;
+    padding: 1rem 2rem;
     font-family: 'Bebas Neue', sans-serif;
     font-size: 1.5rem;
-    padding: 1rem 3rem;
-    border: 3px solid var(--brand-dark);
-    box-shadow: 6px 6px 0px white;
+    display: inline-block;
 }
 
-/* --- FAQ & Shared --- */
+#squad-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 2rem;
+    cursor: pointer;
+    font-weight: 900;
+}
 
+/* --- Footer --- */
+footer {
+    background: var(--brand-dark);
+    color: white;
+    padding: 4rem 1rem;
+    text-align: center;
+    border-top: 8px solid var(--brand-orange);
+}
+
+.footer-content {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.social-links {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.social-brand-link {
+    background: white;
+    color: var(--brand-dark);
+    padding: 0.5rem 1rem;
+    font-weight: 900;
+    text-decoration: none;
+    font-size: 0.8rem;
+    border: 2px solid white;
+}
+
+.social-brand-link:hover {
+    background: transparent;
+    color: white;
+}
+
+.footer-logo {
+    height: 20px;
+    vertical-align: middle;
+    margin-right: 5px;
+}
+
+.footer-nav {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.footer-nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+
+.copyright {
+    opacity: 0.6;
+    font-size: 0.8rem;
+}
+
+/* FAQ */
 .faq {
-    background: var(--surface);
+    background: white;
     border: 3px solid var(--brand-dark);
-    padding: clamp(2rem, 5vw, 4rem);
-    box-shadow: var(--shadow-md);
+    padding: 2rem;
+    margin: 4rem 0;
 }
 
 details.faq-item {
-    border: 2px solid var(--border-light);
-    border-radius: 0;
-    margin-bottom: 1rem;
-    background: white;
+    border-bottom: 2px solid var(--border-light);
+    padding: 1rem 0;
 }
 
 details.faq-item summary {
-    padding: 1.5rem;
     font-weight: 800;
-    font-size: 1.1rem;
-    text-transform: uppercase;
-}
-
-details.faq-item summary::after {
-    content: '→';
-    font-family: 'Bebas Neue';
-    font-size: 1.5rem;
-}
-
-footer {
-    background: var(--brand-dark);
-    padding: clamp(4rem, 10vw, 6rem) 1.5rem 4rem;
-    margin-top: 4rem;
-    position: relative;
-}
-
-footer::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100px;
-    background: var(--bg-tinted);
-    clip-path: polygon(0 0, 100% 0, 100% 0, 0 100%);
+    cursor: pointer;
+    list-style: none;
 }
 
 @media (max-width: 600px) {
-    header { clip-path: none; padding: 2rem 1rem; }
-    h1 { font-size: 4rem; }
-    .coupon-list { gap: 2rem; }
-    .download-button { padding: 1.5rem; font-size: 1.5rem; }
+    header h1 { font-size: 1.8rem; }
+    .header-content { flex-direction: column; text-align: center; }
+    header h1 { text-align: center; }
 }
