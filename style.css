@@ -1,0 +1,422 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@700&display=swap');
+
+:root {
+    /* Brand Colors - Intensified using OKLCH */
+    --brand-orange: oklch(75% 0.2 45);
+    --brand-coral: oklch(65% 0.25 25);
+    --brand-turquoise: oklch(70% 0.15 190);
+    --brand-dark: oklch(20% 0.05 20);
+    
+    /* Tinted Neutrals */
+    --bg-tinted: oklch(98% 0.01 45);
+    --surface: oklch(100% 0 0);
+    --border-light: oklch(92% 0.02 45);
+    --text-main: oklch(25% 0.02 45);
+    --text-muted: oklch(50% 0.02 45);
+    
+    /* Shadows - Sharp & Offset "Pop" Shadows */
+    --shadow-sm: 4px 4px 0px oklch(0% 0 0 / 0.08);
+    --shadow-md: 8px 8px 0px oklch(0% 0 0 / 0.1);
+    --shadow-brand: 8px 8px 0px color-mix(in srgb, var(--brand-orange), transparent 70%);
+    
+    --transition-pop: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    --transition-smooth: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Plus Jakarta Sans', system-serif;
+    background-color: var(--bg-tinted);
+    background-image: 
+        radial-gradient(at 0% 0%, oklch(95% 0.02 45) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, oklch(95% 0.02 190) 0px, transparent 50%);
+    color: var(--text-main);
+    margin: 0;
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* --- Layout Drama --- */
+
+header {
+    background: linear-gradient(165deg, var(--brand-orange) 0%, var(--brand-coral) 100%);
+    padding: clamp(2rem, 8vw, 4rem) 1.5rem;
+    color: white;
+    position: relative;
+    overflow: hidden;
+    clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+    margin-bottom: -2rem;
+}
+
+header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    opacity: 0.15;
+    mix-blend-mode: overlay;
+    pointer-events: none;
+}
+
+.header-content {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Asymmetric alignment */
+    gap: 2.5rem;
+    position: relative;
+    z-index: 2;
+}
+
+.logo {
+    width: 140px;
+    height: auto;
+    filter: brightness(0) invert(1);
+    transition: var(--transition-pop);
+}
+
+.logo:hover {
+    transform: rotate(-5deg) scale(1.1);
+}
+
+.top-nav {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.top-nav a {
+    text-decoration: none;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--white);
+    background: rgba(0, 0, 0, 0.1);
+    padding: 0.75rem 1.5rem;
+    border-radius: 0; /* Brutalist sharp edges */
+    border: 2px solid white;
+    font-size: 0.85rem;
+    transition: var(--transition-pop);
+}
+
+.top-nav a:hover, .top-nav a[aria-current="page"] {
+    background: white;
+    color: var(--brand-coral);
+    transform: translate(-4px, -4px);
+    box-shadow: 4px 4px 0px var(--brand-dark);
+}
+
+.container {
+    width: 100%;
+    max-width: 1100px;
+    margin: 6rem auto;
+    padding: 0 1.5rem;
+    box-sizing: border-box;
+}
+
+/* --- Typography Amplification --- */
+
+h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(4rem, 12vw, 8rem);
+    line-height: 0.9;
+    margin: 0;
+    text-align: left;
+    color: white;
+    text-shadow: 4px 4px 0px var(--brand-dark);
+}
+
+h2.section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    color: var(--brand-dark);
+    margin: 4rem 0 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+h2.section-title::after {
+    content: '';
+    flex-grow: 1;
+    height: 4px;
+    background: repeating-linear-gradient(90deg, var(--brand-orange), var(--brand-orange) 10px, transparent 10px, transparent 20px);
+}
+
+/* --- Digital Voucher (The Bold Card) --- */
+
+.coupon-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 3rem;
+    margin-bottom: 6rem;
+}
+
+.coupon-card {
+    background-color: var(--surface);
+    border: 3px solid var(--brand-dark);
+    padding: 0; /* Padding handled by internal containers */
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    box-shadow: var(--shadow-md);
+    transition: var(--transition-pop);
+    opacity: 0;
+    transform: translateY(40px) rotate(2deg);
+}
+
+/* Ticket "Cutouts" */
+.coupon-card::before, .coupon-card::after {
+    content: '';
+    position: absolute;
+    left: -15px;
+    width: 30px;
+    height: 30px;
+    background: var(--bg-tinted);
+    border: 3px solid var(--brand-dark);
+    border-radius: 50%;
+    z-index: 2;
+}
+.coupon-card::before { top: 60%; }
+.coupon-card::after { left: auto; right: -15px; top: 60%; }
+
+.coupon-card.is-visible {
+    opacity: 1;
+    transform: translateY(0) rotate(0deg);
+}
+
+.coupon-card:hover {
+    transform: translate(-8px, -8px);
+    box-shadow: 16px 16px 0px var(--brand-orange);
+}
+
+.coupon-header {
+    padding: 2rem;
+    background: oklch(98% 0.01 45);
+    border-bottom: 3px dashed var(--border-light);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.discount-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 5rem;
+    font-weight: 900;
+    color: var(--brand-orange);
+    line-height: 0.8;
+}
+
+.discount-value span {
+    font-size: 2rem;
+    margin-left: 0.2rem;
+}
+
+.percentage {
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    background: var(--brand-dark);
+    color: white;
+    padding: 0.4rem 0.8rem;
+    transform: rotate(-5deg);
+}
+
+.coupon-details {
+    padding: 1.5rem 2rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.coupon-code-container {
+    margin: 0 1.5rem 1.5rem;
+    background: var(--brand-dark);
+    padding: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: var(--transition-pop);
+    position: relative;
+    overflow: hidden;
+}
+
+.coupon-code-container::before {
+    content: 'CLICK TO COPY';
+    position: absolute;
+    inset: 0;
+    background: var(--brand-turquoise);
+    color: var(--brand-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: 0.8rem;
+    transform: translateY(100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.coupon-code-container:hover::before {
+    transform: translateY(0);
+}
+
+.coupon-code {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 1.4rem;
+    color: white;
+    letter-spacing: 2px;
+}
+
+/* --- Micro-interactions --- */
+
+.copy-feedback {
+    position: absolute;
+    inset: 0;
+    background: oklch(70% 0.2 145); /* Success Green */
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    z-index: 10;
+}
+
+.copy-animation {
+    animation: bounce-in 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes bounce-in {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05) rotate(1deg); }
+    100% { transform: scale(1); }
+}
+
+/* --- Extension Page Bolder Styles --- */
+
+.hero-desc {
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+    line-height: 1.2;
+    font-weight: 800;
+    color: var(--brand-dark);
+    max-width: 800px;
+    margin-bottom: 4rem;
+}
+
+.button-container {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    margin: 4rem 0;
+}
+
+.download-button {
+    flex: 1;
+    min-width: 280px;
+    padding: 2.5rem;
+    border: 4px solid var(--brand-dark);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 12px 12px 0px var(--brand-dark);
+    transition: var(--transition-pop);
+}
+
+.download-button:hover {
+    transform: translate(-4px, -4px);
+    box-shadow: 16px 16px 0px var(--accent-color, var(--brand-orange));
+}
+
+.firefox-btn { --accent-color: #ff7139; }
+.chrome-btn { --accent-color: #4285F4; }
+
+.browser-logo {
+    width: 60px;
+    height: 60px;
+    background: white;
+    padding: 10px;
+    border: 3px solid var(--brand-dark);
+}
+
+/* --- Squad Popup Amplification --- */
+
+#squad-backdrop {
+    background: oklch(10% 0.05 20 / 0.8);
+    backdrop-filter: blur(12px) saturate(180%);
+}
+
+.squad-card {
+    background: var(--brand-dark);
+    color: white;
+    border: 4px solid white;
+    padding: 4rem 2rem;
+    box-shadow: 30px 30px 0px var(--brand-orange);
+}
+
+.squad-card-amount {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 4rem;
+    display: block;
+    color: #ffeb3b;
+    margin: 1rem 0;
+}
+
+.squad-card-cta {
+    background: var(--brand-orange);
+    color: var(--brand-dark);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.5rem;
+    padding: 1rem 3rem;
+    border: 3px solid var(--brand-dark);
+    box-shadow: 6px 6px 0px white;
+}
+
+/* --- FAQ & Shared --- */
+
+.faq {
+    background: var(--surface);
+    border: 3px solid var(--brand-dark);
+    padding: clamp(2rem, 5vw, 4rem);
+    box-shadow: var(--shadow-md);
+}
+
+details.faq-item {
+    border: 2px solid var(--border-light);
+    border-radius: 0;
+    margin-bottom: 1rem;
+    background: white;
+}
+
+details.faq-item summary {
+    padding: 1.5rem;
+    font-weight: 800;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+}
+
+details.faq-item summary::after {
+    content: '→';
+    font-family: 'Bebas Neue';
+    font-size: 1.5rem;
+}
+
+footer {
+    background: var(--brand-dark);
+    clip-path: polygon(0 15%, 100% 0, 100% 100%, 0 100%);
+    padding-top: 8rem;
+    margin-top: 4rem;
+}
+
+@media (max-width: 600px) {
+    header { clip-path: none; padding: 2rem 1rem; }
+    h1 { font-size: 4rem; }
+    .coupon-list { gap: 2rem; }
+    .download-button { padding: 1.5rem; font-size: 1.5rem; }
+}
