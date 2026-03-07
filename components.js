@@ -1,5 +1,6 @@
 async function loadComponent(id, file) {
     try {
+        // Use relative path from the root
         const response = await fetch(file);
         if (response.ok) {
             const content = await response.text();
@@ -15,20 +16,16 @@ async function loadComponent(id, file) {
 
 function setActiveLink() {
     const path = window.location.pathname;
-    const page = path.split("/").pop();
+    const page = path.split("/").pop() || 'index.html';
     
-    // Remove active attribute from all
     document.querySelectorAll('.top-nav a').forEach(link => {
-        link.removeAttribute('aria-current');
+        const linkPage = link.getAttribute('href').split("/").pop();
+        if (page === linkPage) {
+            link.setAttribute('aria-current', 'page');
+        } else {
+            link.removeAttribute('aria-current');
+        }
     });
-
-    if (page === 'index.html' || page === '') {
-        document.getElementById('nav-home')?.setAttribute('aria-current', 'page');
-    } else if (page === 'extension.html') {
-        document.getElementById('nav-extension')?.setAttribute('aria-current', 'page');
-    } else if (page === 'privacy.html') {
-        document.getElementById('nav-privacy')?.setAttribute('aria-current', 'page');
-    }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
