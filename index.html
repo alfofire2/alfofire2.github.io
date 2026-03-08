@@ -111,22 +111,30 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            gap: 14px;
+            gap: 18px;
             width: 100%;
-            padding: 20px;
+            padding: 30px 20px;
             box-sizing: border-box;
             background: linear-gradient(135deg, var(--orange) 0%, var(--coral) 100%);
+            box-shadow: 0 4px 25px rgba(240, 120, 40, 0.25);
+            position: relative;
+            z-index: 10;
         }
         .header-content {
             display: flex;
             align-items: center;
             gap: 20px;
+            transition: transform 0.3s ease;
         }
         .logo {
-            width: 80px;
+            width: 85px;
             height: auto;
             flex-shrink: 0;
-            filter: brightness(0) invert(1);
+            filter: brightness(0) invert(1) drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .logo:hover {
+            transform: scale(1.1) rotate(-3deg);
         }
         .container {
             width: 100%;
@@ -143,23 +151,34 @@
             font-size: 1.8em;
             margin: 0;
             font-weight: 800;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         .top-nav {
             display: flex;
             justify-content: center;
-            gap: 10px;
+            gap: 12px;
             flex-wrap: wrap;
             margin: 0;
         }
         .top-nav a {
             text-decoration: none;
-            font-weight: 800;
+            font-weight: 700;
             color: var(--white);
-            background: rgba(255, 255, 255, 0.16);
-            padding: 8px 12px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            padding: 10px 18px;
             border-radius: 999px;
+            font-size: 0.95em;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.1);
         }
-        .top-nav a:hover { opacity: 0.9; }
+        .top-nav a:hover {
+            background: rgba(255, 255, 255, 0.28);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-color: rgba(255,255,255,0.3);
+        }
         .intro {
             background: var(--white);
             border: 1px solid var(--light-grey);
@@ -618,7 +637,6 @@
             <h1>Coupon Sconto AliExpress di Prezzone & Prodigeek</h1>
         </div>
         <nav class="top-nav" aria-label="Navigazione principale">
-            <a href="index.html" aria-current="page">Coupon</a>
             <a href="extension.html">Estensione Browser</a>
             <a href="privacy.html">Privacy</a>
             <a href="#faq">FAQ</a>
@@ -708,52 +726,23 @@
 
     <script>
         const SITE_URL = 'https://coupon.prodigeek.it/';
-        const SITE_LASTMOD = '2026-03-03';
+        const SITE_LASTMOD = '2026-03-08';
         const coupons = {
-            esclusiviProdigeek: [
-                { discount: 70, min: 699, code: 'IFP1PPHM', currency: '$' },
-                { discount: 60, min: 599, code: 'IFPVZLI1', currency: '$' },
-                { discount: 50, min: 469, code: 'IFPXLTCB', currency: '$' },
-                { discount: 40, min: 369, code: 'IFPMEQC3', currency: '$' },
-                { discount: 30, min: 269, code: 'IFPXS08X', currency: '$' },
-                { discount: 23, min: 199, code: 'IFP0PR7D', currency: '$' },
-                { discount: 16, min: 149, code: 'IFPRLU4X', currency: '$' },
-                { discount: 9, min: 89, code: 'IFPSRN8Y', currency: '$' },
-                { discount: 6, min: 59, code: 'IFPIR3XU', currency: '$' },
-                { discount: 3, min: 29, code: 'IFPMVETR', currency: '$' }
-            ],
+            esclusiviProdigeek: [],
             altriEsclusiviProdigeek: [
-                { discount: 55, min: 459, code: 'PSIT55', currency: '€' },
-                { discount: 40, min: 329, code: 'PSIT40', currency: '€' },
-                { discount: 25, min: 209, code: 'PSIT25', currency: '€' },
-                { discount: 20, min: 159, code: 'PSIT20', currency: '€' },
-                { discount: 13, min: 99, code: 'PSIT13', currency: '€' },
-                { discount: 9, min: 69, code: 'PSIT09', currency: '€' },
-                { discount: 7, min: 49, code: 'PSIT07', currency: '€' },
-                { discount: 4, min: 29, code: 'PSIT04', currency: '€' },
-                { discount: 2, min: 15, code: 'PSIT02', currency: '€' }
+                { discount: 25, min: 209, code: 'ITVS25', currency: '€' },
+                { discount: 16, min: 139, code: 'ITVS16', currency: '€' },
+                { discount: 7, min: 65, code: 'ITVS07', currency: '€' },
+                { discount: 4, min: 35, code: 'ITVS04', currency: '€' },
+                { discount: 2, min: 19, code: 'ITVS02', currency: '€' }
             ],
-            standardProdigeek: [
-                { discount: 55, min: 459, code: 'PRODIGEEK55', currency: '€' },
-                { discount: 40, min: 329, code: 'PRODIGEEK40', currency: '€' },
-                { discount: 25, min: 209, code: 'PRODIGEEK25', currency: '€' },
-                { discount: 20, min: 159, code: 'PRODIGEEK20', currency: '€' },
-                { discount: 13, min: 99, code: 'PRODIGEEK13', currency: '€' },
-                { discount: 9, min: 69, code: 'PRODIGEEK09', currency: '€' },
-                { discount: 7, min: 49, code: 'PRODIGEEK07', currency: '€' },
-                { discount: 4, min: 29, code: 'PRODIGEEK04', currency: '€' },
-                { discount: 2, min: 15, code: 'PRODIGEEK02', currency: '€' }
-            ],
+            standardProdigeek: [],
             generici: [
-                { discount: 55, min: 459, code: 'ITPS55', currency: '€' },
-                { discount: 40, min: 329, code: 'ITPS40', currency: '€' },
-                { discount: 25, min: 209, code: 'ITPS25', currency: '€' },
-                { discount: 20, min: 159, code: 'ITPS20', currency: '€' },
-                { discount: 13, min: 99, code: 'ITPS13', currency: '€' },
-                { discount: 9, min: 69, code: 'ITPS09', currency: '€' },
-                { discount: 7, min: 49, code: 'ITPS07', currency: '€' },
-                { discount: 4, min: 29, code: 'ITPS04', currency: '€' },
-                { discount: 2, min: 15, code: 'ITPS02', currency: '€' }
+                { discount: 25, min: 209, code: 'VSIT25', currency: '€' },
+                { discount: 16, min: 139, code: 'VSIT16', currency: '€' },
+                { discount: 7, min: 65, code: 'VSIT07', currency: '€' },
+                { discount: 4, min: 35, code: 'VSIT04', currency: '€' },
+                { discount: 2, min: 19, code: 'VSIT02', currency: '€' }
             ]
         };
 
@@ -847,11 +836,17 @@
 
             for (const listId in lists) {
                 const container = document.getElementById(listId);
+                const section = container ? container.closest('section') : null;
                 if (container) {
                     container.innerHTML = ''; // Clear previous content before rendering
-                    lists[listId].forEach(coupon => {
-                        container.appendChild(createCouponCard(coupon));
-                    });
+                    if (lists[listId].length === 0) {
+                        if (section) section.style.display = 'none';
+                    } else {
+                        if (section) section.style.display = 'block';
+                        lists[listId].forEach(coupon => {
+                            container.appendChild(createCouponCard(coupon));
+                        });
+                    }
                 }
             }
         }
