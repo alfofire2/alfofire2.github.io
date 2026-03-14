@@ -664,23 +664,23 @@
             <button id="sort-button">Ordina per convenienza</button>
         </div>
         <div id="coupon-sections">
-            <section id="standard-prodigeek-coupons">
-                <h2>Coupon Prodigeek</h2>
-                <div class="coupon-list" id="standard-prodigeek-list"></div>
-            </section>
-
             <section id="esclusivi-prodigeek-coupons">
-                <h2>Coupon Esclusivi Prodigeek ($)</h2>
+                <h2>Coupon Prodigeek</h2>
                 <div class="coupon-list" id="esclusivi-prodigeek-list"></div>
             </section>
 
             <section id="generici-coupons">
-                <h2>Coupon Standard</h2>
+                <h2>Coupon Generici</h2>
                 <div class="coupon-list" id="generici-list"></div>
             </section>
 
+            <section id="standard-prodigeek-coupons">
+                <h2>Altri Coupon Generici</h2>
+                <div class="coupon-list" id="standard-prodigeek-list"></div>
+            </section>
+
             <section id="altri-esclusivi-prodigeek-coupons">
-                <h2>Altri Coupon Standard</h2>
+                <h2>Altri Coupon Prodigeek ($)</h2>
                 <div class="coupon-list" id="altri-esclusivi-prodigeek-list"></div>
             </section>
         </div>
@@ -878,10 +878,10 @@
 
         function generateJsonLd() {
             const categoryMap = [
-                { key: 'standardProdigeek', label: 'Coupon Prodigeek', anchor: '#standard-prodigeek-coupons' },
-                { key: 'esclusiviProdigeek', label: 'Coupon Esclusivi Prodigeek', anchor: '#esclusivi-prodigeek-coupons' },
-                { key: 'generici', label: 'Coupon Standard', anchor: '#generici-coupons' },
-                { key: 'altriEsclusiviProdigeek', label: 'Altri Coupon Standard', anchor: '#altri-esclusivi-prodigeek-coupons' }
+                { key: 'esclusiviProdigeek', label: 'Coupon Prodigeek', anchor: '#esclusivi-prodigeek-coupons' },
+                { key: 'generici', label: 'Coupon Generici', anchor: '#generici-coupons' },
+                { key: 'standardProdigeek', label: 'Altri Coupon Generici', anchor: '#standard-prodigeek-coupons' },
+                { key: 'altriEsclusiviProdigeek', label: 'Altri Coupon Prodigeek ($)', anchor: '#altri-esclusivi-prodigeek-coupons' }
             ];
 
             const couponEntries = [];
