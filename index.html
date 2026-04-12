@@ -665,7 +665,7 @@
         </div>
         <div id="coupon-sections">
             <section id="esclusivi-prodigeek-coupons">
-                <h2>Coupon Prodigeek</h2>
+                <h2>Coupon Standard</h2>
                 <div class="coupon-list" id="esclusivi-prodigeek-list"></div>
             </section>
 
@@ -675,12 +675,12 @@
             </section>
 
             <section id="standard-prodigeek-coupons">
-                <h2>Altri Coupon Generici</h2>
+                <h2>Coupon Esclusivi Prodigeek</h2>
                 <div class="coupon-list" id="standard-prodigeek-list"></div>
             </section>
 
             <section id="altri-esclusivi-prodigeek-coupons">
-                <h2>Altri Coupon Prodigeek</h2>
+                <h2>Altri Coupon Generici</h2>
                 <div class="coupon-list" id="altri-esclusivi-prodigeek-list"></div>
             </section>
         </div>
@@ -731,24 +731,51 @@
 
     <script>
         const SITE_URL = 'https://coupon.prodigeek.it/';
-        const SITE_LASTMOD = '2026-03-26';
+        const SITE_LASTMOD = '2026-04-12';
         const coupons = {
             esclusiviProdigeek: [
+                { discount: 2, min: 15, code: 'ITAR02', currency: '€' },
+                { discount: 4, min: 29, code: 'ITAR04', currency: '€' },
+                { discount: 7, min: 49, code: 'ITAR07', currency: '€' },
+                { discount: 10, min: 79, code: 'ITAR10', currency: '€' },
+                { discount: 15, min: 109, code: 'ITAR15', currency: '€' },
+                { discount: 20, min: 159, code: 'ITAR20', currency: '€' },
+                { discount: 30, min: 249, code: 'ITAR30', currency: '€' },
+                { discount: 45, min: 369, code: 'ITAR45', currency: '€' },
+                { discount: 60, min: 499, code: 'ITAR60', currency: '€' }
             ],
             altriEsclusiviProdigeek: [
+                { discount: 2, min: 15, code: 'ARIT02', currency: '€' },
+                { discount: 4, min: 29, code: 'ARIT04', currency: '€' },
+                { discount: 7, min: 49, code: 'ARIT07', currency: '€' },
+                { discount: 10, min: 79, code: 'ARIT10', currency: '€' },
+                { discount: 15, min: 109, code: 'ARIT15', currency: '€' },
+                { discount: 20, min: 159, code: 'ARIT20', currency: '€' },
+                { discount: 30, min: 249, code: 'ARIT30', currency: '€' },
+                { discount: 45, min: 369, code: 'ARIT45', currency: '€' },
+                { discount: 60, min: 499, code: 'ARIT60', currency: '€' }
             ],
             standardProdigeek: [
+                { discount: 2, min: 15, code: 'PRODIGEEK02', currency: '€' },
+                { discount: 4, min: 29, code: 'PRODIGEEK04', currency: '€' },
+                { discount: 7, min: 49, code: 'PRODIGEEK07', currency: '€' },
+                { discount: 10, min: 79, code: 'PRODIGEEK10', currency: '€' },
+                { discount: 15, min: 109, code: 'PRODIGEEK15', currency: '€' },
+                { discount: 20, min: 159, code: 'PRODIGEEK20', currency: '€' },
+                { discount: 30, min: 249, code: 'PRODIGEEK30', currency: '€' },
+                { discount: 45, min: 369, code: 'PRODIGEEK45', currency: '€' },
+                { discount: 60, min: 499, code: 'PRODIGEEK60', currency: '€' }
             ],
             generici: [
-                { discount: 2, min: 15, code: 'CDIT02', currency: '€' },
-                { discount: 4, min: 29, code: 'CDIT04', currency: '€' },
-                { discount: 7, min: 49, code: 'CDIT07', currency: '€' },
-                { discount: 9, min: 69, code: 'CDIT09', currency: '€' },
-                { discount: 13, min: 99, code: 'CDIT13', currency: '€' },
-                { discount: 20, min: 159, code: 'CDIT20', currency: '€' },
-                { discount: 25, min: 209, code: 'CDIT25', currency: '€' },
-                { discount: 40, min: 329, code: 'CDIT40', currency: '€' },
-                { discount: 55, min: 459, code: 'CDIT55', currency: '€' }
+                { discount: 2, min: 15, code: 'ITAR02', currency: '€' },
+                { discount: 4, min: 29, code: 'ITAR04', currency: '€' },
+                { discount: 7, min: 49, code: 'ITAR07', currency: '€' },
+                { discount: 10, min: 79, code: 'ITAR10', currency: '€' },
+                { discount: 15, min: 109, code: 'ITAR15', currency: '€' },
+                { discount: 20, min: 159, code: 'ITAR20', currency: '€' },
+                { discount: 30, min: 249, code: 'ITAR30', currency: '€' },
+                { discount: 45, min: 369, code: 'ITAR45', currency: '€' },
+                { discount: 60, min: 499, code: 'ITAR60', currency: '€' }
             ]
         };
 
