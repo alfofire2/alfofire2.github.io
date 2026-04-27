@@ -730,6 +730,10 @@
     <script type="application/ld+json" id="coupons-json-ld"></script>
 
     <script>
+        const enable_aliexpress_squad = false; // Cambia in false per disabilitare il popup e il banner della squadra aliexpress
+        if (!enable_aliexpress_squad) {
+            document.write('<style>#squad-backdrop, #squad-strip { display: none !important; }</style>');
+        }
         const SITE_URL = 'https://coupon.prodigeek.it/';
         const SITE_LASTMOD = '2026-04-12';
         const coupons = {
@@ -1011,20 +1015,25 @@
             const squadStrip    = document.getElementById('squad-strip');
             const squadCloseBtn = document.getElementById('squad-close');
 
-            squadCloseBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                squadCloseBtn.style.pointerEvents = 'none';
-                squadBackdrop.style.opacity = '0';
-                setTimeout(() => {
-                    squadBackdrop.style.display = 'none';
-                    squadStrip.style.display = 'block';
-                    requestAnimationFrame(() => {
-                        squadStrip.style.transition = 'opacity 0.3s ease';
-                        squadStrip.style.opacity = '1';
-                    });
-                }, 300);
-            });
+            if (enable_aliexpress_squad && squadCloseBtn) {
+                squadCloseBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    squadCloseBtn.style.pointerEvents = 'none';
+                    squadBackdrop.style.opacity = '0';
+                    setTimeout(() => {
+                        squadBackdrop.style.display = 'none';
+                        squadStrip.style.display = 'block';
+                        requestAnimationFrame(() => {
+                            squadStrip.style.transition = 'opacity 0.3s ease';
+                            squadStrip.style.opacity = '1';
+                        });
+                    }, 300);
+                });
+            } else if (!enable_aliexpress_squad) {
+                if (squadBackdrop) squadBackdrop.style.display = 'none';
+                if (squadStrip) squadStrip.style.display = 'none';
+            }
 
             const mainContainer = document.getElementById('coupon-sections');
             const originalSections = Array.from(mainContainer.querySelectorAll('section'));
