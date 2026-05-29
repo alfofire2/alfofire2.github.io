@@ -85,7 +85,10 @@
                         <div class="flex justify-between items-center p-3 rounded-lg bg-orange-50/50">
                             <div>
                                 <span class="block text-xs font-bold text-orange-400 uppercase">Coupon Migliore</span>
-                                <span id="pdg-calc-res-coupon-name" class="font-bold text-gray-700 italic">Nessun Coupon</span>
+                                <div class="relative flex items-center gap-2 mt-0.5">
+                                    <span id="pdg-calc-res-coupon-name" class="font-bold text-gray-800 bg-white/60 px-2 py-0.5 rounded border border-orange-200 cursor-pointer hover:bg-orange-100 hover:text-orange-700 transition-colors" onclick="copyCalculatorCoupon()" title="Clicca per copiare">Nessun Coupon</span>
+                                    <span id="pdg-calc-copy-feedback" class="absolute left-0 -top-6 text-[10px] font-bold text-white bg-green-500 px-2 py-0.5 rounded opacity-0 transition-opacity pointer-events-none shadow-sm z-10">Copiato!</span>
+                                </div>
                             </div>
                             <span id="pdg-calc-res-coupon-value" class="text-xl font-bold text-orange-600">0,00 €</span>
                         </div>
@@ -235,6 +238,42 @@
         let dynamicCoupons = [];
 
         // --- Logic & Calculations ---
+
+        function copyCalculatorCoupon() {
+            const couponSpan = document.getElementById('pdg-calc-res-coupon-name');
+            const code = couponSpan.textContent;
+            if (code === "Nessun Coupon") return;
+
+            navigator.clipboard.writeText(code).then(() => {
+                const feedback = document.getElementById('pdg-calc-copy-feedback');
+                feedback.classList.remove('opacity-0');
+                feedback.classList.add('opacity-100');
+                setTimeout(() => {
+                    feedback.classList.remove('opacity-100');
+                    feedback.classList.add('opacity-0');
+                }, 2000);
+            }).catch(err => {
+                console.error('Errore durante la copia:', err);
+                // Fallback semplice
+                const textArea = document.createElement("textarea");
+                textArea.value = code;
+                document.body.appendChild(textArea);
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    const feedback = document.getElementById('pdg-calc-copy-feedback');
+                    feedback.classList.remove('opacity-0');
+                    feedback.classList.add('opacity-100');
+                    setTimeout(() => {
+                        feedback.classList.remove('opacity-100');
+                        feedback.classList.add('opacity-0');
+                    }, 2000);
+                } catch (e) {
+                    console.error('Fallback fallito', e);
+                }
+                document.body.removeChild(textArea);
+            });
+        }
 
         const formatEuro = (val) => val.toLocaleString('it-IT', { style: 'currency', currency: 'EUR' });
 
