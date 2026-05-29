@@ -57,9 +57,23 @@
                 <h1 class="text-2xl md:text-3xl font-extrabold brand-text-gradient">Calcolatore Sconti</h1>
             </div>
             <nav class="flex items-center gap-4">
-                <button onclick="downloadScreenshot()" title="Scarica Foto Riepilogo" class="w-10 h-10 rounded-full bg-orange-600 text-white hover:bg-orange-700 transition-colors flex items-center justify-center shadow-lg shadow-orange-200">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-                </button>
+                <!-- Download Dropdown -->
+                <div class="relative">
+                    <button id="pdg-download-main-btn" onclick="toggleDownloadMenu()" title="Opzioni Scarica Foto" class="w-10 h-10 rounded-full bg-orange-600 text-white hover:bg-orange-700 transition-colors flex items-center justify-center shadow-lg shadow-orange-200">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                    </button>
+                    <!-- Menu -->
+                    <div id="pdg-download-menu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-gray-100 py-2 z-50 transform origin-top-right transition-all">
+                        <button onclick="downloadScreenshot('jpg')" class="w-full text-left px-4 py-2 text-sm font-bold text-gray-700 hover:bg-orange-50 hover:text-orange-600 flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-orange-400"></span>
+                            Scarica JPG (.jpg)
+                        </button>
+                        <button onclick="downloadScreenshot('png')" class="w-full text-left px-4 py-2 text-sm font-bold text-gray-700 hover:bg-orange-50 hover:text-orange-600 flex items-center gap-2 border-t border-gray-50">
+                            <span class="w-2 h-2 rounded-full bg-blue-400"></span>
+                            Scarica PNG Trasp.
+                        </button>
+                    </div>
+                </div>
                 <a href="/" class="px-4 py-2 rounded-full bg-white border border-gray-200 text-sm font-bold hover:bg-gray-50 transition-colors">Torna ai Coupon</a>
             </nav>
         </header>
@@ -245,49 +259,6 @@
 
             </div>
 
-            <!-- Right Column: Final Summary -->
-            <div class="lg:col-span-5">
-                <div class="sticky top-8 bg-white rounded-3xl p-8 shadow-xl border border-gray-100 brand-gradient text-white">
-                    <h3 class="text-xl font-bold mb-6 opacity-90">Riepilogo Finale</h3>
-                    
-                    <div class="space-y-4">
-                        <div class="flex justify-between items-baseline border-b border-white/20 pb-2">
-                            <span class="text-xs font-medium opacity-80 uppercase tracking-tighter">Prezzo Originale</span>
-                            <span id="pdg-calc-summary-orig" class="text-lg font-bold">0,00 €</span>
-                        </div>
-
-                        <div class="flex justify-between items-baseline border-b border-white/20 pb-2">
-                            <span class="text-xs font-medium opacity-80 uppercase tracking-tighter">Dopo Coupon</span>
-                            <span id="pdg-calc-summary-after-coupon" class="text-lg font-bold">0,00 €</span>
-                        </div>
-
-                        <div class="flex justify-between items-baseline border-b border-white/20 pb-2">
-                            <span class="text-xs font-medium opacity-80 uppercase tracking-tighter">Dopo PayPal</span>
-                            <span id="pdg-calc-summary-after-pp" class="text-lg font-bold">0,00 €</span>
-                        </div>
-
-                        <div class="pt-2">
-                            <span class="block text-sm font-bold opacity-80 mb-1 uppercase tracking-tighter">Prezzo Finale (con Cashback)</span>
-                            <div id="pdg-calc-summary-final" class="text-6xl font-black tracking-tighter leading-none mb-2">0,00 €</div>
-                            <div class="flex justify-between items-center mt-2">
-                                <span id="pdg-calc-summary-save-val" class="text-xl font-black text-yellow-300">0,00 € RISPARMIATI</span>
-                                <span id="pdg-calc-summary-save-perc" class="text-xs font-bold px-2 py-0.5 rounded bg-white/20">0% Sconto</span>
-                            </div>
-                        </div>
-
-                        <p class="text-[10px] opacity-70 leading-tight pt-2 border-t border-white/10">Il prezzo finale include lo sconto coupon, lo sconto PayPal e il cashback stimato che riceverai dopo l'acquisto.</p>
-
-                        <a href="/" class="block w-full text-center bg-white text-orange-600 font-black py-4 rounded-2xl shadow-lg hover:bg-orange-50 transition-all transform hover:-translate-y-1 mt-4">
-                            COPIA I CODICI ORA
-                        </a>
-                    </div>
-                </div>
-                
-                <p class="mt-6 text-center text-xs text-gray-400 px-4">
-                    *Il calcolo del cashback e degli sconti PayPal può variare in base ai termini di servizio di AliExpress e dei fornitori.
-                </p>
-            </div>
-
         </main>
     </div>
 
@@ -469,33 +440,64 @@
             calcolaTutto();
         });
 
-        async function downloadScreenshot() {
+        // --- Download & Menu Logic ---
+
+        function toggleDownloadMenu() {
+            const menu = document.getElementById('pdg-download-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Chiudi menu se clicchi fuori
+        document.addEventListener('click', (e) => {
+            const container = document.querySelector('.relative'); // Il contenitore del dropdown
+            const menu = document.getElementById('pdg-download-menu');
+            if (container && !container.contains(e.target) && menu && !menu.classList.contains('hidden')) {
+                menu.classList.add('hidden');
+            }
+        });
+
+        async function downloadScreenshot(format = 'jpg') {
             const captureArea = document.getElementById('pdg-capture-wrapper');
-            const settings = document.getElementById('pdg-calc-settings');
-            const downloadBtn = document.querySelector('button[onclick="downloadScreenshot()"]');
+            const menu = document.getElementById('pdg-download-menu');
+            const downloadBtn = document.getElementById('pdg-download-main-btn');
             
+            // Chiudi menu
+            if (menu) menu.classList.add('hidden');
+
             // UI Feedback
-            const originalBtnText = downloadBtn.innerHTML;
-            downloadBtn.innerHTML = '<svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>';
+            const originalBtnContent = downloadBtn.innerHTML;
+            downloadBtn.innerHTML = '<svg class="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>';
             downloadBtn.disabled = true;
 
             try {
-                const dataUrl = await htmlToImage.toPng(captureArea, {
-                    backgroundColor: '#faf9f6', // var(--creamy-white)
-                    pixelRatio: 2, // Alta qualità
-                });
+                let dataUrl;
+                const options = {
+                    pixelRatio: 3,
+                    style: {
+                        borderRadius: '40px'
+                    }
+                };
 
-                // Crea il link di download
+                if (format === 'png') {
+                    // PNG Trasparente: togliamo lo sfondo del wrapper e forziamo trasparenza
+                    options.backgroundColor = null;
+                    options.style.backgroundColor = 'transparent';
+                    dataUrl = await htmlToImage.toPng(captureArea, options);
+                } else {
+                    // JPG Standard: sfondo bianco crema
+                    options.backgroundColor = '#faf9f6';
+                    dataUrl = await htmlToImage.toJpeg(captureArea, options);
+                }
+
                 const link = document.createElement('a');
-                link.download = `AliExpress-Sconto-Prodigeek-${new Date().getTime()}.png`;
+                link.download = `AliExpress-Sconto-Prodigeek-${new Date().getTime()}.${format}`;
                 link.href = dataUrl;
                 link.click();
             } catch (err) {
                 console.error("Errore screenshot:", err);
                 alert("Si è verificato un errore durante la generazione della foto.");
             } finally {
-                // Ripristina UI
-                downloadBtn.innerHTML = originalBtnText;
+                downloadBtn.innerHTML = originalBtnContent;
                 downloadBtn.disabled = false;
             }
         }
