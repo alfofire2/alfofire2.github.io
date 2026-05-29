@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calcolatore Sconti AliExpress | Prodigeek & Prezzone</title>
+    <meta name="description" content="Calcola la combinazione ottimale di sconti AliExpress, PayPal e Cashback con il calcolatore avanzato di Prodigeek.">
+    
+    <!-- Tailwind CSS 4 CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --orange: #f07828;
+            --coral: #e84847;
+            --turquoise: #1baeb0;
+            --creamy-white: #faf9f6;
+            --dark-grey: #2c3e50;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--creamy-white);
+            color: var(--dark-grey);
+        }
+        /* Custom styles to match the site's brand */
+        .brand-gradient {
+            background: linear-gradient(135deg, var(--orange) 0%, var(--coral) 100%);
+        }
+        .brand-text-gradient {
+            background: linear-gradient(135deg, var(--orange) 0%, var(--coral) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+    </style>
+</head>
+<body class="min-h-screen p-4 md:p-8">
+
+    <div class="max-w-4xl mx-auto">
+        <!-- Header / Nav -->
+        <header class="mb-8 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-4">
+                <a href="index.html" class="block transform hover:scale-105 transition-transform">
+                    <img src="assets/logo.svg" alt="Prezzone Logo" class="w-16 h-auto filter brightness-0">
+                </a>
+                <h1 class="text-2xl md:text-3xl font-extrabold brand-text-gradient">Calcolatore Sconti</h1>
+            </div>
+            <nav class="flex gap-4">
+                <a href="index.html" class="px-4 py-2 rounded-full bg-white border border-gray-200 text-sm font-bold hover:bg-gray-50 transition-colors">Torna ai Coupon</a>
+            </nav>
+        </header>
+
+        <main class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            
+            <!-- Left Column: Input & Results -->
+            <div class="lg:col-span-7 space-y-6">
+                
+                <!-- Main Input Card -->
+                <section class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                    <label for="pdg-calc-price" class="block text-sm font-bold text-gray-500 uppercase tracking-wider mb-2">Prezzo Originale Prodotto</label>
+                    <div class="relative">
+                        <input type="number" id="pdg-calc-price" placeholder="0.00" step="0.01" min="0" 
+                            class="w-full text-4xl font-black p-4 pr-12 rounded-xl bg-gray-50 border-2 border-transparent focus:border-orange-400 focus:bg-white transition-all outline-none">
+                        <span class="absolute right-4 top-1/2 -translate-y-1/2 text-3xl font-bold text-gray-400">€</span>
+                    </div>
+                </section>
+
+                <!-- Detailed Results Card -->
+                <section class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                    <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+                        <span class="w-2 h-6 bg-turquoise rounded-full"></span>
+                        Dettaglio Risparmio
+                    </h3>
+                    
+                    <div class="space-y-4">
+                        <!-- Coupon Row -->
+                        <div class="flex justify-between items-center p-3 rounded-lg bg-orange-50/50">
+                            <div>
+                                <span class="block text-xs font-bold text-orange-400 uppercase">Coupon Migliore</span>
+                                <span id="pdg-calc-res-coupon-name" class="font-bold text-gray-700 italic">Nessun Coupon</span>
+                            </div>
+                            <span id="pdg-calc-res-coupon-value" class="text-xl font-bold text-orange-600">0,00 €</span>
+                        </div>
+
+                        <!-- PayPal Row -->
+                        <div class="flex justify-between items-center p-3 rounded-lg bg-blue-50/50">
+                            <div>
+                                <span class="block text-xs font-bold text-blue-400 uppercase">Sconto PayPal</span>
+                                <span class="font-bold text-gray-700">Automatico al checkout</span>
+                            </div>
+                            <span id="pdg-calc-res-paypal-value" class="text-xl font-bold text-blue-600">0,00 €</span>
+                        </div>
+
+                        <!-- Cashback Row -->
+                        <div class="flex justify-between items-center p-3 rounded-lg bg-emerald-50/50">
+                            <div>
+                                <span class="block text-xs font-bold text-emerald-500 uppercase">Cashback Squad</span>
+                                <span id="pdg-calc-res-cashback-perc" class="font-bold text-gray-700">Accumulo previsto</span>
+                            </div>
+                            <span id="pdg-calc-res-cashback-value" class="text-xl font-bold text-emerald-600">0,00 €</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Collapsible Settings -->
+                <details class="group bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+                    <summary class="flex justify-between items-center p-6 cursor-pointer hover:bg-gray-50 transition-colors list-none">
+                        <div class="flex items-center gap-3">
+                            <svg class="w-6 h-6 text-gray-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            <h3 class="text-lg font-bold">Impostazioni Parametri</h3>
+                        </div>
+                        <span class="text-xs font-bold text-gray-400 uppercase group-open:hidden">Modifica Soglie & Cashback</span>
+                    </summary>
+                    
+                    <div class="p-6 pt-0 border-t border-gray-50 space-y-8">
+                        
+                        <!-- Cashback Config -->
+                        <div>
+                            <h4 class="text-sm font-bold text-gray-400 uppercase mb-4">Configurazione Cashback</h4>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-bold mb-1">Percentuale %</label>
+                                    <select id="pdg-calc-conf-cash-perc" class="w-full p-2 rounded-lg bg-gray-50 border border-gray-200 font-bold outline-none focus:border-emerald-400">
+                                        <option value="3">3%</option>
+                                        <option value="5" selected>5% (Standard)</option>
+                                        <option value="7">7%</option>
+                                        <option value="9">9% (Squad)</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold mb-1">Cap Massimo (€)</label>
+                                    <input type="number" id="pdg-calc-conf-cash-cap" value="15" class="w-full p-2 rounded-lg bg-gray-50 border border-gray-200 font-bold outline-none focus:border-emerald-400">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- PayPal Config -->
+                        <div>
+                            <h4 class="text-sm font-bold text-gray-400 uppercase mb-4">Soglie Sconto PayPal</h4>
+                            <div class="space-y-3">
+                                <div class="grid grid-cols-2 gap-4 items-center">
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-xs font-bold text-gray-400">#3</span>
+                                        <input type="number" id="pdg-calc-conf-pp-t3-min" value="299" class="w-full p-2 rounded-lg bg-gray-50 border border-gray-200 font-bold outline-none">
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-xs font-bold text-gray-400">→ -€</span>
+                                        <input type="number" id="pdg-calc-conf-pp-t3-disc" value="45" class="w-full p-2 rounded-lg bg-gray-50 border border-gray-200 font-bold outline-none">
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-2 gap-4 items-center">
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-xs font-bold text-gray-400">#2</span>
+                                        <input type="number" id="pdg-calc-conf-pp-t2-min" value="199" class="w-full p-2 rounded-lg bg-gray-50 border border-gray-200 font-bold outline-none">
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-xs font-bold text-gray-400">→ -€</span>
+                                        <input type="number" id="pdg-calc-conf-pp-t2-disc" value="20" class="w-full p-2 rounded-lg bg-gray-50 border border-gray-200 font-bold outline-none">
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-2 gap-4 items-center">
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-xs font-bold text-gray-400">#1</span>
+                                        <input type="number" id="pdg-calc-conf-pp-t1-min" value="99" class="w-full p-2 rounded-lg bg-gray-50 border border-gray-200 font-bold outline-none">
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-xs font-bold text-gray-400">→ -€</span>
+                                        <input type="number" id="pdg-calc-conf-pp-t1-disc" value="8" class="w-full p-2 rounded-lg bg-gray-50 border border-gray-200 font-bold outline-none">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </details>
+
+            </div>
+
+            <!-- Right Column: Final Summary -->
+            <div class="lg:col-span-5">
+                <div class="sticky top-8 bg-white rounded-3xl p-8 shadow-xl border border-gray-100 brand-gradient text-white">
+                    <h3 class="text-xl font-bold mb-6 opacity-90">Riepilogo Finale</h3>
+                    
+                    <div class="space-y-6">
+                        <div class="flex justify-between items-baseline border-b border-white/20 pb-4">
+                            <span class="text-sm font-medium opacity-80">Prezzo Originale</span>
+                            <span id="pdg-calc-summary-orig" class="text-xl font-bold">0,00 €</span>
+                        </div>
+
+                        <div class="flex justify-between items-baseline border-b border-white/20 pb-4">
+                            <span class="text-sm font-medium opacity-80">Risparmio Totale</span>
+                            <div class="text-right">
+                                <span id="pdg-calc-summary-save-val" class="block text-2xl font-black text-yellow-300">0,00 €</span>
+                                <span id="pdg-calc-summary-save-perc" class="text-xs font-bold px-2 py-0.5 rounded bg-white/20">0% Sconto</span>
+                            </div>
+                        </div>
+
+                        <div class="pt-4">
+                            <span class="block text-sm font-bold opacity-80 mb-1 uppercase tracking-tighter">Prezzo Finale Scontato</span>
+                            <div id="pdg-calc-summary-final" class="text-6xl font-black tracking-tighter leading-none mb-2">0,00 €</div>
+                            <p class="text-xs opacity-70 leading-relaxed">Il prezzo finale include lo sconto coupon, lo sconto PayPal (se applicabile) e il cashback stimato che riceverai dopo l'acquisto.</p>
+                        </div>
+
+                        <a href="index.html" class="block w-full text-center bg-white text-orange-600 font-black py-4 rounded-2xl shadow-lg hover:bg-orange-50 transition-all transform hover:-translate-y-1">
+                            COPIA I CODICI ORA
+                        </a>
+                    </div>
+                </div>
+                
+                <p class="mt-6 text-center text-xs text-gray-400 px-4">
+                    *Il calcolo del cashback e degli sconti PayPal può variare in base ai termini di servizio di AliExpress e dei fornitori.
+                </p>
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+        // --- Data & State ---
+        let dynamicCoupons = [];
+
+        // --- Logic & Calculations ---
+
+        const formatEuro = (val) => val.toLocaleString('it-IT', { style: 'currency', currency: 'EUR' });
+
+        async function fetchCoupons() {
+            try {
+                const response = await fetch('index.html');
+                const html = await response.text();
+                const match = html.match(/const coupons = ({[\s\S]*?});/);
+                if (match) {
+                    // Sanitizzazione minima per eval (dato che il file è locale e sotto nostro controllo)
+                    const data = eval(`(${match[1]})`);
+                    const flat = [
+                        ...data.esclusiviProdigeek,
+                        ...data.altriEsclusiviProdigeek,
+                        ...data.standardProdigeek,
+                        ...data.generici
+                    ];
+                    return flat.map(c => ({
+                        codice: c.code,
+                        sconto: parseFloat(c.discount),
+                        minSpesa: parseFloat(c.min)
+                    }));
+                }
+            } catch (e) {
+                console.warn("API Fetch fallita, uso fallback locale", e);
+            }
+            // Fallback
+            return [
+                { "codice": "SSIT70", "sconto": 70, "minSpesa": 499 },
+                { "codice": "SSIT50", "sconto": 50, "minSpesa": 349 },
+                { "codice": "SSIT35", "sconto": 35, "minSpesa": 239 },
+                { "codice": "SSIT20", "sconto": 20, "minSpesa": 139 },
+                { "codice": "SSIT12", "sconto": 12, "minSpesa": 79 },
+                { "codice": "SSIT06", "sconto": 6, "minSpesa": 39 },
+                { "codice": "SSIT03", "sconto": 3, "minSpesa": 15 }
+            ];
+        }
+
+        function calcolaTutto() {
+            const prezzoOrig = parseFloat(document.getElementById('pdg-calc-price').value) || 0;
+            
+            // 1. Miglior Coupon (basato sul prezzo originale)
+            let bestCoupon = { codice: "Nessun Coupon", sconto: 0 };
+            dynamicCoupons.forEach(c => {
+                if (prezzoOrig >= c.minSpesa && c.sconto > bestCoupon.sconto) {
+                    bestCoupon = c;
+                }
+            });
+            const prezzoDopoCoupon = Math.max(0, prezzoOrig - bestCoupon.sconto);
+
+            // 2. PayPal (basato sul prezzo DOPO il coupon)
+            const ppThresholds = [
+                { min: parseFloat(document.getElementById('pdg-calc-conf-pp-t3-min').value), disc: parseFloat(document.getElementById('pdg-calc-conf-pp-t3-disc').value) },
+                { min: parseFloat(document.getElementById('pdg-calc-conf-pp-t2-min').value), disc: parseFloat(document.getElementById('pdg-calc-conf-pp-t2-disc').value) },
+                { min: parseFloat(document.getElementById('pdg-calc-conf-pp-t1-min').value), disc: parseFloat(document.getElementById('pdg-calc-conf-pp-t1-disc').value) }
+            ];
+            
+            let ppSconto = 0;
+            const activeThreshold = ppThresholds.find(t => prezzoDopoCoupon >= t.min);
+            if (activeThreshold) ppSconto = activeThreshold.disc;
+            const prezzoDopoPayPal = Math.max(0, prezzoDopoCoupon - ppSconto);
+
+            // 3. Cashback (basato sul prezzo DOPO PayPal)
+            const cashPerc = parseFloat(document.getElementById('pdg-calc-conf-cash-perc').value) / 100;
+            const cashCap = parseFloat(document.getElementById('pdg-calc-conf-cash-cap').value);
+            const cashSconto = Math.min(cashCap, prezzoDopoPayPal * cashPerc);
+
+            // 4. Totali
+            const totaleSconti = bestCoupon.sconto + ppSconto + cashSconto;
+            const prezzoFinale = Math.max(0, prezzoOrig - totaleSconti);
+            const percRisparmio = prezzoOrig > 0 ? (totaleSconti / prezzoOrig) * 100 : 0;
+
+            // --- UI Update ---
+            
+            // Dettagli
+            document.getElementById('pdg-calc-res-coupon-name').textContent = bestCoupon.codice;
+            document.getElementById('pdg-calc-res-coupon-value').textContent = formatEuro(bestCoupon.sconto);
+            document.getElementById('pdg-calc-res-paypal-value').textContent = formatEuro(ppSconto);
+            document.getElementById('pdg-calc-res-cashback-value').textContent = formatEuro(cashSconto);
+            document.getElementById('pdg-calc-res-cashback-perc').textContent = `Accumulo previsto (${(cashPerc * 100).toFixed(0)}%)`;
+
+            // Riepilogo
+            document.getElementById('pdg-calc-summary-orig').textContent = formatEuro(prezzoOrig);
+            document.getElementById('pdg-calc-summary-save-val').textContent = formatEuro(totaleSconti);
+            document.getElementById('pdg-calc-summary-save-perc').textContent = `${percRisparmio.toFixed(1)}% Sconto`;
+            document.getElementById('pdg-calc-summary-final').textContent = formatEuro(prezzoFinale);
+        }
+
+        // --- Initialization ---
+        document.addEventListener('DOMContentLoaded', async () => {
+            dynamicCoupons = await fetchCoupons();
+            
+            // Event Listeners Reattivi
+            const inputs = document.querySelectorAll('input, select');
+            inputs.forEach(input => {
+                input.addEventListener('input', calcolaTutto);
+                input.addEventListener('change', calcolaTutto);
+            });
+
+            // Initial calc
+            calcolaTutto();
+        });
+    </script>
+</body>
+</html>
