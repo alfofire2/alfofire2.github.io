@@ -9,6 +9,9 @@
     <!-- Tailwind CSS 4 CDN -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     
+    <!-- html2canvas for screenshots -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -53,12 +56,15 @@
                 </a>
                 <h1 class="text-2xl md:text-3xl font-extrabold brand-text-gradient">Calcolatore Sconti</h1>
             </div>
-            <nav class="flex gap-4">
+            <nav class="flex items-center gap-4">
+                <button onclick="downloadScreenshot()" title="Scarica Foto Riepilogo" class="w-10 h-10 rounded-full bg-orange-600 text-white hover:bg-orange-700 transition-colors flex items-center justify-center shadow-lg shadow-orange-200">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                </button>
                 <a href="/" class="px-4 py-2 rounded-full bg-white border border-gray-200 text-sm font-bold hover:bg-gray-50 transition-colors">Torna ai Coupon</a>
             </nav>
         </header>
 
-        <main class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <main id="pdg-main-capture" class="grid grid-cols-1 lg:grid-cols-12 gap-8 pb-8">
             
             <!-- Left Column: Input & Results -->
             <div class="lg:col-span-7 space-y-6">
@@ -85,9 +91,11 @@
                         <div class="flex justify-between items-center p-3 rounded-lg bg-orange-50/50">
                             <div>
                                 <span class="block text-xs font-bold text-orange-400 uppercase">Coupon Migliore</span>
-                                <div class="relative flex items-center gap-2 mt-0.5">
-                                    <span id="pdg-calc-res-coupon-name" class="font-bold text-gray-800 bg-white/60 px-2 py-0.5 rounded border border-orange-200 cursor-pointer hover:bg-orange-100 hover:text-orange-700 transition-colors" onclick="copyCalculatorCoupon()" title="Clicca per copiare">Nessun Coupon</span>
-                                    <span id="pdg-calc-copy-feedback" class="absolute left-0 -top-6 text-[10px] font-bold text-white bg-green-500 px-2 py-0.5 rounded opacity-0 transition-opacity pointer-events-none shadow-sm z-10">Copiato!</span>
+                                <div id="pdg-calc-coupon-container" class="flex flex-wrap items-center gap-2 mt-0.5">
+                                    <div class="relative flex items-center">
+                                        <span id="pdg-calc-res-coupon-name" class="font-bold text-gray-800 bg-white/60 px-2 py-0.5 rounded border border-orange-200 cursor-pointer hover:bg-orange-100 hover:text-orange-700 transition-colors" onclick="copyCalculatorCoupon(this)" title="Clicca per copiare">Nessun Coupon</span>
+                                        <span class="pdg-calc-copy-feedback absolute left-0 -top-6 text-[10px] font-bold text-white bg-green-500 px-2 py-0.5 rounded opacity-0 transition-opacity pointer-events-none shadow-sm z-10">Copiato!</span>
+                                    </div>
                                 </div>
                             </div>
                             <span id="pdg-calc-res-coupon-value" class="text-xl font-bold text-orange-600">0,00 €</span>
@@ -114,7 +122,7 @@
                 </section>
 
                 <!-- Collapsible Settings -->
-                <details class="group bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+                <details id="pdg-calc-settings" class="group bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
                     <summary class="flex justify-between items-center p-6 cursor-pointer hover:bg-gray-50 transition-colors list-none">
                         <div class="flex items-center gap-3">
                             <svg class="w-6 h-6 text-gray-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
@@ -239,13 +247,12 @@
 
         // --- Logic & Calculations ---
 
-        function copyCalculatorCoupon() {
-            const couponSpan = document.getElementById('pdg-calc-res-coupon-name');
-            const code = couponSpan.textContent;
+        function copyCalculatorCoupon(element) {
+            const code = element.textContent;
             if (code === "Nessun Coupon") return;
 
             navigator.clipboard.writeText(code).then(() => {
-                const feedback = document.getElementById('pdg-calc-copy-feedback');
+                const feedback = element.parentElement.querySelector('.pdg-calc-copy-feedback');
                 feedback.classList.remove('opacity-0');
                 feedback.classList.add('opacity-100');
                 setTimeout(() => {
@@ -261,7 +268,7 @@
                 textArea.select();
                 try {
                     document.execCommand('copy');
-                    const feedback = document.getElementById('pdg-calc-copy-feedback');
+                    const feedback = element.parentElement.querySelector('.pdg-calc-copy-feedback');
                     feedback.classList.remove('opacity-0');
                     feedback.classList.add('opacity-100');
                     setTimeout(() => {
@@ -303,12 +310,19 @@
             // Fallback
             return [
                 { "codice": "SSIT70", "sconto": 70, "minSpesa": 499 },
+                { "codice": "ITSS70", "sconto": 70, "minSpesa": 499 },
                 { "codice": "SSIT50", "sconto": 50, "minSpesa": 349 },
+                { "codice": "ITSS50", "sconto": 50, "minSpesa": 349 },
                 { "codice": "SSIT35", "sconto": 35, "minSpesa": 239 },
+                { "codice": "ITSS35", "sconto": 35, "minSpesa": 239 },
                 { "codice": "SSIT20", "sconto": 20, "minSpesa": 139 },
+                { "codice": "ITSS20", "sconto": 20, "minSpesa": 139 },
                 { "codice": "SSIT12", "sconto": 12, "minSpesa": 79 },
+                { "codice": "ITSS12", "sconto": 12, "minSpesa": 79 },
                 { "codice": "SSIT06", "sconto": 6, "minSpesa": 39 },
-                { "codice": "SSIT03", "sconto": 3, "minSpesa": 15 }
+                { "codice": "ITSS06", "sconto": 6, "minSpesa": 39 },
+                { "codice": "SSIT03", "sconto": 3, "minSpesa": 15 },
+                { "codice": "ITSS03", "sconto": 3, "minSpesa": 15 }
             ];
         }
 
@@ -316,13 +330,28 @@
             const prezzoOrig = parseFloat(document.getElementById('pdg-calc-price').value) || 0;
             
             // 1. Miglior Coupon (basato sul prezzo originale)
-            let bestCoupon = { codice: "Nessun Coupon", sconto: 0 };
+            let maxDiscount = 0;
+            let bestCoupons = [];
+            
             dynamicCoupons.forEach(c => {
-                if (prezzoOrig >= c.minSpesa && c.sconto > bestCoupon.sconto) {
-                    bestCoupon = c;
+                if (prezzoOrig >= c.minSpesa) {
+                    if (c.sconto > maxDiscount) {
+                        maxDiscount = c.sconto;
+                        bestCoupons = [c];
+                    } else if (c.sconto === maxDiscount && maxDiscount > 0) {
+                        // Aggiungi solo se non è già presente (per evitare duplicati se l'API li ha)
+                        if (!bestCoupons.find(bc => bc.codice === c.codice)) {
+                            bestCoupons.push(c);
+                        }
+                    }
                 }
             });
-            const prezzoDopoCoupon = Math.max(0, prezzoOrig - bestCoupon.sconto);
+
+            if (bestCoupons.length === 0) {
+                bestCoupons = [{ codice: "Nessun Coupon", sconto: 0 }];
+            }
+
+            const prezzoDopoCoupon = Math.max(0, prezzoOrig - maxDiscount);
 
             // 2. PayPal (basato sul prezzo DOPO il coupon)
             const ppThresholds = [
@@ -342,15 +371,26 @@
             const cashSconto = Math.min(cashCap, prezzoDopoPayPal * cashPerc);
 
             // 4. Totali
-            const totaleSconti = bestCoupon.sconto + ppSconto + cashSconto;
+            const totaleSconti = maxDiscount + ppSconto + cashSconto;
             const prezzoFinale = Math.max(0, prezzoOrig - totaleSconti);
             const percRisparmio = prezzoOrig > 0 ? (totaleSconti / prezzoOrig) * 100 : 0;
 
             // --- UI Update ---
             
-            // Dettagli
-            document.getElementById('pdg-calc-res-coupon-name').textContent = bestCoupon.codice;
-            document.getElementById('pdg-calc-res-coupon-value').textContent = formatEuro(bestCoupon.sconto);
+            // Dettagli Coupon
+            const container = document.getElementById('pdg-calc-coupon-container');
+            container.innerHTML = '';
+            bestCoupons.forEach(c => {
+                const wrapper = document.createElement('div');
+                wrapper.className = 'relative flex items-center';
+                wrapper.innerHTML = `
+                    <span class="font-bold text-gray-800 bg-white/60 px-2 py-0.5 rounded border border-orange-200 cursor-pointer hover:bg-orange-100 hover:text-orange-700 transition-colors" onclick="copyCalculatorCoupon(this)" title="Clicca per copiare">${c.codice}</span>
+                    <span class="pdg-calc-copy-feedback absolute left-0 -top-6 text-[10px] font-bold text-white bg-green-500 px-2 py-0.5 rounded opacity-0 transition-opacity pointer-events-none shadow-sm z-10">Copiato!</span>
+                `;
+                container.appendChild(wrapper);
+            });
+
+            document.getElementById('pdg-calc-res-coupon-value').textContent = formatEuro(maxDiscount);
             document.getElementById('pdg-calc-res-paypal-value').textContent = formatEuro(ppSconto);
             document.getElementById('pdg-calc-res-cashback-value').textContent = formatEuro(cashSconto);
             document.getElementById('pdg-calc-res-cashback-perc').textContent = `Accumulo previsto (${(cashPerc * 100).toFixed(0)}%)`;
@@ -378,6 +418,51 @@
             // Initial calc
             calcolaTutto();
         });
+
+        async function downloadScreenshot() {
+            const captureArea = document.getElementById('pdg-main-capture');
+            const settings = document.getElementById('pdg-calc-settings');
+            const downloadBtn = event.currentTarget;
+            
+            // UI Feedback
+            const originalBtnText = downloadBtn.innerHTML;
+            downloadBtn.innerHTML = '<svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Generazione...';
+            downloadBtn.disabled = true;
+
+            // Temporaneamente nascondi i settaggi e aggiungi padding per lo screenshot
+            const originalSettingsDisplay = settings.style.display;
+            settings.style.display = 'none';
+            
+            try {
+                const canvas = await html2canvas(captureArea, {
+                    backgroundColor: '#faf9f6', // var(--creamy-white)
+                    scale: 2, // Alta qualità
+                    logging: false,
+                    useCORS: true,
+                    allowTaint: true,
+                    onclone: (clonedDoc) => {
+                        // Assicurati che gli elementi clonati siano visibili e ben formattati
+                        const clonedMain = clonedDoc.getElementById('pdg-main-capture');
+                        clonedMain.style.padding = '20px';
+                    }
+                });
+
+                // Crea il link di download
+                const image = canvas.toDataURL("image/png");
+                const link = document.createElement('a');
+                link.download = `AliExpress-Sconto-Prodigeek-${new Date().getTime()}.png`;
+                link.href = image;
+                link.click();
+            } catch (err) {
+                console.error("Errore screenshot:", err);
+                alert("Si è verificato un errore durante la generazione della foto.");
+            } finally {
+                // Ripristina UI
+                settings.style.display = originalSettingsDisplay;
+                downloadBtn.innerHTML = originalBtnText;
+                downloadBtn.disabled = false;
+            }
+        }
     </script>
 </body>
 </html>
