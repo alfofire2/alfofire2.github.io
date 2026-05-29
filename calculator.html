@@ -9,8 +9,8 @@
     <!-- Tailwind CSS 4 CDN -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     
-    <!-- html2canvas for screenshots -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <!-- html-to-image for screenshots (supports modern CSS like oklch) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html-to-image/1.11.11/html-to-image.min.js"></script>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -422,36 +422,31 @@
         async function downloadScreenshot() {
             const captureArea = document.getElementById('pdg-main-capture');
             const settings = document.getElementById('pdg-calc-settings');
-            const downloadBtn = event.currentTarget;
+            const downloadBtn = document.querySelector('button[onclick="downloadScreenshot()"]');
             
             // UI Feedback
             const originalBtnText = downloadBtn.innerHTML;
-            downloadBtn.innerHTML = '<svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Generazione...';
+            downloadBtn.innerHTML = '<svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>';
             downloadBtn.disabled = true;
 
-            // Temporaneamente nascondi i settaggi e aggiungi padding per lo screenshot
+            // Temporaneamente nascondi i settaggi
             const originalSettingsDisplay = settings.style.display;
             settings.style.display = 'none';
             
             try {
-                const canvas = await html2canvas(captureArea, {
+                const dataUrl = await htmlToImage.toPng(captureArea, {
                     backgroundColor: '#faf9f6', // var(--creamy-white)
-                    scale: 2, // Alta qualità
-                    logging: false,
-                    useCORS: true,
-                    allowTaint: true,
-                    onclone: (clonedDoc) => {
-                        // Assicurati che gli elementi clonati siano visibili e ben formattati
-                        const clonedMain = clonedDoc.getElementById('pdg-main-capture');
-                        clonedMain.style.padding = '20px';
+                    pixelRatio: 2, // Alta qualità
+                    style: {
+                        padding: '20px',
+                        margin: '0'
                     }
                 });
 
                 // Crea il link di download
-                const image = canvas.toDataURL("image/png");
                 const link = document.createElement('a');
                 link.download = `AliExpress-Sconto-Prodigeek-${new Date().getTime()}.png`;
-                link.href = image;
+                link.href = dataUrl;
                 link.click();
             } catch (err) {
                 console.error("Errore screenshot:", err);
