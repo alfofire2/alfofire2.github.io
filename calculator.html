@@ -573,12 +573,14 @@
                 const fileName = `Sconto-AliExpress-Prodigeek-${new Date().getTime()}.jpg`;
                 const file = dataURLtoFile(dataUrl, fileName);
 
-                if (navigator.canShare && navigator.canShare({ files: [file] })) {
-                    await navigator.share({
-                        files: [file],
-                        title: 'Il mio sconto AliExpress',
-                        text: 'Guarda quanto ho risparmiato con i codici di Prodigeek! Calcola anche tu il tuo sconto su coupon.prodigeek.it'
-                    });
+                const shareData = {
+                    files: [file],
+                    title: 'Il mio sconto AliExpress',
+                    text: 'Guarda quanto ho risparmiato con i codici di Prodigeek! Calcola anche tu il tuo sconto su coupon.prodigeek.it'
+                };
+
+                if (navigator.canShare && navigator.canShare(shareData)) {
+                    await navigator.share(shareData);
                 } else {
                     // Fallback al download se la condivisione file non è supportata
                     const link = document.createElement('a');
