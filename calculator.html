@@ -361,7 +361,24 @@
         document.addEventListener('DOMContentLoaded', async () => {
             dynamicCoupons = await fetchCoupons(); renderHistory();
             const pI = document.getElementById('pdg-calc-price');
-            pI.addEventListener('input', (e) => { const s = e.target.selectionStart, v = e.target.value, nv = v.replace(/\./g, ','); if (v !== nv) { e.target.value = nv; e.target.setSelectionRange(s, s); } calcolaTutto(); });
+            pI.addEventListener('input', (e) => { 
+                const s = e.target.selectionStart;
+                let v = e.target.value;
+                
+                // 1. Sostituzione istantanea punto -> virgola
+                v = v.replace(/\./g, ',');
+                
+                // 2. Rimozione di qualsiasi carattere non numerico eccetto la virgola
+                const nv = v.replace(/[^0-9,]/g, ''); 
+                
+                if (v !== nv || e.target.value !== nv) { 
+                    e.target.value = nv; 
+                    // Ripristina la posizione del cursore (approssimativa in caso di rimozione caratteri)
+                    const offset = v.length - nv.length;
+                    e.target.setSelectionRange(s - offset, s - offset); 
+                } 
+                calcolaTutto(); 
+            });
             pI.addEventListener('blur', (e) => { const v = e.target.value; if (!v) return; const n = parseFloat(v.replace(',', '.')); if (!isNaN(n)) e.target.value = n.toLocaleString('it-IT', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); });
             document.querySelectorAll('select, input:not(#pdg-calc-price)').forEach(i => i.addEventListener('change', calcolaTutto));
             calcolaTutto();
