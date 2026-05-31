@@ -6,10 +6,27 @@
     <title>Calcolatore Sconti AliExpress | Prodigeek & Prezzone</title>
     <meta name="description" content="Calcola la combinazione ottimale di sconti AliExpress, PayPal e Cashback con il calcolatore avanzato di Prodigeek.">
     
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://coupon.prodigeek.it/calculator">
+    <meta property="og:title" content="Calcolatore Sconti AliExpress | Prodigeek">
+    <meta property="og:description" content="Scopri quanto puoi risparmiare! Calcola coupon, sconti PayPal e cashback in un colpo solo.">
+    <meta property="og:image" content="https://coupon.prodigeek.it/apple-touch-icon.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://coupon.prodigeek.it/calculator">
+    <meta property="twitter:title" content="Calcolatore Sconti AliExpress | Prodigeek">
+    <meta property="twitter:description" content="Scopri quanto puoi risparmiare! Calcola coupon, sconti PayPal e cashback in un colpo solo.">
+    <meta property="twitter:image" content="https://coupon.prodigeek.it/apple-touch-icon.png">
+
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    
     <!-- Tailwind CSS 4 CDN -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     
-    <!-- html-to-image for screenshots (supports modern CSS like oklch) -->
+    <!-- html-to-image for screenshots -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html-to-image/1.11.11/html-to-image.min.js"></script>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -29,181 +46,95 @@
             background-color: var(--creamy-white);
             color: var(--dark-grey);
         }
-        /* Custom styles to match the site's brand */
-        .brand-gradient {
-            background: linear-gradient(135deg, var(--orange) 0%, var(--coral) 100%);
-        }
+        .brand-gradient { background: linear-gradient(135deg, var(--orange) 0%, var(--coral) 100%); }
         .brand-text-gradient {
             background: linear-gradient(135deg, var(--orange) 0%, var(--coral) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        input::-webkit-outer-spin-button,
-        input::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
+        input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 
-        /* Screenshot Optimization Logic */
-        .pdg-is-capturing {
-            width: 800px !important;
-            min-width: 800px !important;
-            padding: 40px !important;
-            border-radius: 40px !important;
-            background-color: #faf9f6 !important;
-        }
-        /* Force desktop-like grid in capture */
-        .pdg-is-capturing .grid {
-            grid-template-columns: repeat(12, minmax(0, 1fr)) !important;
-            gap: 2rem !important;
-            display: grid !important;
-        }
-        .pdg-is-capturing .lg\:col-span-7,
-        .pdg-is-capturing .lg\:col-span-12 { /* Ensure columns are forced */
-            grid-column: span 7 / span 7 !important;
-        }
-        .pdg-is-capturing .lg\:col-span-5 {
-            grid-column: span 5 / span 5 !important;
-        }
-        /* Clean and minimal shadows for screenshot */
-        .pdg-is-capturing .shadow-sm, 
-        .pdg-is-capturing .shadow-xl {
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03) !important;
-            border: 1px solid rgba(0,0,0,0.05) !important;
-        }
-        .pdg-is-capturing .brand-gradient {
-            box-shadow: 0 10px 20px rgba(240, 120, 40, 0.15) !important;
-        }
-        .pdg-is-capturing a.block.w-full {
-            display: none !important;
-        }
-        /* Specific capture fixes for labels */
-        .pdg-is-capturing .pdg-input-wrapper {
-            background-color: transparent !important;
-        }
-        .pdg-is-capturing .whitespace-nowrap {
-            white-space: nowrap !important;
-        }
+        /* Screenshot Optimization */
+        .pdg-is-capturing { width: 800px !important; min-width: 800px !important; padding: 40px !important; border-radius: 40px !important; background-color: #faf9f6 !important; }
+        .pdg-is-capturing .grid { grid-template-columns: repeat(12, minmax(0, 1fr)) !important; gap: 2rem !important; display: grid !important; }
+        .pdg-is-capturing .lg\:col-span-7, .pdg-is-capturing .lg\:col-span-12 { grid-column: span 7 / span 7 !important; }
+        .pdg-is-capturing .lg\:col-span-5 { grid-column: span 5 / span 5 !important; }
+        .pdg-is-capturing .shadow-sm, .pdg-is-capturing .shadow-xl { box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03) !important; border: 1px solid rgba(0,0,0,0.05) !important; }
+        .pdg-is-capturing .brand-gradient { box-shadow: 0 10px 20px rgba(240, 120, 40, 0.15) !important; }
+        .pdg-is-capturing a.block.w-full, .pdg-is-capturing .pdg-action-buttons, .pdg-is-capturing header, .pdg-is-capturing #pdg-calc-settings { display: none !important; }
+        .pdg-is-capturing .pdg-input-wrapper { background-color: transparent !important; }
+        .pdg-is-capturing .whitespace-nowrap { white-space: nowrap !important; }
     </style>
 </head>
 <body class="min-h-screen p-4 md:p-8">
 
     <div class="max-w-4xl mx-auto">
-        <!-- Header / Nav -->
         <header class="mb-8">
             <div class="flex items-center justify-between gap-2 md:gap-4 mb-4">
-                <!-- Logo -->
                 <div class="flex-shrink-0">
                     <a href="/" class="block transform hover:scale-105 transition-transform">
                         <img src="assets/logo.svg" alt="Prezzone Logo" class="w-10 md:w-16 h-auto filter brightness-0">
                     </a>
                 </div>
-                
-                <!-- Title (Centered on mobile) -->
                 <div class="flex-grow text-center">
                     <h1 class="text-xl md:text-3xl font-black brand-text-gradient leading-tight tracking-tight uppercase">Calcolatore Sconti</h1>
                 </div>
-
-                <!-- Share Button (Right) -->
                 <div class="flex-shrink-0">
-                    <button id="pdg-share-main-btn" onclick="shareScreenshot('jpg')" title="Condividi Foto" class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-orange-600 text-white hover:bg-orange-700 transition-colors flex items-center justify-center shadow-lg shadow-orange-200">
+                    <button id="pdg-share-main-btn" onclick="shareScreenshot()" title="Condividi Foto" class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-orange-600 text-white hover:bg-orange-700 transition-colors flex items-center justify-center shadow-lg shadow-orange-200">
                         <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path></svg>
                     </button>
                 </div>
             </div>
-            
-            <!-- Navigation Row (Back Button) -->
             <div class="flex justify-center md:justify-end">
-                <a href="/" class="px-6 py-2 rounded-full bg-white border border-gray-200 text-xs md:text-sm font-bold text-gray-500 hover:text-orange-600 hover:border-orange-200 hover:bg-orange-50 transition-all flex items-center gap-2">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
-                    Torna ai Coupon
+                <a href="/" class="px-6 py-2 rounded-full bg-white border border-gray-200 text-xs md:text-sm font-bold text-gray-500 hover:text-orange-600 flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg> Torna ai Coupon
                 </a>
             </div>
         </header>
 
         <main class="space-y-8 pb-12">
-            <!-- Screenshot Capture Area -->
             <div id="pdg-capture-wrapper" class="p-4 md:p-8 bg-[#faf9f6] rounded-[40px]">
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
-                    
-                    <!-- Left Column: Input & Results -->
                     <div class="lg:col-span-7 flex flex-col gap-6">
-                        
-                        <!-- Main Input Card -->
                         <section class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
                             <label for="pdg-calc-price" class="block text-sm font-bold text-gray-500 uppercase tracking-wider mb-2">Prezzo Originale Prodotto</label>
                             <div class="relative pdg-input-wrapper">
-                                <input type="text" id="pdg-calc-price" placeholder="0,00" 
-                                    class="w-full text-4xl font-black p-4 pr-12 rounded-xl bg-gray-50 border-2 border-transparent focus:border-orange-400 focus:bg-white transition-all outline-none">
+                                <input type="text" id="pdg-calc-price" placeholder="0,00" class="w-full text-4xl font-black p-4 pr-12 rounded-xl bg-gray-50 border-2 border-transparent focus:border-orange-400 outline-none">
                                 <span class="absolute right-4 top-1/2 -translate-y-1/2 text-3xl font-bold text-gray-400">€</span>
                             </div>
                         </section>
-
-                        <!-- Detailed Results Card -->
                         <section class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex-grow">
-                            <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
-                                <span class="w-2 h-6 bg-turquoise rounded-full"></span>
-                                Dettaglio Risparmio
-                            </h3>
-                            
+                            <h3 class="text-lg font-bold mb-4 flex items-center gap-2"><span class="w-2 h-6 bg-turquoise rounded-full"></span> Dettaglio Risparmio</h3>
                             <div class="space-y-4">
-                                <!-- Coupon Row -->
                                 <div class="flex justify-between items-center p-3 rounded-lg bg-orange-50/50">
-                                    <div>
-                                        <span class="block text-xs font-bold text-orange-400 uppercase">Coupon Migliore</span>
-                                        <div id="pdg-calc-coupon-container" class="flex flex-wrap items-center gap-2 mt-0.5">
-                                            <div class="relative flex items-center">
-                                                <span id="pdg-calc-res-coupon-name" class="font-bold text-gray-800 bg-white/60 px-2 py-0.5 rounded border border-orange-200 cursor-pointer hover:bg-orange-100 hover:text-orange-700 transition-colors" onclick="copyCalculatorCoupon(this)" title="Clicca per copiare">Nessun Coupon</span>
-                                                <span class="pdg-calc-copy-feedback absolute left-0 -top-6 text-[10px] font-bold text-white bg-green-500 px-2 py-0.5 rounded opacity-0 transition-opacity pointer-events-none shadow-sm z-10">Copiato!</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <span id="pdg-calc-res-coupon-value" class="text-xl font-bold text-orange-600">0,00 €</span>
-                                </div>
-
-                                <!-- PayPal Row -->
-                                <div class="flex justify-between items-center p-3 rounded-lg bg-blue-50/50">
-                                    <div>
-                                        <span class="block text-xs font-bold text-blue-400 uppercase">Sconto PayPal</span>
-                                        <span class="font-bold text-gray-700">Automatico al checkout</span>
-                                    </div>
-                                    <span id="pdg-calc-res-paypal-value" class="text-xl font-bold text-blue-600">0,00 €</span>
-                                </div>
-
-                                <!-- Cashback Row -->
-                                <div class="flex justify-between items-center p-3 rounded-lg bg-emerald-50/50">
                                     <div class="min-w-0 flex-1 pr-2">
-                                        <span class="block text-xs font-bold text-emerald-500 uppercase whitespace-nowrap overflow-hidden">Cashback Squadra Prodigeek</span>
-                                        <span id="pdg-calc-res-cashback-perc" class="font-bold text-gray-700 text-sm">Accumulo previsto</span>
+                                        <span class="block text-xs font-bold text-orange-400 uppercase whitespace-nowrap">Coupon Migliore</span>
+                                        <div id="pdg-calc-coupon-container" class="flex flex-wrap items-center gap-2 mt-0.5"></div>
                                     </div>
+                                    <span id="pdg-calc-res-coupon-value" class="text-xl font-bold text-orange-600 whitespace-nowrap">0,00 €</span>
+                                </div>
+                                <div class="flex justify-between items-center p-3 rounded-lg bg-blue-50/50">
+                                    <div class="min-w-0 flex-1 pr-2">
+                                        <span class="block text-xs font-bold text-blue-400 uppercase whitespace-nowrap">Sconto PayPal</span>
+                                        <span class="font-bold text-gray-700 text-sm whitespace-nowrap">Automatico al checkout</span>
+                                    </div>
+                                    <span id="pdg-calc-res-paypal-value" class="text-xl font-bold text-blue-600 whitespace-nowrap">0,00 €</span>
+                                </div>
+                                <div class="flex justify-between items-center p-3 rounded-lg bg-emerald-50/50">
+                                    <div class="min-w-0 flex-1 pr-2"><span class="block text-xs font-bold text-emerald-500 uppercase whitespace-nowrap overflow-hidden">Cashback Squadra Prodigeek</span><span id="pdg-calc-res-cashback-perc" class="font-bold text-gray-700 text-sm">Accumulo previsto</span></div>
                                     <span id="pdg-calc-res-cashback-value" class="text-xl font-bold text-emerald-600 whitespace-nowrap">0,00 €</span>
                                 </div>
                             </div>
                         </section>
                     </div>
-
-                    <!-- Right Column: Final Summary -->
                     <div class="lg:col-span-5">
                         <div class="h-full bg-white rounded-3xl p-8 shadow-xl border border-gray-100 brand-gradient text-white flex flex-col justify-between">
                             <div>
                                 <h3 class="text-xl font-bold mb-6 opacity-90">Riepilogo Finale</h3>
-                                
                                 <div class="space-y-4">
-                                    <div class="flex justify-between items-baseline border-b border-white/20 pb-2">
-                                        <span class="text-xs font-medium opacity-80 uppercase tracking-tighter whitespace-nowrap">Prezzo Originale</span>
-                                        <span id="pdg-calc-summary-orig" class="text-lg font-bold">0,00 €</span>
-                                    </div>
-
-                                    <div class="flex justify-between items-baseline border-b border-white/20 pb-2">
-                                        <span class="text-xs font-medium opacity-80 uppercase tracking-tighter whitespace-nowrap">Dopo Coupon</span>
-                                        <span id="pdg-calc-summary-after-coupon" class="text-lg font-bold">0,00 €</span>
-                                    </div>
-
-                                    <div class="flex justify-between items-baseline border-b border-white/20 pb-2">
-                                        <span class="text-xs font-medium opacity-80 uppercase tracking-tighter whitespace-nowrap">Dopo PayPal</span>
-                                        <span id="pdg-calc-summary-after-pp" class="text-lg font-bold">0,00 €</span>
-                                    </div>
-
+                                    <div class="flex justify-between items-baseline border-b border-white/20 pb-2"><span class="text-xs font-medium opacity-80 uppercase tracking-tighter whitespace-nowrap">Prezzo Originale</span><span id="pdg-calc-summary-orig" class="text-lg font-bold">0,00 €</span></div>
+                                    <div class="flex justify-between items-baseline border-b border-white/20 pb-2"><span class="text-xs font-medium opacity-80 uppercase tracking-tighter whitespace-nowrap">Dopo Coupon</span><span id="pdg-calc-summary-after-coupon" class="text-lg font-bold">0,00 €</span></div>
+                                    <div class="flex justify-between items-baseline border-b border-white/20 pb-2"><span class="text-xs font-medium opacity-80 uppercase tracking-tighter whitespace-nowrap">Dopo PayPal</span><span id="pdg-calc-summary-after-pp" class="text-lg font-bold">0,00 €</span></div>
                                     <div class="pt-2">
                                         <span class="block text-[10px] font-bold opacity-80 mb-1 uppercase tracking-tighter whitespace-nowrap">Prezzo Finale (con Cashback)</span>
                                         <div id="pdg-calc-summary-final" class="text-6xl font-black tracking-tighter leading-none mb-2">0,00 €</div>
@@ -214,57 +145,41 @@
                                     </div>
                                 </div>
                             </div>
+                                <div class="pt-4 border-t border-white/10 mt-8">
+                                    <p class="text-[10px] opacity-70 leading-tight">Il prezzo finale include lo sconto coupon, eventuale sconto per metodo di pagamento e il cashback stimato che riceverai dopo l'acquisto. I prezzi possono variare, le disponibilità dei coupon sono limitate.</p>
+                                </div>
 
-                            <div class="mt-8">
-                                <p class="text-[10px] opacity-70 leading-tight pt-2 border-t border-white/10 mb-4">Il prezzo finale include lo sconto coupon, lo sconto PayPal e il cashback stimato che riceverai dopo l'acquisto.</p>
-
-                                <a href="/" class="block w-full text-center bg-white text-orange-600 font-black py-4 rounded-2xl shadow-lg hover:bg-orange-50 transition-all transform hover:-translate-y-1">
-                                    SCOPRI TUTTI I CODICI
-                                </a>
+                                <div class="mt-4 space-y-4 pdg-action-buttons">
+                                    <button onclick="copyTextSummary(this)" class="flex items-center justify-center gap-2 w-full bg-white/10 hover:bg-white/20 text-white font-bold py-3 rounded-2xl transition-all border border-white/10">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg> COPIA RIEPILOGO TESTO
+                                    </button>
+                                    <a href="/" class="block w-full text-center bg-white text-orange-600 font-black py-4 rounded-2xl shadow-lg hover:bg-orange-50 transition-all transform hover:-translate-y-1">SCOPRI TUTTI I CODICI</a>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- Watermark for Screenshot (Hidden in UI, visible in capture) -->
                 <div id="pdg-screenshot-watermark" class="hidden mt-6 text-center">
                     <p class="text-gray-400 font-bold text-sm">Scopri tutti i codici attivi su <span class="text-orange-500">coupon.prodigeek.it</span></p>
                 </div>
             </div>
 
-            <!-- Settings (Outside of Capture Area) -->
-            <div class="max-w-4xl mx-auto px-4">
+            <div id="pdg-calc-settings-container" class="max-w-4xl mx-auto px-4">
                 <details id="pdg-calc-settings" class="group bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-                    <summary class="flex justify-between items-center p-6 cursor-pointer hover:bg-gray-50 transition-colors list-none">
+                    <summary class="flex justify-between items-center p-6 cursor-pointer hover:bg-gray-50 list-none">
                         <div class="flex items-center gap-3">
-                            <svg class="w-6 h-6 text-gray-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                            <h3 class="text-lg font-bold">Impostazioni Parametri</h3>
+                            <svg class="w-6 h-6 text-gray-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"></path></svg>
+                            <h3 class="text-lg font-bold">Impostazioni & Cronologia</h3>
                         </div>
-                        <span class="text-xs font-bold text-gray-400 uppercase group-open:hidden">Modifica Soglie & Cashback</span>
                     </summary>
-                    
                     <div class="p-6 pt-0 border-t border-gray-50 space-y-8">
-                        
-                        <!-- Cashback Config -->
                         <div>
                             <h4 class="text-sm font-bold text-gray-400 uppercase mb-4">Configurazione Cashback</h4>
                             <div class="grid grid-cols-2 gap-4">
-                                <div>
-                                    <label class="block text-xs font-bold mb-1">Percentuale %</label>
-                                    <select id="pdg-calc-conf-cash-perc" class="w-full p-2 rounded-lg bg-gray-50 border border-gray-200 font-bold outline-none focus:border-emerald-400">
-                                        <option value="3">3%</option>
-                                        <option value="5" selected>5% (Standard)</option>
-                                        <option value="7">7%</option>
-                                        <option value="9">9% (Squad)</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-bold mb-1">Cap Massimo (€)</label>
-                                    <input type="number" id="pdg-calc-conf-cash-cap" value="15" class="w-full p-2 rounded-lg bg-gray-50 border border-gray-200 font-bold outline-none focus:border-emerald-400">
-                                </div>
+                                <div><label class="block text-xs font-bold mb-1">Percentuale %</label><select id="pdg-calc-conf-cash-perc" class="w-full p-2 rounded-lg bg-gray-50 border border-gray-200 font-bold outline-none"><option value="3">3%</option><option value="5" selected>5%</option><option value="7">7%</option><option value="9">9%</option></select></div>
+                                <div><label class="block text-xs font-bold mb-1">Cap Massimo (€)</label><input type="number" id="pdg-calc-conf-cash-cap" value="15" class="w-full p-2 rounded-lg bg-gray-50 border border-gray-200 font-bold outline-none"></div>
                             </div>
                         </div>
-
-                        <!-- PayPal Config -->
                         <div>
                             <h4 class="text-sm font-bold text-gray-400 uppercase mb-4">Soglie Sconto PayPal</h4>
                             <div class="space-y-3">
@@ -301,304 +216,154 @@
                             </div>
                         </div>
 
+                        <div class="pt-4 border-t border-gray-50">
+                            <h4 class="text-sm font-bold text-gray-400 uppercase mb-4">Ultime 5 Simulazioni</h4>
+                            <div id="pdg-calc-history-list" class="space-y-2"><p class="text-xs text-gray-400 italic">Nessun calcolo salvato.</p></div>
+                        </div>
                     </div>
                 </details>
-
             </div>
-
         </main>
     </div>
 
     <script>
-        // --- Data & State ---
-        let dynamicCoupons = [];
+        let dynamicCoupons = [], currentValues = { orig: 0, final: 0, saveVal: 0, savePerc: 0 };
+        const formatEuro = (v) => v.toLocaleString('it-IT', { style: 'currency', currency: 'EUR', minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
-        // --- Logic & Calculations ---
-
-        function copyCalculatorCoupon(element) {
-            const code = element.textContent;
-            if (code === "Nessun Coupon") return;
-
-            navigator.clipboard.writeText(code).then(() => {
-                const feedback = element.parentElement.querySelector('.pdg-calc-copy-feedback');
-                feedback.classList.remove('opacity-0');
-                feedback.classList.add('opacity-100');
-                setTimeout(() => {
-                    feedback.classList.remove('opacity-100');
-                    feedback.classList.add('opacity-0');
-                }, 2000);
-            }).catch(err => {
-                console.error('Errore durante la copia:', err);
-                // Fallback semplice
-                const textArea = document.createElement("textarea");
-                textArea.value = code;
-                document.body.appendChild(textArea);
-                textArea.select();
-                try {
-                    document.execCommand('copy');
-                    const feedback = element.parentElement.querySelector('.pdg-calc-copy-feedback');
-                    feedback.classList.remove('opacity-0');
-                    feedback.classList.add('opacity-100');
-                    setTimeout(() => {
-                        feedback.classList.remove('opacity-100');
-                        feedback.classList.add('opacity-0');
-                    }, 2000);
-                } catch (e) {
-                    console.error('Fallback fallito', e);
-                }
-                document.body.removeChild(textArea);
-            });
+        function animateValue(id, start, end, duration, isCurrency = true, isPerc = false) {
+            const obj = document.getElementById(id); if (!obj) return;
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                const current = progress * (end - start) + start;
+                if (isCurrency) obj.textContent = formatEuro(current);
+                else if (isPerc) obj.textContent = `${current.toFixed(1)}% Sconto`;
+                else obj.textContent = current.toFixed(2);
+                if (progress < 1) window.requestAnimationFrame(step);
+                else { if (isCurrency) obj.textContent = formatEuro(end); else if (isPerc) obj.textContent = `${end.toFixed(1)}% Sconto`; }
+            };
+            window.requestAnimationFrame(step);
         }
-
-        const formatEuro = (val) => {
-            return val.toLocaleString('it-IT', { 
-                style: 'currency', 
-                currency: 'EUR',
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-            });
-        };
 
         async function fetchCoupons() {
             try {
-                const response = await fetch('index.html');
-                const html = await response.text();
-                const match = html.match(/const coupons = ({[\s\S]*?});/);
+                const res = await fetch('index.html'), html = await res.text(), match = html.match(/const coupons = ({[\s\S]*?});/);
                 if (match) {
-                    // Sanitizzazione minima per eval (dato che il file è locale e sotto nostro controllo)
                     const data = eval(`(${match[1]})`);
-                    const flat = [
-                        ...data.esclusiviProdigeek,
-                        ...data.altriEsclusiviProdigeek,
-                        ...data.standardProdigeek,
-                        ...data.generici
-                    ];
-                    return flat.map(c => ({
-                        codice: c.code,
-                        sconto: parseFloat(c.discount),
-                        minSpesa: parseFloat(c.min)
-                    }));
+                    return [...data.esclusiviProdigeek, ...data.altriEsclusiviProdigeek, ...data.standardProdigeek, ...data.generici].map(c => ({ codice: c.code, sconto: parseFloat(c.discount), minSpesa: parseFloat(c.min) }));
                 }
-            } catch (e) {
-                console.warn("API Fetch fallita, uso fallback locale", e);
-            }
-            // Fallback
-            return [
-                { "codice": "SSIT70", "sconto": 70, "minSpesa": 499 },
-                { "codice": "ITSS70", "sconto": 70, "minSpesa": 499 },
-                { "codice": "SSIT50", "sconto": 50, "minSpesa": 349 },
-                { "codice": "ITSS50", "sconto": 50, "minSpesa": 349 },
-                { "codice": "SSIT35", "sconto": 35, "minSpesa": 239 },
-                { "codice": "ITSS35", "sconto": 35, "minSpesa": 239 },
-                { "codice": "SSIT20", "sconto": 20, "minSpesa": 139 },
-                { "codice": "ITSS20", "sconto": 20, "minSpesa": 139 },
-                { "codice": "SSIT12", "sconto": 12, "minSpesa": 79 },
-                { "codice": "ITSS12", "sconto": 12, "minSpesa": 79 },
-                { "codice": "SSIT06", "sconto": 6, "minSpesa": 39 },
-                { "codice": "ITSS06", "sconto": 6, "minSpesa": 39 },
-                { "codice": "SSIT03", "sconto": 3, "minSpesa": 15 },
-                { "codice": "ITSS03", "sconto": 3, "minSpesa": 15 }
-            ];
+            } catch (e) {}
+            return [{codice:"SSIT70", sconto:70, minSpesa:499}, {codice:"SSIT50", sconto:50, minSpesa:349}, {codice:"SSIT35", sconto:35, minSpesa:239}, {codice:"SSIT20", sconto:20, minSpesa:139}, {codice:"SSIT12", sconto:12, minSpesa:79}, {codice:"SSIT06", sconto:6, minSpesa:39}, {codice:"SSIT03", sconto:3, minSpesa:15}];
+        }
+
+        function saveToHistory(data) {
+            if (data.orig <= 0) return;
+            let history = JSON.parse(localStorage.getItem('pdg_calc_history') || '[]');
+            if (history.length > 0 && history[0].final === data.final && history[0].orig === data.orig) return;
+            history.unshift({ date: new Date().toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' }), orig: data.orig, final: data.final, coupon: data.couponCode });
+            history = history.slice(0, 5); localStorage.setItem('pdg_calc_history', JSON.stringify(history)); renderHistory();
+        }
+
+        function renderHistory() {
+            const list = document.getElementById('pdg-calc-history-list'), history = JSON.parse(localStorage.getItem('pdg_calc_history') || '[]');
+            if (history.length === 0) { list.innerHTML = '<p class="text-xs text-gray-400 italic">Nessun calcolo salvato.</p>'; return; }
+            list.innerHTML = history.map(item => `
+                <div class="flex justify-between items-center p-2 rounded bg-gray-50 text-[11px] border border-gray-100">
+                    <span class="font-bold text-gray-400">${item.date}</span>
+                    <span class="text-gray-500">${formatEuro(item.orig)} → <b class="text-orange-600">${formatEuro(item.final)}</b></span>
+                    <span class="bg-orange-100 text-orange-700 px-1 rounded font-black">${item.coupon}</span>
+                </div>`).join('');
+        }
+
+        function copyTextSummary(btn) {
+            const c = currentValues;
+            const coupon = c.couponCode !== "Nessuno" ? c.couponCode : "Nessuno";
+            const ppSconto = c.afterCoupon - c.afterPP;
+            
+            let text = `🛒 RISPARMIO ALIEXPRESS 🛒\n\n`;
+            text += `💰 Prezzo Prodotto: ${formatEuro(c.orig)}\n`;
+            text += `🎟️ Coupon: ${coupon} (-${formatEuro(c.orig - c.afterCoupon)})\n`;
+            if (ppSconto > 0) text += `💳 Sconto PayPal: -${formatEuro(ppSconto)}\n`;
+            if (c.cashback > 0) text += `💰 Cashback Squadra: -${formatEuro(c.cashback)}\n`;
+            text += `\n---------------------------\n`;
+            text += `✨ PREZZO FINALE: ${formatEuro(c.final)}\n`;
+            text += `🎁 RISPARMIO TOTALE: ${formatEuro(c.saveVal)}\n`;
+            text += `---------------------------\n\n`;
+            text += `Calcola anche tu il tuo sconto qui:\nhttps://coupon.prodigeek.it/calculator`;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                const originalContent = btn.innerHTML;
+                btn.innerHTML = '✨ COPIATO!';
+                btn.classList.add('bg-green-600', 'text-white');
+                setTimeout(() => {
+                    btn.innerHTML = originalContent;
+                    btn.classList.remove('bg-green-600', 'text-white');
+                }, 2000);
+            }).catch(err => {
+                console.error("Errore copia:", err);
+            });
         }
 
         function calcolaTutto() {
-            const rawValue = document.getElementById('pdg-calc-price').value;
-            const normalizedValue = rawValue.replace(',', '.');
-            const prezzoOrig = parseFloat(normalizedValue) || 0;
-            
-            // 1. Miglior Coupon (basato sul prezzo originale)
-            let maxDiscount = 0;
-            let bestCoupons = [];
-            
-            dynamicCoupons.forEach(c => {
-                if (prezzoOrig >= c.minSpesa) {
-                    if (c.sconto > maxDiscount) {
-                        maxDiscount = c.sconto;
-                        bestCoupons = [c];
-                    } else if (c.sconto === maxDiscount && maxDiscount > 0) {
-                        // Aggiungi solo se non è già presente (per evitare duplicati se l'API li ha)
-                        if (!bestCoupons.find(bc => bc.codice === c.codice)) {
-                            bestCoupons.push(c);
-                        }
-                    }
-                }
-            });
-
-            if (bestCoupons.length === 0) {
-                bestCoupons = [{ codice: "Nessun Coupon", sconto: 0 }];
-            }
-
+            const rawValue = document.getElementById('pdg-calc-price').value, normalizedValue = rawValue.replace(',', '.'), prezzoOrig = parseFloat(normalizedValue) || 0;
+            let maxDiscount = 0, bestCoupons = [];
+            dynamicCoupons.forEach(c => { if (prezzoOrig >= c.minSpesa) { if (c.sconto > maxDiscount) { maxDiscount = c.sconto; bestCoupons = [c]; } else if (c.sconto === maxDiscount && maxDiscount > 0) { if (!bestCoupons.find(bc => bc.codice === c.codice)) bestCoupons.push(c); } } });
+            if (bestCoupons.length === 0) bestCoupons = [{ codice: "Nessuno", sconto: 0 }];
             const prezzoDopoCoupon = Math.max(0, prezzoOrig - maxDiscount);
-
-            // 2. PayPal (basato sul prezzo DOPO il coupon)
-            const ppThresholds = [
-                { min: parseFloat(document.getElementById('pdg-calc-conf-pp-t3-min').value), disc: parseFloat(document.getElementById('pdg-calc-conf-pp-t3-disc').value) },
-                { min: parseFloat(document.getElementById('pdg-calc-conf-pp-t2-min').value), disc: parseFloat(document.getElementById('pdg-calc-conf-pp-t2-disc').value) },
-                { min: parseFloat(document.getElementById('pdg-calc-conf-pp-t1-min').value), disc: parseFloat(document.getElementById('pdg-calc-conf-pp-t1-disc').value) }
-            ];
-            
-            let ppSconto = 0;
-            const activeThreshold = ppThresholds.find(t => prezzoDopoCoupon >= t.min);
-            if (activeThreshold) ppSconto = activeThreshold.disc;
-            const prezzoDopoPayPal = Math.max(0, prezzoDopoCoupon - ppSconto);
-
-            // 3. Cashback (basato sul prezzo DOPO PayPal)
-            const cashPerc = parseFloat(document.getElementById('pdg-calc-conf-cash-perc').value) / 100;
-            const cashCap = parseFloat(document.getElementById('pdg-calc-conf-cash-cap').value);
-            const cashSconto = Math.min(cashCap, prezzoDopoPayPal * cashPerc);
-
-            // 4. Totali
-            const totaleSconti = maxDiscount + ppSconto + cashSconto;
-            const prezzoFinale = Math.max(0, prezzoOrig - totaleSconti);
-            const percRisparmio = prezzoOrig > 0 ? (totaleSconti / prezzoOrig) * 100 : 0;
-
-            // --- UI Update ---
-            
-            // Dettagli Coupon
-            const container = document.getElementById('pdg-calc-coupon-container');
-            container.innerHTML = '';
-            bestCoupons.forEach(c => {
-                const wrapper = document.createElement('div');
-                wrapper.className = 'relative flex items-center';
-                wrapper.innerHTML = `
-                    <span class="font-bold text-gray-800 bg-white/60 px-2 py-0.5 rounded border border-orange-200 cursor-pointer hover:bg-orange-100 hover:text-orange-700 transition-colors" onclick="copyCalculatorCoupon(this)" title="Clicca per copiare">${c.codice}</span>
-                    <span class="pdg-calc-copy-feedback absolute left-0 -top-6 text-[10px] font-bold text-white bg-green-500 px-2 py-0.5 rounded opacity-0 transition-opacity pointer-events-none shadow-sm z-10">Copiato!</span>
-                `;
-                container.appendChild(wrapper);
-            });
-
-            document.getElementById('pdg-calc-res-coupon-value').textContent = formatEuro(maxDiscount);
-            document.getElementById('pdg-calc-res-paypal-value').textContent = formatEuro(ppSconto);
-            document.getElementById('pdg-calc-res-cashback-value').textContent = formatEuro(cashSconto);
+            const ppT = [{min:299, disc:45}, {min:199, disc:20}, {min:99, disc:8}];
+            let ppSconto = 0; const activePP = ppT.find(t => prezzoDopoCoupon >= t.min); if (activePP) ppSconto = activePP.disc;
+            const prezzoDopoPP = Math.max(0, prezzoDopoCoupon - ppSconto);
+            const cashPerc = parseFloat(document.getElementById('pdg-calc-conf-cash-perc').value) / 100, cashCap = parseFloat(document.getElementById('pdg-calc-conf-cash-cap').value);
+            const cashSconto = Math.min(cashCap, prezzoDopoPP * cashPerc);
+            const totalSconti = maxDiscount + ppSconto + cashSconto, prezzoFinale = Math.max(0, prezzoOrig - totalSconti), perc = prezzoOrig > 0 ? (totalSconti / prezzoOrig) * 100 : 0;
+            const old = {...currentValues};
+            currentValues = { orig: prezzoOrig, afterCoupon: prezzoDopoCoupon, afterPP: prezzoDopoPP, cashback: cashSconto, final: prezzoFinale, saveVal: totalSconti, savePerc: perc, couponCode: bestCoupons[0].codice };
+            document.getElementById('pdg-calc-coupon-container').innerHTML = bestCoupons.map(c => `<span class="font-bold text-gray-800 bg-white/60 px-2 py-0.5 rounded border border-orange-200">${c.codice}</span>`).join('');
+            animateValue('pdg-calc-res-coupon-value', old.afterCoupon ? old.orig - old.afterCoupon : 0, maxDiscount, 400);
+            animateValue('pdg-calc-res-paypal-value', old.afterCoupon - old.afterPP || 0, ppSconto, 400);
+            animateValue('pdg-calc-res-cashback-value', old.cashback || 0, cashSconto, 400);
             document.getElementById('pdg-calc-res-cashback-perc').textContent = `Accumulo previsto (${(cashPerc * 100).toFixed(0)}%)`;
-
-            // Riepilogo
-            document.getElementById('pdg-calc-summary-orig').textContent = formatEuro(prezzoOrig);
-            document.getElementById('pdg-calc-summary-after-coupon').textContent = formatEuro(prezzoDopoCoupon);
-            document.getElementById('pdg-calc-summary-after-pp').textContent = formatEuro(prezzoDopoPayPal);
-            document.getElementById('pdg-calc-summary-save-val').textContent = formatEuro(totaleSconti);
-            document.getElementById('pdg-calc-summary-save-perc').textContent = `${percRisparmio.toFixed(1)}% Sconto`;
-            document.getElementById('pdg-calc-summary-final').textContent = formatEuro(prezzoFinale);
+            animateValue('pdg-calc-summary-orig', old.orig, prezzoOrig, 400);
+            animateValue('pdg-calc-summary-after-coupon', old.afterCoupon || 0, prezzoDopoCoupon, 400);
+            animateValue('pdg-calc-summary-after-pp', old.afterPP || 0, prezzoDopoPP, 400);
+            animateValue('pdg-calc-summary-save-val', old.saveVal, totalSconti, 400);
+            animateValue('pdg-calc-summary-save-perc', old.savePerc, perc, 400, false, true);
+            animateValue('pdg-calc-summary-final', old.final, prezzoFinale, 600);
+            clearTimeout(window.pdgH); window.pdgHistoryTimer = setTimeout(() => saveToHistory(currentValues), 2000);
         }
 
-        // --- Initialization ---
         document.addEventListener('DOMContentLoaded', async () => {
-            dynamicCoupons = await fetchCoupons();
-            
-            const priceInput = document.getElementById('pdg-calc-price');
-
-            // Sostituzione automatica punto -> virgola mentre si scrive
-            priceInput.addEventListener('input', (e) => {
-                const start = e.target.selectionStart;
-                const end = e.target.selectionEnd;
-                const originalValue = e.target.value;
-                const newValue = originalValue.replace(/\./g, ',');
-                
-                if (originalValue !== newValue) {
-                    e.target.value = newValue;
-                    // Ripristina la posizione del cursore
-                    e.target.setSelectionRange(start, end);
-                }
-                calcolaTutto();
-            });
-
-            // Formattazione a due decimali quando si esce dal campo
-            priceInput.addEventListener('blur', (e) => {
-                const val = e.target.value;
-                if (!val) return;
-                
-                const normalizedValue = val.replace(',', '.');
-                const num = parseFloat(normalizedValue);
-                
-                if (!isNaN(num)) {
-                    e.target.value = num.toLocaleString('it-IT', { 
-                        minimumFractionDigits: 2, 
-                        maximumFractionDigits: 2 
-                    });
-                }
-            });
-
-            // Event Listeners Reattivi per gli altri campi
-            const otherInputs = document.querySelectorAll('select, input:not(#pdg-calc-price)');
-            otherInputs.forEach(input => {
-                input.addEventListener('input', calcolaTutto);
-                input.addEventListener('change', calcolaTutto);
-            });
-
-            // Initial calc
+            dynamicCoupons = await fetchCoupons(); renderHistory();
+            const pI = document.getElementById('pdg-calc-price');
+            pI.addEventListener('input', (e) => { const s = e.target.selectionStart, v = e.target.value, nv = v.replace(/\./g, ','); if (v !== nv) { e.target.value = nv; e.target.setSelectionRange(s, s); } calcolaTutto(); });
+            pI.addEventListener('blur', (e) => { const v = e.target.value; if (!v) return; const n = parseFloat(v.replace(',', '.')); if (!isNaN(n)) e.target.value = n.toLocaleString('it-IT', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); });
+            document.querySelectorAll('select, input:not(#pdg-calc-price)').forEach(i => i.addEventListener('change', calcolaTutto));
             calcolaTutto();
         });
 
-        // --- Share Logic ---
-
-        function dataURLtoFile(dataurl, filename) {
-            const arr = dataurl.split(',');
-            const mime = arr[0].match(/:(.*?);/)[1];
-            const bstr = atob(arr[1]);
-            let n = bstr.length;
-            const u8arr = new Uint8Array(n);
-            while(n--){
-                u8arr[n] = bstr.charCodeAt(n);
-            }
-            return new File([u8arr], filename, {type:mime});
-        }
-
         async function shareScreenshot() {
-            const captureArea = document.getElementById('pdg-capture-wrapper');
-            const shareBtn = document.getElementById('pdg-share-main-btn');
-            const watermark = document.getElementById('pdg-screenshot-watermark');
-            
-            // UI Feedback
-            const originalBtnContent = shareBtn.innerHTML;
-            shareBtn.innerHTML = '<svg class="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>';
-            shareBtn.disabled = true;
-
-            // Attiva modalità cattura (layout orizzontale forzato e ombre soft)
-            captureArea.classList.add('pdg-is-capturing');
-            
-            // Forza reflow e aspetta un istante per stabilizzare il layout
-            void captureArea.offsetWidth;
-            await new Promise(res => setTimeout(res, 200));
-
-            // Mostra watermark solo per lo scatto
-            if (watermark) watermark.classList.remove('hidden');
-
+            const area = document.getElementById('pdg-capture-wrapper'), btn = document.getElementById('pdg-share-main-btn'), wm = document.getElementById('pdg-screenshot-watermark');
+            const old = btn.innerHTML; btn.innerHTML = '...'; btn.disabled = true;
+            area.classList.add('pdg-is-capturing'); void area.offsetWidth; await new Promise(r => setTimeout(r, 300));
+            if (wm) wm.classList.remove('hidden');
             try {
-                const options = {
-                    pixelRatio: 3,
-                    backgroundColor: '#faf9f6'
-                };
+                const dUrl = await htmlToImage.toJpeg(area, { pixelRatio: 3, backgroundColor: '#faf9f6' });
+                const fData = atob(dUrl.split(',')[1]);
+                const u8arr = new Uint8Array(fData.length);
+                for(let i=0; i<fData.length; i++) u8arr[i] = fData.charCodeAt(i);
+                
+                // Formatta il nome file: Sconto-Prodigeek-PrezzoOriginale-Data
+                const prezzoOrig = currentValues.orig.toFixed(2).replace('.', ',');
+                const dateStr = new Date().toISOString().slice(0,10).replace(/-/g, ''); // YYYYMMDD
+                const fileName = `Sconto-Prodigeek-${prezzoOrig}eur-${dateStr}.jpg`;
 
-                const dataUrl = await htmlToImage.toJpeg(captureArea, options);
-                const fileName = `Sconto-AliExpress-Prodigeek-${new Date().getTime()}.jpg`;
-                const file = dataURLtoFile(dataUrl, fileName);
-
-                const shareData = {
-                    files: [file],
-                    title: 'Il mio sconto AliExpress',
-                    text: 'Guarda quanto ho risparmiato con i codici di Prodigeek! Calcola anche tu il tuo sconto su coupon.prodigeek.it'
-                };
-
-                if (navigator.canShare && navigator.canShare(shareData)) {
-                    await navigator.share(shareData);
-                } else {
-                    // Fallback al download se la condivisione file non è supportata
-                    const link = document.createElement('a');
-                    link.download = fileName;
-                    link.href = dataUrl;
-                    link.click();
-                }
-            } catch (err) {
-                if (err.name !== 'AbortError') {
-                    console.error("Errore screenshot/share:", err);
-                    alert("Si è verificato un errore durante la generazione della foto.");
-                }
-            } finally {
-                // Nascondi watermark e ripristina UI
-                if (watermark) watermark.classList.add('hidden');
-                captureArea.classList.remove('pdg-is-capturing');
-                shareBtn.innerHTML = originalBtnContent;
-                shareBtn.disabled = false;
+                const f = new File([u8arr], fileName, {type:'image/jpeg'});
+                const sD = { files: [f], title: 'Sconto AliExpress', text: 'Guarda quanto ho risparmiato su coupon.prodigeek.it' };
+                if (navigator.canShare && navigator.canShare(sD)) await navigator.share(sD);
+                else { const l = document.createElement('a'); l.download = f.name; l.href = dUrl; l.click(); }
+            } catch (e) { alert("Errore generazione foto."); } finally {
+                if (wm) wm.classList.add('hidden'); area.classList.remove('pdg-is-capturing'); btn.innerHTML = old; btn.disabled = false;
             }
         }
     </script>
