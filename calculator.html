@@ -307,6 +307,22 @@
             });
         }
 
+        // Dynamic Font Scaling for Final Price
+        function adjustFinalPriceFontSize() {
+            const container = document.getElementById('pdg-calc-summary-final').parentElement;
+            const text = document.getElementById('pdg-calc-summary-final');
+            if (!container || !text) return;
+
+            let fontSize = 60; // Base size in px (text-6xl approx)
+            text.style.fontSize = fontSize + 'px';
+            text.style.whiteSpace = 'nowrap';
+
+            while (text.scrollWidth > container.offsetWidth && fontSize > 20) {
+                fontSize -= 2;
+                text.style.fontSize = fontSize + 'px';
+            }
+        }
+
         function calcolaTutto() {
             const rawValue = document.getElementById('pdg-calc-price').value, normalizedValue = rawValue.replace(',', '.'), prezzoOrig = parseFloat(normalizedValue) || 0;
             let maxDiscount = 0, bestCoupons = [];
@@ -332,6 +348,10 @@
             animateValue('pdg-calc-summary-save-val', old.saveVal, totalSconti, 400);
             animateValue('pdg-calc-summary-save-perc', old.savePerc, perc, 400, false, true);
             animateValue('pdg-calc-summary-final', old.final, prezzoFinale, 600);
+            
+            // Scalamento dinamico del font
+            setTimeout(adjustFinalPriceFontSize, 50); // Piccolo delay per aspettare l'inizio animazione
+            
             clearTimeout(window.pdgH); window.pdgHistoryTimer = setTimeout(() => saveToHistory(currentValues), 2000);
         }
 
