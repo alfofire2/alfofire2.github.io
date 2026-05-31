@@ -138,7 +138,7 @@
                                     <div class="pt-2 overflow-hidden">
                                         <span class="block text-[10px] font-bold opacity-80 mb-1 uppercase tracking-tighter whitespace-nowrap">Prezzo Finale (con Cashback)</span>
                                         <div class="flex items-baseline min-w-0">
-                                            <div id="pdg-calc-summary-final" class="text-6xl font-black tracking-tighter leading-none mb-2 break-all sm:break-normal">0,00 €</div>
+                                            <div id="pdg-calc-summary-final" class="text-6xl font-black tracking-tighter leading-none mb-2">0,00 €</div>
                                         </div>
                                         <div class="flex justify-between items-center mt-2">
                                             <span id="pdg-calc-summary-save-val" class="text-xl font-black text-yellow-300 uppercase tracking-tight whitespace-nowrap">0,00 € RISPARMIATI</span>
@@ -309,16 +309,19 @@
 
         // Dynamic Font Scaling for Final Price
         function adjustFinalPriceFontSize() {
-            const container = document.getElementById('pdg-calc-summary-final').parentElement;
             const text = document.getElementById('pdg-calc-summary-final');
+            const container = text?.parentElement;
             if (!container || !text) return;
 
-            let fontSize = 60; // Base size in px (text-6xl approx)
+            // Reset a dimensione base prima del ricalcolo
+            let fontSize = 60; 
             text.style.fontSize = fontSize + 'px';
             text.style.whiteSpace = 'nowrap';
-
-            while (text.scrollWidth > container.offsetWidth && fontSize > 20) {
-                fontSize -= 2;
+            
+            // Riduce il font finché il testo non entra nel contenitore (con un margine generoso di 40px)
+            const maxWidth = container.clientWidth - 40;
+            while (text.scrollWidth > maxWidth && fontSize > 16) {
+                fontSize -= 1;
                 text.style.fontSize = fontSize + 'px';
             }
         }
@@ -367,8 +370,18 @@
         async function shareScreenshot() {
             const area = document.getElementById('pdg-capture-wrapper'), btn = document.getElementById('pdg-share-main-btn'), wm = document.getElementById('pdg-screenshot-watermark');
             const old = btn.innerHTML; btn.innerHTML = '...'; btn.disabled = true;
-            area.classList.add('pdg-is-capturing'); void area.offsetWidth; await new Promise(r => setTimeout(r, 300));
+            
+            // 1. Applica layout di cattura
+            area.classList.add('pdg-is-capturing'); 
+            
+            // 2. Forza ricalcolo font basato sul NUOVO layout (800px)
+            void area.offsetWidth; 
+            adjustFinalPriceFontSize();
+            
+            // 3. Aspetta che il layout si stabilizzi
+            await new Promise(r => setTimeout(r, 500));
             if (wm) wm.classList.remove('hidden');
+
             try {
                 const dUrl = await htmlToImage.toJpeg(area, { pixelRatio: 3, backgroundColor: '#faf9f6' });
                 const fData = atob(dUrl.split(',')[1]);
