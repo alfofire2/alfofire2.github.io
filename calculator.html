@@ -43,6 +43,47 @@
             -webkit-appearance: none;
             margin: 0;
         }
+
+        /* Screenshot Optimization Logic */
+        .pdg-is-capturing {
+            width: 800px !important;
+            min-width: 800px !important;
+            padding: 40px !important;
+            border-radius: 40px !important;
+            background-color: #faf9f6 !important;
+        }
+        /* Force desktop-like grid in capture */
+        .pdg-is-capturing .grid {
+            grid-template-columns: repeat(12, minmax(0, 1fr)) !important;
+            gap: 2rem !important;
+            display: grid !important;
+        }
+        .pdg-is-capturing .lg\:col-span-7,
+        .pdg-is-capturing .lg\:col-span-12 { /* Ensure columns are forced */
+            grid-column: span 7 / span 7 !important;
+        }
+        .pdg-is-capturing .lg\:col-span-5 {
+            grid-column: span 5 / span 5 !important;
+        }
+        /* Clean and minimal shadows for screenshot */
+        .pdg-is-capturing .shadow-sm, 
+        .pdg-is-capturing .shadow-xl {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03) !important;
+            border: 1px solid rgba(0,0,0,0.05) !important;
+        }
+        .pdg-is-capturing .brand-gradient {
+            box-shadow: 0 10px 20px rgba(240, 120, 40, 0.15) !important;
+        }
+        .pdg-is-capturing a.block.w-full {
+            display: none !important;
+        }
+        /* Specific capture fixes for labels */
+        .pdg-is-capturing .pdg-input-wrapper {
+            background-color: transparent !important;
+        }
+        .pdg-is-capturing .whitespace-nowrap {
+            white-space: nowrap !important;
+        }
     </style>
 </head>
 <body class="min-h-screen p-4 md:p-8">
@@ -76,8 +117,8 @@
                         <!-- Main Input Card -->
                         <section class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
                             <label for="pdg-calc-price" class="block text-sm font-bold text-gray-500 uppercase tracking-wider mb-2">Prezzo Originale Prodotto</label>
-                            <div class="relative">
-                                <input type="number" id="pdg-calc-price" placeholder="0.00" step="0.01" min="0" 
+                            <div class="relative pdg-input-wrapper">
+                                <input type="text" id="pdg-calc-price" placeholder="0,00" 
                                     class="w-full text-4xl font-black p-4 pr-12 rounded-xl bg-gray-50 border-2 border-transparent focus:border-orange-400 focus:bg-white transition-all outline-none">
                                 <span class="absolute right-4 top-1/2 -translate-y-1/2 text-3xl font-bold text-gray-400">€</span>
                             </div>
@@ -116,11 +157,11 @@
 
                                 <!-- Cashback Row -->
                                 <div class="flex justify-between items-center p-3 rounded-lg bg-emerald-50/50">
-                                    <div>
-                                        <span class="block text-xs font-bold text-emerald-500 uppercase">Cashback Squad</span>
-                                        <span id="pdg-calc-res-cashback-perc" class="font-bold text-gray-700">Accumulo previsto</span>
+                                    <div class="min-w-0 flex-1 pr-2">
+                                        <span class="block text-xs font-bold text-emerald-500 uppercase whitespace-nowrap overflow-hidden">Cashback Squadra Prodigeek</span>
+                                        <span id="pdg-calc-res-cashback-perc" class="font-bold text-gray-700 text-sm">Accumulo previsto</span>
                                     </div>
-                                    <span id="pdg-calc-res-cashback-value" class="text-xl font-bold text-emerald-600">0,00 €</span>
+                                    <span id="pdg-calc-res-cashback-value" class="text-xl font-bold text-emerald-600 whitespace-nowrap">0,00 €</span>
                                 </div>
                             </div>
                         </section>
@@ -149,7 +190,7 @@
                                     </div>
 
                                     <div class="pt-2">
-                                        <span class="block text-sm font-bold opacity-80 mb-1 uppercase tracking-tighter">Prezzo Finale (con Cashback)</span>
+                                        <span class="block text-[10px] font-bold opacity-80 mb-1 uppercase tracking-tighter whitespace-nowrap">Prezzo Finale (con Cashback)</span>
                                         <div id="pdg-calc-summary-final" class="text-6xl font-black tracking-tighter leading-none mb-2">0,00 €</div>
                                         <div class="flex justify-between items-center mt-2">
                                             <span id="pdg-calc-summary-save-val" class="text-xl font-black text-yellow-300 uppercase tracking-tight whitespace-nowrap">0,00 € RISPARMIATI</span>
@@ -294,7 +335,14 @@
             });
         }
 
-        const formatEuro = (val) => val.toLocaleString('it-IT', { style: 'currency', currency: 'EUR' });
+        const formatEuro = (val) => {
+            return val.toLocaleString('it-IT', { 
+                style: 'currency', 
+                currency: 'EUR',
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+        };
 
         async function fetchCoupons() {
             try {
@@ -339,7 +387,9 @@
         }
 
         function calcolaTutto() {
-            const prezzoOrig = parseFloat(document.getElementById('pdg-calc-price').value) || 0;
+            const rawValue = document.getElementById('pdg-calc-price').value;
+            const normalizedValue = rawValue.replace(',', '.');
+            const prezzoOrig = parseFloat(normalizedValue) || 0;
             
             // 1. Miglior Coupon (basato sul prezzo originale)
             let maxDiscount = 0;
@@ -420,9 +470,26 @@
         document.addEventListener('DOMContentLoaded', async () => {
             dynamicCoupons = await fetchCoupons();
             
-            // Event Listeners Reattivi
-            const inputs = document.querySelectorAll('input, select');
-            inputs.forEach(input => {
+            const priceInput = document.getElementById('pdg-calc-price');
+
+            // Sostituzione automatica punto -> virgola mentre si scrive
+            priceInput.addEventListener('input', (e) => {
+                const start = e.target.selectionStart;
+                const end = e.target.selectionEnd;
+                const originalValue = e.target.value;
+                const newValue = originalValue.replace(/\./g, ',');
+                
+                if (originalValue !== newValue) {
+                    e.target.value = newValue;
+                    // Ripristina la posizione del cursore
+                    e.target.setSelectionRange(start, end);
+                }
+                calcolaTutto();
+            });
+
+            // Event Listeners Reattivi per gli altri campi
+            const otherInputs = document.querySelectorAll('select, input:not(#pdg-calc-price)');
+            otherInputs.forEach(input => {
                 input.addEventListener('input', calcolaTutto);
                 input.addEventListener('change', calcolaTutto);
             });
@@ -455,15 +522,19 @@
             shareBtn.innerHTML = '<svg class="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>';
             shareBtn.disabled = true;
 
+            // Attiva modalità cattura (layout orizzontale forzato e ombre soft)
+            captureArea.classList.add('pdg-is-capturing');
+            
+            // Forza reflow e aspetta un istante per stabilizzare il layout
+            void captureArea.offsetWidth;
+            await new Promise(res => setTimeout(res, 200));
+
             // Mostra watermark solo per lo scatto
             if (watermark) watermark.classList.remove('hidden');
 
             try {
                 const options = {
                     pixelRatio: 3,
-                    style: {
-                        borderRadius: '40px'
-                    },
                     backgroundColor: '#faf9f6'
                 };
 
@@ -492,6 +563,7 @@
             } finally {
                 // Nascondi watermark e ripristina UI
                 if (watermark) watermark.classList.add('hidden');
+                captureArea.classList.remove('pdg-is-capturing');
                 shareBtn.innerHTML = originalBtnContent;
                 shareBtn.disabled = false;
             }
