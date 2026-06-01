@@ -666,7 +666,7 @@
         </div>
         <div id="coupon-sections">
             <section id="esclusivi-prodigeek-coupons">
-                <h2>Coupon Standard</h2>
+                <h2>Coupon Esclusivi Prodigeek</h2>
                 <div class="coupon-list" id="esclusivi-prodigeek-list"></div>
             </section>
 
@@ -676,12 +676,12 @@
             </section>
 
             <section id="standard-prodigeek-coupons">
-                <h2>Coupon Esclusivi Prodigeek</h2>
+                <h2>Altri Coupon Generici</h2>
                 <div class="coupon-list" id="standard-prodigeek-list"></div>
             </section>
 
             <section id="altri-esclusivi-prodigeek-coupons">
-                <h2>Altri Coupon Generici</h2>
+                <h2>Altri Coupon Esclusivi Prodigeek</h2>
                 <div class="coupon-list" id="altri-esclusivi-prodigeek-list"></div>
             </section>
         </div>
@@ -739,6 +739,16 @@
         const SITE_LASTMOD = '2026-06-01';
         const coupons = {
             esclusiviProdigeek: [
+                { code: 'PRODIGEEK110', discount: 110, min: 650, currency: '€' },
+                { code: 'PRODIGEEK70', discount: 70, min: 499, currency: '€' },
+                { code: 'PRODIGEEK50', discount: 50, min: 349, currency: '€' },
+                { code: 'PRODIGEEK35', discount: 35, min: 239, currency: '€' },
+                { code: 'PRODIGEEK20', discount: 20, min: 139, currency: '€' },
+                { code: 'PRODIGEEK12', discount: 12, min: 79, currency: '€' },
+                { code: 'PRODIGEEK06', discount: 6, min: 39, currency: '€' },
+                { code: 'PRODIGEEK03', discount: 3, min: 15, currency: '€' }
+            ],
+            altriEsclusiviProdigeek: [
                 { code: 'IFPWRAGA', discount: 50, min: 359, currency: '€' },
                 { code: 'IFP5EFKV', discount: 35, min: 249, currency: '€' },
                 { code: 'IFPKOZX7', discount: 25, min: 169, currency: '€' },
@@ -748,7 +758,7 @@
                 { code: 'IFPT9L3Y', discount: 6, min: 39, currency: '€' },
                 { code: 'IFPNQRAQ', discount: 3, min: 15, currency: '€' }
             ],
-            altriEsclusiviProdigeek: [
+            standardProdigeek: [
                 { code: 'ITSS110', discount: 110, min: 650, currency: '€' },
                 { code: 'ITSS70', discount: 70, min: 499, currency: '€' },
                 { code: 'ITSS50', discount: 50, min: 349, currency: '€' },
@@ -757,8 +767,6 @@
                 { code: 'ITSS12', discount: 12, min: 79, currency: '€' },
                 { code: 'ITSS06', discount: 6, min: 39, currency: '€' },
                 { code: 'ITSS03', discount: 3, min: 15, currency: '€' }
-            ],
-            standardProdigeek: [
             ],
             generici: [
                 { code: 'SSIT110', discount: 110, min: 650, currency: '€' },
