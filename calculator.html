@@ -212,7 +212,7 @@
                                     </div>
                                     <div class="flex items-center gap-2">
                                         <span class="text-xs font-bold text-gray-400">→ -€</span>
-                                        <input type="number" id="pdg-calc-conf-pp-t1-disc" value="8" class="w-full p-2 rounded-lg bg-gray-50 border border-gray-200 font-bold outline-none">
+                                        <input type="number" id="pdg-calc-conf-pp-t1-disc" value="10" class="w-full p-2 rounded-lg bg-gray-50 border border-gray-200 font-bold outline-none">
                                     </div>
                                 </div>
                             </div>
@@ -332,7 +332,7 @@
             dynamicCoupons.forEach(c => { if (prezzoOrig >= c.minSpesa) { if (c.sconto > maxDiscount) { maxDiscount = c.sconto; bestCoupons = [c]; } else if (c.sconto === maxDiscount && maxDiscount > 0) { if (!bestCoupons.find(bc => bc.codice === c.codice)) bestCoupons.push(c); } } });
             if (bestCoupons.length === 0) bestCoupons = [{ codice: "Nessuno", sconto: 0 }];
             const prezzoDopoCoupon = Math.max(0, prezzoOrig - maxDiscount);
-            const ppT = [{min:299, disc:45}, {min:199, disc:20}, {min:99, disc:8}];
+            const ppT = [{min:299, disc:45}, {min:199, disc:20}, {min:99, disc:10}];
             let ppSconto = 0; const activePP = ppT.find(t => prezzoDopoCoupon >= t.min); if (activePP) ppSconto = activePP.disc;
             const prezzoDopoPP = Math.max(0, prezzoDopoCoupon - ppSconto);
             const cashPerc = parseFloat(document.getElementById('pdg-calc-conf-cash-perc').value) / 100, cashCap = parseFloat(document.getElementById('pdg-calc-conf-cash-cap').value);
