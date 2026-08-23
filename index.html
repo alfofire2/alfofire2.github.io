@@ -738,7 +738,23 @@
         const SITE_URL = 'https://coupon.prodigeek.it/';
         const SITE_LASTMOD = '2026-06-26';
         const coupons = {
+            // Coupon Esclusivi Prodigeek
             esclusiviProdigeek: [
+                { code: 'PRODIGEEK3', discount: 3, min: 15, currency: '€' },
+                { code: 'PRODIGEEK6', discount: 6, min: 39, currency: '€' },
+                { code: 'PRODIGEEK11', discount: 11, min: 79, currency: '€' },
+                { code: 'PRODIGEEK20', discount: 20, min: 139, currency: '€' },
+                { code: 'PRODIGEEK33', discount: 33, min: 229, currency: '€' },
+                { code: 'PRODIGEEK45', discount: 45, min: 309, currency: '€' },
+                { code: 'PRODIGEEK68', discount: 68, min: 459, currency: '€' },
+                { code: 'PRODIGEEK70', discount: 70, min: 489, currency: '€' },
+                { code: 'PRODIGEEK80', discount: 80, min: 599, currency: '€' },
+                { code: 'PRODIGEEK90', discount: 90, min: 699, currency: '€' },
+                { code: 'PRODIGEEK110', discount: 110, min: 650, currency: '€' }
+            ],
+
+            // Altri Coupon Esclusivi Prodigeek (in dollari)
+            altriEsclusiviProdigeek: [
                 { code: 'IFP7NYAJ', discount: 3, min: 15, currency: '$' },
                 { code: 'IFP9ZAX0', discount: 6, min: 39, currency: '$' },
                 { code: 'IFPVOCPY', discount: 11, min: 79, currency: '$' },
@@ -748,29 +764,23 @@
                 { code: 'IFPPST3S', discount: 70, min: 489, currency: '$' }
             ],
 
-            altriEsclusiviProdigeek: [],
-
+            // Altri Coupon Generici
             standardProdigeek: [
-                { code: 'PRODIGEEK3', discount: 3, min: 15, currency: '€' },
-                { code: 'PRODIGEEK6', discount: 6, min: 39, currency: '€' },
-                { code: 'PRODIGEEK11', discount: 11, min: 79, currency: '€' },
-                { code: 'PRODIGEEK20', discount: 20, min: 139, currency: '€' },
-                { code: 'PRODIGEEK33', discount: 33, min: 229, currency: '€' },
-                { code: 'PRODIGEEK45', discount: 45, min: 309, currency: '€' },
-                { code: 'PRODIGEEK70', discount: 70, min: 489, currency: '€' },
-                { code: 'PRODIGEEK110', discount: 110, min: 650, currency: '€' }
-            ],
-
-            generici: [
                 { code: 'ITAE3', discount: 3, min: 15, currency: '€' },
                 { code: 'ITAE6', discount: 6, min: 39, currency: '€' },
                 { code: 'ITAE11', discount: 11, min: 79, currency: '€' },
                 { code: 'ITAE20', discount: 20, min: 139, currency: '€' },
                 { code: 'ITAE33', discount: 33, min: 229, currency: '€' },
                 { code: 'ITAE45', discount: 45, min: 309, currency: '€' },
+                { code: 'ITAE68', discount: 68, min: 459, currency: '€' },
                 { code: 'ITAE70', discount: 70, min: 489, currency: '€' },
-                { code: 'ITAE110', discount: 110, min: 650, currency: '€' },
+                { code: 'ITAE80', discount: 80, min: 599, currency: '€' },
+                { code: 'ITAE90', discount: 90, min: 699, currency: '€' },
+                { code: 'ITAE110', discount: 110, min: 650, currency: '€' }
+            ],
 
+            // Coupon Generici
+            generici: [
                 { code: 'ITNS03', discount: 3, min: 15, currency: '€' },
                 { code: 'ITNS06', discount: 6, min: 39, currency: '€' },
                 { code: 'ITNS11', discount: 11, min: 79, currency: '€' },
