@@ -5,14 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calcolatore Sconti AliExpress | Prodigeek & Prezzone</title>
     <meta name="description"
-          content="Calcola la combinazione ottimale di sconti AliExpress, Scalapay e Cashback con il calcolatore avanzato di Prodigeek.">
+          content="Calcola la combinazione ottimale di sconti AliExpress e Scalapay con il calcolatore avanzato di Prodigeek.">
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://coupon.prodigeek.it/calculator">
     <meta property="og:title" content="Calcolatore Sconti AliExpress | Prodigeek">
     <meta property="og:description"
-          content="Scopri quanto puoi risparmiare! Calcola coupon, sconti Scalapay e cashback in un colpo solo.">
+          content="Scopri quanto puoi risparmiare! Calcola coupon e sconti Scalapay in un colpo solo.">
     <meta property="og:image" content="https://coupon.prodigeek.it/apple-touch-icon.png">
 
     <!-- Twitter -->
@@ -20,7 +20,7 @@
     <meta property="twitter:url" content="https://coupon.prodigeek.it/calculator">
     <meta property="twitter:title" content="Calcolatore Sconti AliExpress | Prodigeek">
     <meta property="twitter:description"
-          content="Scopri quanto puoi risparmiare! Calcola coupon, sconti Scalapay e cashback in un colpo solo.">
+          content="Scopri quanto puoi risparmiare! Calcola coupon e sconti Scalapay in un colpo solo.">
     <meta property="twitter:image" content="https://coupon.prodigeek.it/apple-touch-icon.png">
 
     <link rel="manifest" href="site.webmanifest">
@@ -182,15 +182,6 @@
                                 <span id="pdg-calc-res-paypal-value"
                                       class="text-xl font-bold text-blue-600 whitespace-nowrap">0,00 €</span>
                             </div>
-                            <div class="flex justify-between items-center p-3 rounded-lg bg-emerald-50/50">
-                                <div class="min-w-0 flex-1 pr-2"><span
-                                        class="block text-xs font-bold text-emerald-500 uppercase whitespace-nowrap overflow-hidden">Cashback Squadra Prodigeek</span><span
-                                        id="pdg-calc-res-cashback-perc" class="font-bold text-gray-700 text-sm">Accumulo previsto</span>
-                                </div>
-                                <span id="pdg-calc-res-cashback-value"
-                                      class="text-xl font-bold text-emerald-600 whitespace-nowrap">0,00 €</span>
-                            </div>
-                        </div>
                     </section>
                 </div>
                 <div class="lg:col-span-5">
@@ -208,7 +199,7 @@
                                         class="text-xs font-medium opacity-80 uppercase tracking-tighter whitespace-nowrap">Dopo Scalapay</span><span
                                         id="pdg-calc-summary-after-pp" class="text-lg font-bold">0,00 €</span></div>
                                 <div class="pt-2 overflow-hidden">
-                                    <span class="block text-[10px] font-bold opacity-80 mb-1 uppercase tracking-tighter whitespace-nowrap">Prezzo Finale (con Cashback)</span>
+                                    <span class="block text-[10px] font-bold opacity-80 mb-1 uppercase tracking-tighter whitespace-nowrap">Prezzo Finale</span>
                                     <div class="flex items-baseline min-w-0">
                                         <div id="pdg-calc-summary-final"
                                              class="text-6xl font-black tracking-tighter leading-none mb-2">0,00 €
@@ -224,9 +215,7 @@
                             </div>
                         </div>
                         <div class="pt-4 border-t border-white/10 mt-8">
-                            <p class="text-[10px] opacity-70 leading-tight">Il prezzo finale include lo sconto coupon,
-                                eventuale sconto per metodo di pagamento e il cashback stimato che riceverai dopo
-                                l'acquisto. I prezzi possono variare, le disponibilità dei coupon sono limitate.</p>
+                            <p class="text-[10px] opacity-70 leading-tight">Il prezzo finale include lo sconto coupon e l'eventuale sconto per metodo di pagamento. I prezzi possono variare, le disponibilità dei coupon sono limitate.</p>
                         </div>
 
                         <div class="mt-4 space-y-4 pdg-action-buttons">
@@ -263,24 +252,6 @@
             </div>
         </summary>
         <div class="p-6 pt-0 border-t border-gray-50 space-y-8">
-            <div>
-                <h4 class="text-sm font-bold text-gray-400 uppercase mb-4">Configurazione Cashback</h4>
-                <div class="grid grid-cols-2 gap-4">
-                    <div><label class="block text-xs font-bold mb-1">Percentuale %</label><select
-                            id="pdg-calc-conf-cash-perc"
-                            class="w-full p-2 rounded-lg bg-gray-50 border border-gray-200 font-bold outline-none">
-                        <option value="3">3%</option>
-                        <option value="5">5%</option>
-                        <option value="7">7%</option>
-                        <option value="9" selected>9%</option>
-                    </select></div>
-                    <div><label class="block text-xs font-bold mb-1">Cap Massimo (€)</label><input type="number"
-                                                                                                   id="pdg-calc-conf-cash-cap"
-                                                                                                   value="10"
-                                                                                                   class="w-full p-2 rounded-lg bg-gray-50 border border-gray-200 font-bold outline-none">
-                    </div>
-                </div>
-            </div>
             <div>
                 <h4 class="text-sm font-bold text-gray-400 uppercase mb-4">Soglie Sconto Scalapay</h4>
                 <div class="space-y-3">
@@ -418,7 +389,6 @@
         text += `💰 Prezzo Prodotto: ${formatEuro(c.orig)}\n`;
         text += `🎟️ Coupon: ${coupon} (-${formatEuro(c.orig - c.afterCoupon)})\n`;
         if (ppSconto > 0) text += `💳 Sconto Scalapay: -${formatEuro(ppSconto)}\n`;
-        if (c.cashback > 0) text += `💰 Cashback Squadra: -${formatEuro(c.cashback)}\n`;
         text += `\n---------------------------\n`;
         text += `✨ PREZZO FINALE: ${formatEuro(c.final)}\n`;
         text += `🎁 RISPARMIO TOTALE: ${formatEuro(c.saveVal)}\n`;
@@ -478,10 +448,9 @@
         const activePP = ppT.find(t => prezzoDopoCoupon >= t.min);
         if (activePP) ppSconto = activePP.disc;
         const prezzoDopoPP = Math.max(0, prezzoDopoCoupon - ppSconto);
-        const cashPerc = parseFloat(document.getElementById('pdg-calc-conf-cash-perc').value) / 100,
-            cashCap = parseFloat(document.getElementById('pdg-calc-conf-cash-cap').value);
-        const cashSconto = Math.min(cashCap, prezzoDopoPP * cashPerc);
-        const totalSconti = maxDiscount + ppSconto + cashSconto, prezzoFinale = Math.max(0, prezzoOrig - totalSconti),
+        const cashPerc = 0;
+        const cashSconto = 0;
+        const totalSconti = maxDiscount + ppSconto, prezzoFinale = Math.max(0, prezzoOrig - totalSconti),
             perc = prezzoOrig > 0 ? (totalSconti / prezzoOrig) * 100 : 0;
         const old = {...currentValues};
         currentValues = {
@@ -497,8 +466,6 @@
         document.getElementById('pdg-calc-coupon-container').innerHTML = bestCoupons.map(c => `<span class="font-bold text-gray-800 bg-white/60 px-2 py-0.5 rounded border border-orange-200">${c.codice}</span>`).join('');
         animateValue('pdg-calc-res-coupon-value', old.afterCoupon ? old.orig - old.afterCoupon : 0, maxDiscount, 400);
         animateValue('pdg-calc-res-paypal-value', old.afterCoupon - old.afterPP || 0, ppSconto, 400);
-        animateValue('pdg-calc-res-cashback-value', old.cashback || 0, cashSconto, 400);
-        document.getElementById('pdg-calc-res-cashback-perc').textContent = `Accumulo previsto (${(cashPerc * 100).toFixed(0)}%)`;
         animateValue('pdg-calc-summary-orig', old.orig, prezzoOrig, 400);
         animateValue('pdg-calc-summary-after-coupon', old.afterCoupon || 0, prezzoDopoCoupon, 400);
         animateValue('pdg-calc-summary-after-pp', old.afterPP || 0, prezzoDopoPP, 400);
