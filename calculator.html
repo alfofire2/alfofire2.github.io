@@ -5,14 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calcolatore Sconti AliExpress | Prodigeek & Prezzone</title>
     <meta name="description"
-          content="Calcola la combinazione ottimale di sconti AliExpress, PayPal e Cashback con il calcolatore avanzato di Prodigeek.">
+          content="Calcola la combinazione ottimale di sconti AliExpress, Scalapay e Cashback con il calcolatore avanzato di Prodigeek.">
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://coupon.prodigeek.it/calculator">
     <meta property="og:title" content="Calcolatore Sconti AliExpress | Prodigeek">
     <meta property="og:description"
-          content="Scopri quanto puoi risparmiare! Calcola coupon, sconti PayPal e cashback in un colpo solo.">
+          content="Scopri quanto puoi risparmiare! Calcola coupon, sconti Scalapay e cashback in un colpo solo.">
     <meta property="og:image" content="https://coupon.prodigeek.it/apple-touch-icon.png">
 
     <!-- Twitter -->
@@ -20,7 +20,7 @@
     <meta property="twitter:url" content="https://coupon.prodigeek.it/calculator">
     <meta property="twitter:title" content="Calcolatore Sconti AliExpress | Prodigeek">
     <meta property="twitter:description"
-          content="Scopri quanto puoi risparmiare! Calcola coupon, sconti PayPal e cashback in un colpo solo.">
+          content="Scopri quanto puoi risparmiare! Calcola coupon, sconti Scalapay e cashback in un colpo solo.">
     <meta property="twitter:image" content="https://coupon.prodigeek.it/apple-touch-icon.png">
 
     <link rel="manifest" href="site.webmanifest">
@@ -176,7 +176,7 @@
                             </div>
                             <div class="flex justify-between items-center p-3 rounded-lg bg-blue-50/50">
                                 <div class="min-w-0 flex-1 pr-2">
-                                    <span class="block text-xs font-bold text-blue-400 uppercase whitespace-nowrap">Sconto PayPal</span>
+                                    <span class="block text-xs font-bold text-blue-400 uppercase whitespace-nowrap">Sconto Scalapay</span>
                                     <span class="font-bold text-gray-700 text-sm whitespace-nowrap">Automatico al checkout</span>
                                 </div>
                                 <span id="pdg-calc-res-paypal-value"
@@ -205,7 +205,7 @@
                                         class="text-xs font-medium opacity-80 uppercase tracking-tighter whitespace-nowrap">Dopo Coupon</span><span
                                         id="pdg-calc-summary-after-coupon" class="text-lg font-bold">0,00 €</span></div>
                                 <div class="flex justify-between items-baseline border-b border-white/20 pb-2"><span
-                                        class="text-xs font-medium opacity-80 uppercase tracking-tighter whitespace-nowrap">Dopo PayPal</span><span
+                                        class="text-xs font-medium opacity-80 uppercase tracking-tighter whitespace-nowrap">Dopo Scalapay</span><span
                                         id="pdg-calc-summary-after-pp" class="text-lg font-bold">0,00 €</span></div>
                                 <div class="pt-2 overflow-hidden">
                                     <span class="block text-[10px] font-bold opacity-80 mb-1 uppercase tracking-tighter whitespace-nowrap">Prezzo Finale (con Cashback)</span>
@@ -282,20 +282,8 @@
                 </div>
             </div>
             <div>
-                <h4 class="text-sm font-bold text-gray-400 uppercase mb-4">Soglie Sconto PayPal</h4>
+                <h4 class="text-sm font-bold text-gray-400 uppercase mb-4">Soglie Sconto Scalapay</h4>
                 <div class="space-y-3">
-                    <div class="grid grid-cols-2 gap-4 items-center">
-                        <div class="flex items-center gap-2">
-                            <span class="text-xs font-bold text-gray-400">#3</span>
-                            <input type="number" id="pdg-calc-conf-pp-t3-min" value="299"
-                                   class="w-full p-2 rounded-lg bg-gray-50 border border-gray-200 font-bold outline-none">
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <span class="text-xs font-bold text-gray-400">→ -€</span>
-                            <input type="number" id="pdg-calc-conf-pp-t3-disc" value="45"
-                                   class="w-full p-2 rounded-lg bg-gray-50 border border-gray-200 font-bold outline-none">
-                        </div>
-                    </div>
                     <div class="grid grid-cols-2 gap-4 items-center">
                         <div class="flex items-center gap-2">
                             <span class="text-xs font-bold text-gray-400">#2</span>
@@ -429,7 +417,7 @@
         let text = `🛒 RISPARMIO ALIEXPRESS 🛒\n\n`;
         text += `💰 Prezzo Prodotto: ${formatEuro(c.orig)}\n`;
         text += `🎟️ Coupon: ${coupon} (-${formatEuro(c.orig - c.afterCoupon)})\n`;
-        if (ppSconto > 0) text += `💳 Sconto PayPal: -${formatEuro(ppSconto)}\n`;
+        if (ppSconto > 0) text += `💳 Sconto Scalapay: -${formatEuro(ppSconto)}\n`;
         if (c.cashback > 0) text += `💰 Cashback Squadra: -${formatEuro(c.cashback)}\n`;
         text += `\n---------------------------\n`;
         text += `✨ PREZZO FINALE: ${formatEuro(c.final)}\n`;
@@ -485,7 +473,7 @@
         });
         if (bestCoupons.length === 0) bestCoupons = [{codice: "Nessuno", sconto: 0}];
         const prezzoDopoCoupon = Math.max(0, prezzoOrig - maxDiscount);
-        const ppT = [{min: 299, disc: 45}, {min: 199, disc: 20}, {min: 99, disc: 10}];
+        const ppT = [{min: 199, disc: 20}, {min: 99, disc: 10}];
         let ppSconto = 0;
         const activePP = ppT.find(t => prezzoDopoCoupon >= t.min);
         if (activePP) ppSconto = activePP.disc;
