@@ -258,12 +258,36 @@
                     <div class="grid grid-cols-2 gap-4 items-center">
                         <div class="flex items-center gap-2">
                             <span class="text-xs font-bold text-gray-400">#1</span>
+                            <input type="number" id="pdg-calc-conf-pp-t1-min" value="99"
+                                   class="w-full p-2 rounded-lg bg-gray-50 border border-gray-200 font-bold outline-none">
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs font-bold text-gray-400">→ -€</span>
+                            <input type="number" id="pdg-calc-conf-pp-t1-disc" value="10"
+                                   class="w-full p-2 rounded-lg bg-gray-50 border border-gray-200 font-bold outline-none">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4 items-center">
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs font-bold text-gray-400">#2</span>
                             <input type="number" id="pdg-calc-conf-pp-t2-min" value="199"
                                    class="w-full p-2 rounded-lg bg-gray-50 border border-gray-200 font-bold outline-none">
                         </div>
                         <div class="flex items-center gap-2">
                             <span class="text-xs font-bold text-gray-400">→ -€</span>
                             <input type="number" id="pdg-calc-conf-pp-t2-disc" value="20"
+                                   class="w-full p-2 rounded-lg bg-gray-50 border border-gray-200 font-bold outline-none">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4 items-center">
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs font-bold text-gray-400">#3</span>
+                            <input type="number" id="pdg-calc-conf-pp-t3-min" value="299"
+                                   class="w-full p-2 rounded-lg bg-gray-50 border border-gray-200 font-bold outline-none">
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs font-bold text-gray-400">→ -€</span>
+                            <input type="number" id="pdg-calc-conf-pp-t3-disc" value="45"
                                    class="w-full p-2 rounded-lg bg-gray-50 border border-gray-200 font-bold outline-none">
                         </div>
                     </div>
@@ -310,32 +334,17 @@
     }
 
     async function fetchCoupons() {
-        try {
-            const res = await fetch('index.html'), html = await res.text(),
-                match = html.match(/const coupons = ({[\s\S]*?});/);
-            if (match) {
-                const data = eval(`(${match[1]})`);
-                return [...data.esclusiviProdigeek, ...data.altriEsclusiviProdigeek, ...data.standardProdigeek, ...data.generici].map(c => ({
-                    codice: c.code,
-                    sconto: parseFloat(c.discount),
-                    minSpesa: parseFloat(c.min)
-                }));
-            }
-        } catch (e) {
-        }
-        return [{codice: "SSIT70", sconto: 70, minSpesa: 499}, {
-            codice: "SSIT50",
-            sconto: 50,
-            minSpesa: 349
-        }, {codice: "SSIT35", sconto: 35, minSpesa: 239}, {
-            codice: "SSIT20",
-            sconto: 20,
-            minSpesa: 139
-        }, {codice: "SSIT12", sconto: 12, minSpesa: 79}, {codice: "SSIT06", sconto: 6, minSpesa: 39}, {
-            codice: "SSIT03",
-            sconto: 3,
-            minSpesa: 15
-        }];
+        return [
+            {codice: "ITAFF03", sconto: 3, minSpesa: 18},
+            {codice: "ITAFF06", sconto: 6, minSpesa: 39},
+            {codice: "ITAFF14", sconto: 14, minSpesa: 79},
+            {codice: "ITAFF25", sconto: 25, minSpesa: 149},
+            {codice: "ITAFF45", sconto: 45, minSpesa: 259},
+            {codice: "ITAFF60", sconto: 60, minSpesa: 349},
+            {codice: "ITAFF80", sconto: 80, minSpesa: 469},
+            {codice: "ITD11100", sconto: 100, minSpesa: 500},
+            {codice: "ITD11120", sconto: 120, minSpesa: 600}
+        ];
     }
 
     function saveToHistory(data) {
@@ -431,7 +440,7 @@
         });
         if (bestCoupons.length === 0) bestCoupons = [{codice: "Nessuno", sconto: 0}];
         const prezzoDopoCoupon = Math.max(0, prezzoOrig - maxDiscount);
-        const ppT = [{min: 199, disc: 20}];
+        const ppT = [{min: 299, disc: 45}, {min: 199, disc: 20}, {min: 99, disc: 10}];
         let ppSconto = 0;
         const activePP = ppT.find(t => prezzoDopoCoupon >= t.min);
         if (activePP) ppSconto = activePP.disc;
