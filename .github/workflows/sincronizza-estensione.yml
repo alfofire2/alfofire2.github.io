@@ -1,0 +1,48 @@
+# Copia da config.js a index.html i dati che l'estensione del browser legge dalla homepage
+# (coupon, link e stato della squadra). Parte quando cambia config.js e ogni ora, così la
+# squadra si spegne nell'estensione anche quando finisce l'evento. Fa un commit solo se qualcosa cambia.
+name: Sincronizza i dati dell'estensione
+
+on:
+  push:
+    branches: [main]
+    paths: [config.js, scripts/sincronizza-estensione.mjs]
+  schedule:
+    - cron: '7 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+
+concurrency:
+  group: sincronizza-estensione
+  cancel-in-progress: false
+
+jobs:
+  sincronizza:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Aggiorna index.html da config.js
+        run: node scripts/sincronizza-estensione.mjs
+
+      - name: Pubblica se è cambiato qualcosa
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if git diff --quiet -- index.html; then
+            echo "Niente da aggiornare"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Dati dell'estensione aggiornati da config.js" -- index.html
+          git push
+          # Chiede comunque una nuova pubblicazione di GitHub Pages, nel caso il push del bot non la avvii
+          gh api -X POST "repos/${{ github.repository }}/pages/builds" || true

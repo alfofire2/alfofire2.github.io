@@ -1,4 +1,7 @@
 GEMINI.md
 .gemini/
 gha-creds-*.json
-.github/
+.github/*
+!.github/workflows/
+.github/workflows/*
+!.github/workflows/sincronizza-estensione.yml

@@ -1,6 +1,6 @@
 # AliExpress Coupon Codes Website
 
-A clean, responsive, and easy-to-use single-page website designed to display AliExpress coupon codes. The entire website is self-contained in `index.html`.
+A clean, responsive, and easy-to-use single-page website designed to display AliExpress coupon codes. Values are kept in `config.js`.
 
 ## Features
 
@@ -15,25 +15,18 @@ Simply open the `index.html` file in any modern web browser to view the website.
 
 ## How to Update Coupons
 
-All coupon data is stored within a single JavaScript object called `coupons` inside the `<script>` tag at the bottom of `index.html`.
+All the values the site uses live in `config.js`: the coupons, the AliExpress cashback squad (on/off, link, event dates, percentages, daily cap) and the checkout payment discount (name and thresholds). Edit only that file; the comments in it explain each value.
 
-To edit, add, or remove coupons, modify the arrays within this `coupons` object. The coupons are categorized into four lists:
+- The homepage (`index.html`) and the calculator (`calculator.html`) read `config.js` directly.
+- The browser extension reads its data from the homepage HTML, so the workflow `.github/workflows/sincronizza-estensione.yml` copies the coupons, the squad link and the squad switch from `config.js` into a block in `index.html` (between the `DATI PER L'ESTENSIONE` comments). It runs when `config.js` changes and every hour, so the squad also turns off in the extension when the event ends. Do not edit that block by hand; to run the copy locally: `node scripts/sincronizza-estensione.mjs`.
 
-1.  `esclusiviProdigeek`
-2.  `altriEsclusiviProdigeek`
-3.  `standardProdigeek`
-4.  `generici`
-
-Each coupon is an object with the following structure:
+Each coupon has this structure:
 
 ```javascript
-{
-    discount: 10,   // The discount amount (number)
-    min: 69,      // The minimum spend (number)
-    code: 'CODE', // The coupon code (string)
-    currency: '€' // The currency symbol (string, e.g., '€' or '$')
-}
+{ code: 'CODE', discount: 10, min: 69, currency: '€' } // currency: '€' or '$'
 ```
+
+An empty list (`[]`) hides its section on the homepage.
 
 ## License
 
