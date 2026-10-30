@@ -616,6 +616,14 @@
             flex-shrink: 0;
         }
     </style>
+    <!-- DATI PER L'ESTENSIONE -->
+    <!-- Generati da config.js con scripts/sincronizza-estensione.mjs: non modificarli qui, cambia config.js. -->
+    <script type="text/plain" id="dati-estensione">
+const enable_aliexpress_squad = true;
+const coupons = {"esclusiviProdigeek":[],"altriEsclusiviProdigeek":[],"standardProdigeek":[],"generici":[{"code":"ITAFF03","discount":3,"min":18,"currency":"€"},{"code":"ITAFF06","discount":6,"min":39,"currency":"€"},{"code":"ITAFF14","discount":14,"min":79,"currency":"€"},{"code":"ITAFF25","discount":25,"min":149,"currency":"€"},{"code":"ITAFF45","discount":45,"min":259,"currency":"€"},{"code":"ITAFF60","discount":60,"min":349,"currency":"€"},{"code":"ITAFF80","discount":80,"min":469,"currency":"€"},{"code":"ITD11100","discount":100,"min":500,"currency":"€"},{"code":"ITD11120","discount":120,"min":600,"currency":"€"}]};
+<a href="https://s.click.aliexpress.com/e/_c3yNnO8F" class="squad-card"></a>
+    </script>
+    <!-- FINE DATI PER L'ESTENSIONE -->
 </head>
 <body>
 
@@ -624,7 +632,7 @@
             <img src="https://ae-pic-a1.aliexpress-media.com/kf/S63c57e91c68a4d93b5563febfebd71099.png_220x220.png" alt="Prodigeek" class="squad-card-img">
             <div class="squad-card-text">
                 <div class="squad-card-title">Entra nella Squadra Prodigeek</div>
-                <div class="squad-card-subtitle">Ottieni fino al <span class="squad-card-amount">7% di Cashback</span> sui tuoi acquisti AliExpress, fino a 168 € in tutto</div>
+                <div class="squad-card-subtitle">Ottieni fino al <span class="squad-card-amount"><span data-squadra="percentuale">7</span>% di Cashback</span> sui tuoi acquisti AliExpress, fino a <span data-squadra="premio">168</span> € in tutto</div>
             </div>
             <div class="squad-card-cta">APPROFITTANE</div>
             <span class="squad-card-close" id="squad-close">×</span>
@@ -649,7 +657,7 @@
             <img src="https://ae-pic-a1.aliexpress-media.com/kf/S63c57e91c68a4d93b5563febfebd71099.png_220x220.png" alt="Prodigeek" class="squad-compact-img">
             <div class="squad-compact-body">
                 <div class="squad-compact-title">Entra nella squadra Prodigeek</div>
-                <div class="squad-compact-subtitle">per raggiungere fino al <span class="squad-compact-amount">7% di Cashback</span></div>
+                <div class="squad-compact-subtitle">per raggiungere fino al <span class="squad-compact-amount"><span data-squadra="percentuale">7</span>% di Cashback</span></div>
             </div>
             <div class="squad-compact-cta">APPROFITTANE</div>
         </a>
@@ -730,30 +738,20 @@
 
     <script type="application/ld+json" id="coupons-json-ld"></script>
 
+    <script src="config.js"></script>
     <script>
-        const enable_aliexpress_squad = true && Date.now() <= Date.parse('2026-11-18T14:59:59-08:00'); // Cambia true in false per disabilitare il popup e il banner della squadra aliexpress; si spengono da soli a fine evento Team Up (18/11, 23:59 ora italiana)
-        if (!enable_aliexpress_squad) {
+        // Coupon, squadra e date arrivano da config.js
+        const squadra = PRODIGEEK.squadra;
+        const squad_visibile = squadra.attiva === true && Date.now() >= Date.parse(squadra.inizio) && Date.now() <= Date.parse(squadra.fine);
+        document.querySelectorAll('.squad-card, .squad-compact').forEach(a => a.href = squadra.link);
+        document.querySelectorAll('[data-squadra="percentuale"]').forEach(el => el.textContent = squadra.percentualeMassima);
+        document.querySelectorAll('[data-squadra="premio"]').forEach(el => el.textContent = squadra.premioMassimo);
+        if (!squad_visibile) {
             document.write('<style>#squad-backdrop, #squad-strip { display: none !important; }</style>');
         }
         const SITE_URL = 'https://coupon.prodigeek.it/';
         const SITE_LASTMOD = '2026-10-27';
-        const coupons = {
-            esclusiviProdigeek: [],
-            altriEsclusiviProdigeek: [],
-            standardProdigeek: [],
-
-            generici: [
-                { code: 'ITAFF03', discount: 3, min: 18, currency: '€' },
-                { code: 'ITAFF06', discount: 6, min: 39, currency: '€' },
-                { code: 'ITAFF14', discount: 14, min: 79, currency: '€' },
-                { code: 'ITAFF25', discount: 25, min: 149, currency: '€' },
-                { code: 'ITAFF45', discount: 45, min: 259, currency: '€' },
-                { code: 'ITAFF60', discount: 60, min: 349, currency: '€' },
-                { code: 'ITAFF80', discount: 80, min: 469, currency: '€' },
-                { code: 'ITD11100', discount: 100, min: 500, currency: '€' },
-                { code: 'ITD11120', discount: 120, min: 600, currency: '€' }
-            ]
-        };
+        const coupons = PRODIGEEK.coupons;
 
         
         function showCopyFeedback(feedbackElement) {
@@ -1017,7 +1015,7 @@
             const squadStrip    = document.getElementById('squad-strip');
             const squadCloseBtn = document.getElementById('squad-close');
 
-            if (enable_aliexpress_squad && squadCloseBtn) {
+            if (squad_visibile && squadCloseBtn) {
                 squadCloseBtn.addEventListener('click', (e) => {
                     e.preventDefault();
                     e.stopPropagation();
@@ -1032,7 +1030,7 @@
                         });
                     }, 300);
                 });
-            } else if (!enable_aliexpress_squad) {
+            } else if (!squad_visibile) {
                 if (squadBackdrop) squadBackdrop.style.display = 'none';
                 if (squadStrip) squadStrip.style.display = 'none';
             }

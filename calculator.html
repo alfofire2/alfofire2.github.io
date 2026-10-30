@@ -176,14 +176,14 @@
                             </div>
                             <div class="flex justify-between items-center p-3 rounded-lg bg-blue-50/50">
                                 <div class="min-w-0 flex-1 pr-2">
-                                    <span class="block text-xs font-bold text-blue-400 uppercase whitespace-nowrap">Sconto PayPal</span>
+                                    <span class="block text-xs font-bold text-blue-400 uppercase whitespace-nowrap">Sconto <span data-pagamento-nome>PayPal</span></span>
                                     <span class="font-bold text-gray-700 text-sm whitespace-nowrap">Automatico al checkout</span>
                                 </div>
                                 <span id="pdg-calc-res-paypal-value"
                                       class="text-xl font-bold text-blue-600 whitespace-nowrap">0,00 €</span>
                             </div>
-                            <div class="flex justify-between items-center p-3 rounded-lg bg-emerald-50/50">
-                                <div class="min-w-0 flex-1 pr-2"><a href="https://s.click.aliexpress.com/e/_c3yNnO8F" target="_blank" rel="sponsored nofollow noopener noreferrer"
+                            <div data-cashback class="flex justify-between items-center p-3 rounded-lg bg-emerald-50/50">
+                                <div class="min-w-0 flex-1 pr-2"><a data-squadra="link" href="https://s.click.aliexpress.com/e/_c3yNnO8F" target="_blank" rel="sponsored nofollow noopener noreferrer"
                                         class="block text-xs font-bold text-emerald-500 uppercase whitespace-nowrap overflow-hidden underline">Cashback Squadra Prodigeek</a><span
                                         id="pdg-calc-res-cashback-perc" class="font-bold text-gray-700 text-sm">Accumulo previsto</span>
                                 </div>
@@ -205,10 +205,10 @@
                                         class="text-xs font-medium opacity-80 uppercase tracking-tighter whitespace-nowrap">Dopo Coupon</span><span
                                         id="pdg-calc-summary-after-coupon" class="text-lg font-bold">0,00 €</span></div>
                                 <div class="flex justify-between items-baseline border-b border-white/20 pb-2"><span
-                                        class="text-xs font-medium opacity-80 uppercase tracking-tighter whitespace-nowrap">Dopo PayPal</span><span
+                                        class="text-xs font-medium opacity-80 uppercase tracking-tighter whitespace-nowrap">Dopo <span data-pagamento-nome>PayPal</span></span><span
                                         id="pdg-calc-summary-after-pp" class="text-lg font-bold">0,00 €</span></div>
                                 <div class="pt-2 overflow-hidden">
-                                    <span class="block text-[10px] font-bold opacity-80 mb-1 uppercase tracking-tighter whitespace-nowrap">Prezzo Finale (con Cashback)</span>
+                                    <span class="block text-[10px] font-bold opacity-80 mb-1 uppercase tracking-tighter whitespace-nowrap">Prezzo Finale<span data-cashback> (con Cashback)</span></span>
                                     <div class="flex items-baseline min-w-0">
                                         <div id="pdg-calc-summary-final"
                                              class="text-6xl font-black tracking-tighter leading-none mb-2">0,00 €
@@ -224,10 +224,13 @@
                             </div>
                         </div>
                         <div class="pt-4 border-t border-white/10 mt-8">
-                            <p class="text-[10px] opacity-70 leading-tight">Dal prezzo finale sono tolti il coupon,
-                                l'eventuale sconto PayPal e il cashback stimato. Il cashback arriva dopo la spedizione
-                                come credito per i prossimi ordini: va usato entro 10 giorni e non supera 8 € al giorno
-                                e 168 € in tutto l'evento. I prezzi possono cambiare e i coupon finiscono.</p>
+                            <p data-cashback class="text-[10px] opacity-70 leading-tight">Dal prezzo finale sono tolti il coupon,
+                                l'eventuale sconto <span data-pagamento-nome>PayPal</span> e il cashback stimato. Il cashback arriva dopo la spedizione
+                                come credito per i prossimi ordini: va usato entro 10 giorni e non supera <span data-squadra="giorno">8</span> € al giorno
+                                e <span data-squadra="premio">168</span> € in tutto l'evento. I prezzi possono cambiare e i coupon finiscono.</p>
+                            <p data-no-cashback hidden class="text-[10px] opacity-70 leading-tight">Dal prezzo finale
+                                sono tolti il coupon e l'eventuale sconto <span data-pagamento-nome>PayPal</span>. I prezzi possono cambiare e i coupon
+                                finiscono.</p>
                         </div>
 
                         <div class="mt-4 space-y-4 pdg-action-buttons">
@@ -264,15 +267,12 @@
             </div>
         </summary>
         <div class="p-6 pt-0 border-t border-gray-50 space-y-8">
-            <div>
+            <div data-cashback>
                 <h4 class="text-sm font-bold text-gray-400 uppercase mb-4">Configurazione Cashback</h4>
                 <div class="grid grid-cols-2 gap-4">
                     <div><label class="block text-xs font-bold mb-1">Percentuale %</label><select
                             id="pdg-calc-conf-cash-perc"
                             class="w-full p-2 rounded-lg bg-gray-50 border border-gray-200 font-bold outline-none">
-                        <option value="3">3% (LV1)</option>
-                        <option value="5">5% (LV2)</option>
-                        <option value="7" selected>7% (LV3)</option>
                     </select></div>
                     <div><label class="block text-xs font-bold mb-1">Massimo al giorno (€)</label><input type="number"
                                                                                                    id="pdg-calc-conf-cash-cap"
@@ -282,45 +282,8 @@
                 </div>
             </div>
             <div>
-                <h4 class="text-sm font-bold text-gray-400 uppercase mb-4">Soglie Sconto PayPal</h4>
-                <div class="space-y-3">
-                    <div class="grid grid-cols-2 gap-4 items-center">
-                        <div class="flex items-center gap-2">
-                            <span class="text-xs font-bold text-gray-400">#1</span>
-                            <input type="number" id="pdg-calc-conf-pp-t1-min" value="99"
-                                   class="w-full p-2 rounded-lg bg-gray-50 border border-gray-200 font-bold outline-none">
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <span class="text-xs font-bold text-gray-400">→ -€</span>
-                            <input type="number" id="pdg-calc-conf-pp-t1-disc" value="10"
-                                   class="w-full p-2 rounded-lg bg-gray-50 border border-gray-200 font-bold outline-none">
-                        </div>
-                    </div>
-                    <div class="grid grid-cols-2 gap-4 items-center">
-                        <div class="flex items-center gap-2">
-                            <span class="text-xs font-bold text-gray-400">#2</span>
-                            <input type="number" id="pdg-calc-conf-pp-t2-min" value="199"
-                                   class="w-full p-2 rounded-lg bg-gray-50 border border-gray-200 font-bold outline-none">
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <span class="text-xs font-bold text-gray-400">→ -€</span>
-                            <input type="number" id="pdg-calc-conf-pp-t2-disc" value="20"
-                                   class="w-full p-2 rounded-lg bg-gray-50 border border-gray-200 font-bold outline-none">
-                        </div>
-                    </div>
-                    <div class="grid grid-cols-2 gap-4 items-center">
-                        <div class="flex items-center gap-2">
-                            <span class="text-xs font-bold text-gray-400">#3</span>
-                            <input type="number" id="pdg-calc-conf-pp-t3-min" value="299"
-                                   class="w-full p-2 rounded-lg bg-gray-50 border border-gray-200 font-bold outline-none">
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <span class="text-xs font-bold text-gray-400">→ -€</span>
-                            <input type="number" id="pdg-calc-conf-pp-t3-disc" value="45"
-                                   class="w-full p-2 rounded-lg bg-gray-50 border border-gray-200 font-bold outline-none">
-                        </div>
-                    </div>
-                </div>
+                <h4 class="text-sm font-bold text-gray-400 uppercase mb-4">Soglie Sconto <span data-pagamento-nome>PayPal</span></h4>
+                <div class="space-y-3" id="pdg-calc-conf-pp-soglie"></div>
             </div>
 
             <div class="pt-4 border-t border-gray-50">
@@ -334,7 +297,13 @@
 </main>
 </div>
 
+<script src="config.js"></script>
 <script>
+    // Coupon, cashback della squadra e sconto del pagamento arrivano da config.js.
+    // Fuori dal periodo della squadra il calcolatore toglie il cashback da solo.
+    const {squadra, pagamento} = PRODIGEEK;
+    const CASHBACK_ATTIVO = squadra.attiva === true && Date.now() >= Date.parse(squadra.inizio) && Date.now() <= Date.parse(squadra.fine);
+
     let dynamicCoupons = [], currentValues = {orig: 0, final: 0, saveVal: 0, savePerc: 0};
     const formatEuro = (v) => v.toLocaleString('it-IT', {
         style: 'currency',
@@ -363,17 +332,11 @@
     }
 
     async function fetchCoupons() {
-        return [
-            {codice: "ITAFF03", sconto: 3, minSpesa: 18},
-            {codice: "ITAFF06", sconto: 6, minSpesa: 39},
-            {codice: "ITAFF14", sconto: 14, minSpesa: 79},
-            {codice: "ITAFF25", sconto: 25, minSpesa: 149},
-            {codice: "ITAFF45", sconto: 45, minSpesa: 259},
-            {codice: "ITAFF60", sconto: 60, minSpesa: 349},
-            {codice: "ITAFF80", sconto: 80, minSpesa: 469},
-            {codice: "ITD11100", sconto: 100, minSpesa: 500},
-            {codice: "ITD11120", sconto: 120, minSpesa: 600}
-        ];
+        return Object.values(PRODIGEEK.coupons).flat().map(c => ({
+            codice: c.code,
+            sconto: parseFloat(c.discount),
+            minSpesa: parseFloat(c.min)
+        }));
     }
 
     function saveToHistory(data) {
@@ -414,7 +377,7 @@
         let text = `🛒 RISPARMIO ALIEXPRESS 🛒\n\n`;
         text += `💰 Prezzo Prodotto: ${formatEuro(c.orig)}\n`;
         text += `🎟️ Coupon: ${coupon} (-${formatEuro(c.orig - c.afterCoupon)})\n`;
-        if (ppSconto > 0) text += `💳 Sconto PayPal: -${formatEuro(ppSconto)}\n`;
+        if (ppSconto > 0) text += `💳 Sconto ${pagamento.nome}: -${formatEuro(ppSconto)}\n`;
         if (c.cashback > 0) text += `💰 Cashback Squadra: -${formatEuro(c.cashback)}\n`;
         text += `\n---------------------------\n`;
         text += `✨ PREZZO FINALE: ${formatEuro(c.final)}\n`;
@@ -470,13 +433,16 @@
         });
         if (bestCoupons.length === 0) bestCoupons = [{codice: "Nessuno", sconto: 0}];
         const prezzoDopoCoupon = Math.max(0, prezzoOrig - maxDiscount);
-        const ppT = [{min: 299, disc: 45}, {min: 199, disc: 20}, {min: 99, disc: 10}];
+        const ppT = [...document.querySelectorAll('#pdg-calc-conf-pp-soglie > div')].map(r => ({
+            min: parseFloat(r.querySelector('.pdg-calc-conf-pp-min').value),
+            disc: parseFloat(r.querySelector('.pdg-calc-conf-pp-disc').value)
+        })).filter(t => !isNaN(t.min) && !isNaN(t.disc)).sort((a, b) => b.min - a.min);
         let ppSconto = 0;
         const activePP = ppT.find(t => prezzoDopoCoupon >= t.min);
         if (activePP) ppSconto = activePP.disc;
         const prezzoDopoPP = Math.max(0, prezzoDopoCoupon - ppSconto);
-        const cashPerc = parseFloat(document.getElementById('pdg-calc-conf-cash-perc').value) / 100,
-            cashCap = parseFloat(document.getElementById('pdg-calc-conf-cash-cap').value);
+        const cashPerc = CASHBACK_ATTIVO ? parseFloat(document.getElementById('pdg-calc-conf-cash-perc').value) / 100 : 0,
+            cashCap = CASHBACK_ATTIVO ? parseFloat(document.getElementById('pdg-calc-conf-cash-cap').value) : 0;
         const cashSconto = Math.min(cashCap, prezzoDopoPP * cashPerc);
         const totalSconti = maxDiscount + ppSconto + cashSconto, prezzoFinale = Math.max(0, prezzoOrig - totalSconti),
             perc = prezzoOrig > 0 ? (totalSconti / prezzoOrig) * 100 : 0;
@@ -494,8 +460,10 @@
         document.getElementById('pdg-calc-coupon-container').innerHTML = bestCoupons.map(c => `<span class="font-bold text-gray-800 bg-white/60 px-2 py-0.5 rounded border border-orange-200">${c.codice}</span>`).join('');
         animateValue('pdg-calc-res-coupon-value', old.afterCoupon ? old.orig - old.afterCoupon : 0, maxDiscount, 400);
         animateValue('pdg-calc-res-paypal-value', old.afterCoupon - old.afterPP || 0, ppSconto, 400);
-        animateValue('pdg-calc-res-cashback-value', old.cashback || 0, cashSconto, 400);
-        document.getElementById('pdg-calc-res-cashback-perc').textContent = `Accumulo previsto (${(cashPerc * 100).toFixed(0)}%, max ${formatEuro(cashCap)} al giorno)`;
+        if (CASHBACK_ATTIVO) {
+            animateValue('pdg-calc-res-cashback-value', old.cashback || 0, cashSconto, 400);
+            document.getElementById('pdg-calc-res-cashback-perc').textContent = `Accumulo previsto (${(cashPerc * 100).toFixed(0)}%, max ${formatEuro(cashCap)} al giorno)`;
+        }
         animateValue('pdg-calc-summary-orig', old.orig, prezzoOrig, 400);
         animateValue('pdg-calc-summary-after-coupon', old.afterCoupon || 0, prezzoDopoCoupon, 400);
         animateValue('pdg-calc-summary-after-pp', old.afterPP || 0, prezzoDopoPP, 400);
@@ -511,6 +479,30 @@
     }
 
     document.addEventListener('DOMContentLoaded', async () => {
+        if (!CASHBACK_ATTIVO) {
+            document.querySelectorAll('[data-cashback]').forEach(el => el.remove());
+            document.querySelectorAll('[data-no-cashback]').forEach(el => el.hidden = false);
+        } else {
+            document.querySelectorAll('[data-squadra="link"]').forEach(a => a.href = squadra.link);
+            document.querySelectorAll('[data-squadra="giorno"]').forEach(el => el.textContent = squadra.massimoAlGiorno);
+            document.querySelectorAll('[data-squadra="premio"]').forEach(el => el.textContent = squadra.premioMassimo);
+            document.getElementById('pdg-calc-conf-cash-perc').innerHTML = squadra.livelli.map((p, i) =>
+                `<option value="${p}"${p === squadra.percentualePredefinita ? ' selected' : ''}>${p}% (LV${i + 1})</option>`).join('');
+            document.getElementById('pdg-calc-conf-cash-cap').value = squadra.massimoAlGiorno;
+        }
+        document.querySelectorAll('[data-pagamento-nome]').forEach(el => el.textContent = pagamento.nome);
+        const campo = 'w-full p-2 rounded-lg bg-gray-50 border border-gray-200 font-bold outline-none';
+        document.getElementById('pdg-calc-conf-pp-soglie').innerHTML = pagamento.soglie.map((t, i) => `
+                    <div class="grid grid-cols-2 gap-4 items-center">
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs font-bold text-gray-400">#${i + 1}</span>
+                            <input type="number" value="${t.min}" class="pdg-calc-conf-pp-min ${campo}">
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs font-bold text-gray-400">→ -€</span>
+                            <input type="number" value="${t.sconto}" class="pdg-calc-conf-pp-disc ${campo}">
+                        </div>
+                    </div>`).join('');
         dynamicCoupons = await fetchCoupons();
         renderHistory();
         const pI = document.getElementById('pdg-calc-price');
