@@ -731,7 +731,7 @@
     <script type="application/ld+json" id="coupons-json-ld"></script>
 
     <script>
-        const enable_aliexpress_squad = true && Date.now() <= Date.parse('2026-11-18T14:59:59-08:00'); // Cambia true in false per disabilitare il popup e il banner della squadra aliexpress; si spengono da soli a fine evento Team Up (18/11, 23:59 ora italiana)
+        const enable_aliexpress_squad = true && Date.now() >= Date.parse('2026-10-28T16:00:00-07:00') && Date.now() <= Date.parse('2026-11-18T14:59:59-08:00'); // Cambia true in false per disabilitare il popup e il banner della squadra aliexpress; fuori dal periodo dell'evento Team Up (28/10 16:00 ora del Pacifico - 18/11 23:59 ora italiana) si spengono da soli
         if (!enable_aliexpress_squad) {
             document.write('<style>#squad-backdrop, #squad-strip { display: none !important; }</style>');
         }
