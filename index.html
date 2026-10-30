@@ -731,8 +731,10 @@
     <script type="application/ld+json" id="coupons-json-ld"></script>
 
     <script>
-        const enable_aliexpress_squad = true && Date.now() >= Date.parse('2026-10-28T16:00:00-07:00') && Date.now() <= Date.parse('2026-11-18T14:59:59-08:00'); // Cambia true in false per disabilitare il popup e il banner della squadra aliexpress; fuori dal periodo dell'evento Team Up (28/10 16:00 ora del Pacifico - 18/11 23:59 ora italiana) si spengono da soli
-        if (!enable_aliexpress_squad) {
+        const enable_aliexpress_squad = true; // Cambia in false per disabilitare il popup e il banner della squadra aliexpress (l'estensione legge questa riga così com'è: lascia solo true o false)
+        // Fuori dal periodo dell'evento Team Up (28/10 16:00 ora del Pacifico - 18/11 23:59:59 ora italiana) popup e banner si spengono da soli
+        const squad_visibile = enable_aliexpress_squad && Date.now() >= Date.parse('2026-10-28T16:00:00-07:00') && Date.now() <= Date.parse('2026-11-18T14:59:59-08:00');
+        if (!squad_visibile) {
             document.write('<style>#squad-backdrop, #squad-strip { display: none !important; }</style>');
         }
         const SITE_URL = 'https://coupon.prodigeek.it/';
@@ -1017,7 +1019,7 @@
             const squadStrip    = document.getElementById('squad-strip');
             const squadCloseBtn = document.getElementById('squad-close');
 
-            if (enable_aliexpress_squad && squadCloseBtn) {
+            if (squad_visibile && squadCloseBtn) {
                 squadCloseBtn.addEventListener('click', (e) => {
                     e.preventDefault();
                     e.stopPropagation();
@@ -1032,7 +1034,7 @@
                         });
                     }, 300);
                 });
-            } else if (!enable_aliexpress_squad) {
+            } else if (!squad_visibile) {
                 if (squadBackdrop) squadBackdrop.style.display = 'none';
                 if (squadStrip) squadStrip.style.display = 'none';
             }
