@@ -1,39 +1,151 @@
-# AliExpress Coupon Codes Website
+# coupon.prodigeek.it
 
-A clean, responsive, and easy-to-use single-page website designed to display AliExpress coupon codes. Values are kept in `config.js`.
+Il sito dei coupon AliExpress di Prezzone & Prodigeek, pubblicato con GitHub Pages dal branch `main`.
 
-## Features
+- `index.html`: la homepage con i coupon, il popup della squadra cashback e le FAQ.
+- `calculator.html`: il calcolatore (coupon migliore, sconto del metodo di pagamento, cashback).
+- `extension.html` e `privacy.html`: la pagina dell'estensione del browser e l'informativa sulla privacy.
+- **`config.js`: tutti i valori che cambiano nel tempo. Di solito è l'unico file da toccare.**
 
--   **Modern & Responsive Design**: Looks great on desktop and mobile devices.
--   **Dynamic Coupon Generation**: Coupons are generated from a simple JavaScript object, making them easy to update.
--   **Click-to-Copy**: Users can easily copy coupon codes with a single click.
--   **SEO Optimized**: Includes meta tags and structured data for better search engine visibility and social media sharing.
+## Come modificare `config.js`
 
-## How to Use
+1. Su GitHub apri `config.js` e clicca sulla matita (*Edit this file*).
+2. Cambia i valori che ti servono (vedi sotto).
+3. Clicca su *Commit changes…* e conferma.
 
-Simply open the `index.html` file in any modern web browser to view the website.
+Dopo uno o due minuti il sito è aggiornato. L'estensione del browser riceve i nuovi coupon entro un'ora al massimo (vedi [Estensione del browser](#estensione-del-browser)).
 
-## How to Update Coupons
+Ogni valore in `config.js` ha accanto un commento che spiega a cosa serve. Le righe in fondo al file, sotto "Da qui in giù non serve modificare nulla", non vanno toccate.
 
-All the values the site uses live in `config.js`: the coupons, the AliExpress cashback squad (on/off, link, event dates, percentages, daily cap) and the checkout payment discount (name and thresholds). Edit only that file; the comments in it explain each value.
+## Coupon
 
-- The homepage (`index.html`) and the calculator (`calculator.html`) read `config.js` directly.
-- The browser extension reads its data from the homepage HTML, so the workflow `.github/workflows/sincronizza-estensione.yml` copies the coupons, the squad link and the squad switch from `config.js` into a block in `index.html` (between the `DATI PER L'ESTENSIONE` comments). It runs when `config.js` changes and every hour, so the squad also turns off in the extension when the event ends. Do not edit that block by hand; to run the copy locally: `node scripts/sincronizza-estensione.mjs`.
+I coupon sono divisi in quattro blocchi, uno per sezione della homepage:
 
-Each coupon block has its currency and a set of ready-made slots; fill a slot to add a coupon, empty its code to remove it:
+| Blocco in `config.js` | Sezione in homepage |
+|---|---|
+| `esclusiviProdigeek` | Coupon Esclusivi Prodigeek |
+| `generici` | Coupon Generici |
+| `standardProdigeek` | Altri Coupon Generici |
+| `altriEsclusiviProdigeek` | Altri Coupon Esclusivi Prodigeek |
 
-```javascript
+Ogni blocco ha la sua valuta e una serie di posti già pronti:
+
+```js
 generici: {
-    valuta: '€',            // '€' or '$', for the whole block
+    valuta: '€',
     codici: [
-        { code: 'CODE',  discount: 10, min: 69 },
-        { code: '',      discount: 0,  min: 0 }   // empty slot: ignored everywhere
+        { code: 'ITAFF03',    discount: 3,    min: 18 },
+        { code: 'ITAFF06',    discount: 6,    min: 39 },
+        { code: '',           discount: 0,    min: 0 },
+        { code: '',           discount: 0,    min: 0 }
     ]
 }
 ```
 
-Slots with an empty code are skipped, and a block with no codes hides its section on the homepage.
+- **`code`**: il codice, tra apici.
+- **`discount`**: lo sconto.
+- **`min`**: la spesa minima.
+- **`valuta`**: `'€'` oppure `'$'`, vale per tutto il blocco.
 
-## License
+Cosa fare:
 
-This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) file for details.
+- **Aggiungere un coupon**: riempi un posto vuoto, per esempio `{ code: 'ITAFF10', discount: 10, min: 99 },`.
+- **Togliere un coupon**: svuota il codice, `code: ''`. Sconto e spesa minima possono restare: un posto con il codice vuoto non compare da nessuna parte.
+- **Svuotare una sezione**: svuota tutti i codici del blocco. La sezione sparisce dalla homepage.
+- **Servono più posti**: copia una riga `{ code: '', discount: 0, min: 0 },` sotto le altre.
+
+I coupon compaiono nell'ordine in cui sono scritti. In homepage si possono anche ordinare per convenienza con il pulsante apposito.
+
+## Squadra cashback
+
+```js
+squadra: {
+    attiva: true,
+    link: 'https://s.click.aliexpress.com/e/_c3yNnO8F',
+    inizio: '2026-10-28T16:00:00-07:00',
+    fine: '2026-11-18T14:59:59-08:00',
+    percentualeMassima: 7,
+    premioMassimo: 168,
+    livelli: [3, 5, 7],
+    percentualePredefinita: 7,
+    massimoAlGiorno: 8
+},
+```
+
+- **`attiva`**: `true` o `false`. Con `false` la squadra sparisce subito ovunque.
+- **`link`**: il link per entrare nella squadra, usato dal popup, dal banner, dal calcolatore e dall'estensione.
+- **`inizio`** e **`fine`**: il periodo dell'evento. Fuori da queste date la squadra sparisce da sola: niente popup e banner in homepage, niente cashback nel calcolatore, niente squadra nell'estensione. Non serve ricordarsi di spegnerla.
+- **`percentualeMassima`** e **`premioMassimo`**: i numeri del popup ("fino al 7% di Cashback… fino a 168 € in tutto").
+- **`livelli`**: le percentuali tra cui scegliere nelle impostazioni del calcolatore, mostrate come LV1, LV2, LV3…
+- **`percentualePredefinita`**: quella già selezionata. Deve essere uno dei `livelli`.
+- **`massimoAlGiorno`**: il tetto del cashback al giorno in euro.
+
+Per un nuovo evento cambia `link`, `inizio`, `fine` e i numeri secondo il regolamento AliExpress.
+
+### Come si scrivono le date
+
+Anno-mese-giorno, `T`, ora, poi il fuso orario: `'2026-11-18T23:59:59+01:00'`.
+
+| Fuso | Quando |
+|---|---|
+| `+01:00` | ora italiana d'inverno (dall'ultima domenica di ottobre all'ultima di marzo) |
+| `+02:00` | ora italiana d'estate |
+| `-08:00` | ora del Pacifico d'inverno (PST), quella dei regolamenti AliExpress |
+| `-07:00` | ora del Pacifico d'estate (PDT) |
+
+Se il regolamento dà le date in ora del Pacifico, conviene copiarle così come sono con il loro fuso.
+
+## Sconto del metodo di pagamento
+
+```js
+pagamento: {
+    nome: 'PayPal',
+    soglie: [
+        { min: 99, sconto: 10 },
+        { min: 199, sconto: 20 },
+        { min: 299, sconto: 45 }
+    ]
+}
+```
+
+- **`nome`**: compare nel calcolatore ("Sconto PayPal", "Dopo PayPal"…). Si può cambiare, per esempio in `'Klarna'`.
+- **`soglie`**: per ogni soglia, la spesa minima dopo il coupon (`min`) e lo sconto in euro (`sconto`). Il calcolatore applica la soglia più alta raggiunta. Se ne possono aggiungere o togliere; con `soglie: []` non c'è nessuno sconto.
+
+Chi usa il calcolatore può cambiare soglie e cashback dalle impostazioni della pagina, ma solo per sé e finché la tiene aperta: i valori di partenza sono sempre quelli di `config.js`.
+
+## Errori comuni
+
+`config.js` è codice JavaScript: un apice o una virgola fuori posto fermano homepage e calcolatore. Attenzione a:
+
+- **codici tra apici**: `'ITAFF03'`, mai senza;
+- **numeri senza apici**, con il punto per i decimali: `discount: 2.5`, non `'2,5'`;
+- **una virgola tra un coupon e l'altro**: se ne manca una, si ferma tutto (dopo l'ultimo invece è facoltativa).
+
+Se c'è un errore, l'automazione "Sincronizza i dati dell'estensione" fallisce. Nella scheda *Actions* del repository compare una X rossa, e di solito arriva un'email da GitHub. In quel caso, o se dopo un paio di minuti il sito non mostra più i coupon, riapri `config.js`, controlla l'ultima modifica e correggila. Nella *History* del file trovi anche la versione precedente, da cui ricopiare i valori.
+
+## Estensione del browser
+
+L'estensione pubblicata (Firefox e Chrome, versione 1.1.5) non legge `config.js`. Legge coupon, link e interruttore della squadra direttamente dall'HTML della homepage. Per questo l'automazione `.github/workflows/sincronizza-estensione.yml` copia quei dati da `config.js` in un blocco di `index.html`, tra i commenti `DATI PER L'ESTENSIONE`, nel formato che l'estensione si aspetta.
+
+L'automazione parte:
+
+- quando cambia `config.js`;
+- ogni ora, così a fine evento la squadra si spegne anche nell'estensione;
+- a mano, dalla scheda *Actions* (*Run workflow*).
+
+Fa un commit su `main` solo se qualcosa è cambiato. Quel blocco di `index.html` non va modificato a mano: viene riscritto alla prossima esecuzione.
+
+Quando l'estensione verrà aggiornata per leggere `config.js` direttamente, l'automazione e il blocco si potranno togliere.
+
+## Provare in locale
+
+```bash
+python3 -m http.server 8000                # poi apri http://localhost:8000
+node scripts/sincronizza-estensione.mjs    # aggiorna il blocco per l'estensione in index.html
+```
+
+Lo stesso script segnala un errore se `config.js` non è scritto bene: è un modo veloce per controllarlo prima di pubblicare.
+
+## Licenza
+
+Il progetto è distribuito con licenza **MIT**. Vedi il file [LICENSE](LICENSE).
