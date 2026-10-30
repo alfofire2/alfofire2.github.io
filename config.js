@@ -8,24 +8,80 @@
 const PRODIGEEK = {
 
     // Coupon mostrati in homepage, usati dal calcolatore e dall'estensione.
-    // discount = sconto, min = spesa minima, currency = '€' oppure '$'.
-    // Una lista vuota [] nasconde la sua sezione in homepage.
+    // Ogni blocco ha la sua valuta ('€' oppure '$') e una serie di posti già pronti:
+    // per aggiungere un coupon riempi un posto vuoto (code, discount = sconto, min = spesa minima),
+    // per toglierlo svuota il codice (code: ''). I posti con il codice vuoto non compaiono da nessuna parte,
+    // e un blocco senza codici nasconde la sua sezione in homepage. Servono più posti? Copia una riga.
     coupons: {
-        esclusiviProdigeek: [],
-        altriEsclusiviProdigeek: [],
-        standardProdigeek: [],
+        // Coupon Esclusivi Prodigeek
+        esclusiviProdigeek: {
+            valuta: '$',
+            codici: [
+                { code: '',           discount: 0,    min: 0 },
+                { code: '',           discount: 0,    min: 0 },
+                { code: '',           discount: 0,    min: 0 },
+                { code: '',           discount: 0,    min: 0 },
+                { code: '',           discount: 0,    min: 0 },
+                { code: '',           discount: 0,    min: 0 },
+                { code: '',           discount: 0,    min: 0 },
+                { code: '',           discount: 0,    min: 0 },
+                { code: '',           discount: 0,    min: 0 },
+                { code: '',           discount: 0,    min: 0 }
+            ]
+        },
 
-        generici: [
-            { code: 'ITAFF03', discount: 3, min: 18, currency: '€' },
-            { code: 'ITAFF06', discount: 6, min: 39, currency: '€' },
-            { code: 'ITAFF14', discount: 14, min: 79, currency: '€' },
-            { code: 'ITAFF25', discount: 25, min: 149, currency: '€' },
-            { code: 'ITAFF45', discount: 45, min: 259, currency: '€' },
-            { code: 'ITAFF60', discount: 60, min: 349, currency: '€' },
-            { code: 'ITAFF80', discount: 80, min: 469, currency: '€' },
-            { code: 'ITD11100', discount: 100, min: 500, currency: '€' },
-            { code: 'ITD11120', discount: 120, min: 600, currency: '€' }
-        ]
+        // Altri Coupon Esclusivi Prodigeek
+        altriEsclusiviProdigeek: {
+            valuta: '$',
+            codici: [
+                { code: '',           discount: 0,    min: 0 },
+                { code: '',           discount: 0,    min: 0 },
+                { code: '',           discount: 0,    min: 0 },
+                { code: '',           discount: 0,    min: 0 },
+                { code: '',           discount: 0,    min: 0 },
+                { code: '',           discount: 0,    min: 0 },
+                { code: '',           discount: 0,    min: 0 },
+                { code: '',           discount: 0,    min: 0 },
+                { code: '',           discount: 0,    min: 0 },
+                { code: '',           discount: 0,    min: 0 }
+            ]
+        },
+
+        // Altri Coupon Generici
+        standardProdigeek: {
+            valuta: '€',
+            codici: [
+                { code: '',           discount: 0,    min: 0 },
+                { code: '',           discount: 0,    min: 0 },
+                { code: '',           discount: 0,    min: 0 },
+                { code: '',           discount: 0,    min: 0 },
+                { code: '',           discount: 0,    min: 0 },
+                { code: '',           discount: 0,    min: 0 },
+                { code: '',           discount: 0,    min: 0 },
+                { code: '',           discount: 0,    min: 0 },
+                { code: '',           discount: 0,    min: 0 },
+                { code: '',           discount: 0,    min: 0 }
+            ]
+        },
+
+        // Coupon Generici
+        generici: {
+            valuta: '€',
+            codici: [
+                { code: 'ITAFF03',    discount: 3,    min: 18 },
+                { code: 'ITAFF06',    discount: 6,    min: 39 },
+                { code: 'ITAFF14',    discount: 14,   min: 79 },
+                { code: 'ITAFF25',    discount: 25,   min: 149 },
+                { code: 'ITAFF45',    discount: 45,   min: 259 },
+                { code: 'ITAFF60',    discount: 60,   min: 349 },
+                { code: 'ITAFF80',    discount: 80,   min: 469 },
+                { code: 'ITD11100',   discount: 100,  min: 500 },
+                { code: 'ITD11120',   discount: 120,  min: 600 },
+                { code: '',           discount: 0,    min: 0 },
+                { code: '',           discount: 0,    min: 0 },
+                { code: '',           discount: 0,    min: 0 }
+            ]
+        }
     },
 
     // Squadra cashback AliExpress (evento "Unisciti a una squadra").
@@ -54,3 +110,12 @@ const PRODIGEEK = {
         ]
     }
 };
+
+
+// Da qui in giù non serve modificare nulla.
+// Le liste di coupon come le usano homepage, calcolatore ed estensione: senza i posti vuoti e con la valuta su ogni coupon.
+PRODIGEEK.listeCoupon = Object.fromEntries(Object.entries(PRODIGEEK.coupons).map(([nome, blocco]) => [nome,
+    blocco.codici
+        .filter(c => String(c.code || '').trim() !== '')
+        .map(c => ({ code: String(c.code).trim(), discount: Number(c.discount), min: Number(c.min), currency: blocco.valuta || '€' }))
+]));

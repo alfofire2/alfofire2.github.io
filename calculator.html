@@ -332,7 +332,7 @@
     }
 
     async function fetchCoupons() {
-        return Object.values(PRODIGEEK.coupons).flat().map(c => ({
+        return Object.values(PRODIGEEK.listeCoupon).flat().map(c => ({
             codice: c.code,
             sconto: parseFloat(c.discount),
             minSpesa: parseFloat(c.min)

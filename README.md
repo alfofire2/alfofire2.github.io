@@ -20,13 +20,19 @@ All the values the site uses live in `config.js`: the coupons, the AliExpress ca
 - The homepage (`index.html`) and the calculator (`calculator.html`) read `config.js` directly.
 - The browser extension reads its data from the homepage HTML, so the workflow `.github/workflows/sincronizza-estensione.yml` copies the coupons, the squad link and the squad switch from `config.js` into a block in `index.html` (between the `DATI PER L'ESTENSIONE` comments). It runs when `config.js` changes and every hour, so the squad also turns off in the extension when the event ends. Do not edit that block by hand; to run the copy locally: `node scripts/sincronizza-estensione.mjs`.
 
-Each coupon has this structure:
+Each coupon block has its currency and a set of ready-made slots; fill a slot to add a coupon, empty its code to remove it:
 
 ```javascript
-{ code: 'CODE', discount: 10, min: 69, currency: '€' } // currency: '€' or '$'
+generici: {
+    valuta: '€',            // '€' or '$', for the whole block
+    codici: [
+        { code: 'CODE',  discount: 10, min: 69 },
+        { code: '',      discount: 0,  min: 0 }   // empty slot: ignored everywhere
+    ]
+}
 ```
 
-An empty list (`[]`) hides its section on the homepage.
+Slots with an empty code are skipped, and a block with no codes hides its section on the homepage.
 
 ## License
 

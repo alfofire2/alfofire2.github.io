@@ -15,7 +15,8 @@ import { runInNewContext } from 'node:vm';
 const root = new URL('../', import.meta.url);
 const config = runInNewContext(readFileSync(new URL('config.js', root), 'utf8') + '\n;PRODIGEEK');
 
-const { squadra, coupons } = config;
+const { squadra } = config;
+const coupons = config.listeCoupon;  // senza i posti vuoti, con la valuta su ogni coupon (vedi fondo di config.js)
 const ora = Date.now();
 const squadraAttiva = squadra.attiva === true && ora >= Date.parse(squadra.inizio) && ora <= Date.parse(squadra.fine);
 
