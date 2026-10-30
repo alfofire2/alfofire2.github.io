@@ -5,14 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calcolatore Sconti AliExpress | Prodigeek & Prezzone</title>
     <meta name="description"
-          content="Calcola la combinazione ottimale di sconti AliExpress, PayPal e Cashback con il calcolatore avanzato di Prodigeek.">
+          content="Scrivi il prezzo di un prodotto AliExpress e vedi quanto paghi con il coupon migliore, lo sconto PayPal e il cashback.">
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://coupon.prodigeek.it/calculator">
     <meta property="og:title" content="Calcolatore Sconti AliExpress | Prodigeek">
     <meta property="og:description"
-          content="Scopri quanto puoi risparmiare! Calcola coupon, sconti PayPal e cashback in un colpo solo.">
+          content="Quanto paghi davvero su AliExpress? Coupon, sconto PayPal e cashback in un solo calcolo.">
     <meta property="og:image" content="https://coupon.prodigeek.it/apple-touch-icon.png">
 
     <!-- Twitter -->
@@ -20,7 +20,7 @@
     <meta property="twitter:url" content="https://coupon.prodigeek.it/calculator">
     <meta property="twitter:title" content="Calcolatore Sconti AliExpress | Prodigeek">
     <meta property="twitter:description"
-          content="Scopri quanto puoi risparmiare! Calcola coupon, sconti PayPal e cashback in un colpo solo.">
+          content="Quanto paghi davvero su AliExpress? Coupon, sconto PayPal e cashback in un solo calcolo.">
     <meta property="twitter:image" content="https://coupon.prodigeek.it/apple-touch-icon.png">
 
     <link rel="manifest" href="site.webmanifest">
@@ -224,11 +224,10 @@
                             </div>
                         </div>
                         <div class="pt-4 border-t border-white/10 mt-8">
-                            <p class="text-[10px] opacity-70 leading-tight">Il prezzo finale include lo sconto coupon,
-                                eventuale sconto per metodo di pagamento e il cashback stimato che riceverai dopo
-                                la spedizione come credito per ordini futuri (da usare entro 10 giorni; massimo 8 € al
-                                giorno e 168 € per tutto l'evento). I prezzi possono variare, le disponibilità dei
-                                coupon sono limitate.</p>
+                            <p class="text-[10px] opacity-70 leading-tight">Dal prezzo finale sono tolti il coupon,
+                                l'eventuale sconto PayPal e il cashback stimato. Il cashback arriva dopo la spedizione
+                                come credito per i prossimi ordini: va usato entro 10 giorni e non supera 8 € al giorno
+                                e 168 € in tutto l'evento. I prezzi possono cambiare e i coupon finiscono.</p>
                         </div>
 
                         <div class="mt-4 space-y-4 pdg-action-buttons">
@@ -580,7 +579,7 @@
             const sD = {
                 files: [f],
                 title: 'Sconto AliExpress',
-                text: 'Guarda quanto ho risparmiato su coupon.prodigeek.it'
+                text: 'Ecco quanto ho risparmiato con coupon.prodigeek.it'
             };
             if (navigator.canShare && navigator.canShare(sD)) await navigator.share(sD);
             else {
@@ -590,7 +589,7 @@
                 l.click();
             }
         } catch (e) {
-            alert("Errore generazione foto.");
+            alert("Non sono riuscito a creare la foto, riprova.");
         } finally {
             if (wm) wm.classList.add('hidden');
             area.classList.remove('pdg-is-capturing');
