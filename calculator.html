@@ -300,7 +300,8 @@
 <script src="config.js"></script>
 <script>
     // Coupon, cashback della squadra e sconto del pagamento arrivano da config.js.
-    // Fuori dal periodo della squadra il calcolatore toglie il cashback da solo.
+    // Fuori dal periodo della squadra il calcolatore toglie il cashback da solo,
+    // e usa solo i coupon validi oggi (date dal/al in config.js).
     const {squadra, pagamento} = PRODIGEEK;
     const CASHBACK_ATTIVO = squadra.attiva === true && Date.now() >= Date.parse(squadra.inizio) && Date.now() <= Date.parse(squadra.fine);
 
@@ -535,6 +536,11 @@
         });
         document.querySelectorAll('select, input:not(#pdg-calc-price)').forEach(i => i.addEventListener('change', calcolaTutto));
         calcolaTutto();
+        // Pagina lasciata aperta a cavallo della mezzanotte: i coupon che iniziano o scadono si aggiornano da soli.
+        PRODIGEEK.seCambianoICoupon(async () => {
+            dynamicCoupons = await fetchCoupons();
+            calcolaTutto();
+        });
     });
 
     async function shareScreenshot() {

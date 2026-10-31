@@ -626,7 +626,7 @@
     <!-- Generati da config.js con scripts/sincronizza-estensione.mjs: non modificarli qui, cambia config.js. -->
     <script type="text/plain" id="dati-estensione">
 const enable_aliexpress_squad = true;
-const coupons = {"esclusiviProdigeek":[{"code":"IFPBKCOQ","discount":3,"min":18,"currency":"$"},{"code":"IFPWBJXE","discount":6,"min":39,"currency":"$"},{"code":"IFPT3ULS","discount":14,"min":79,"currency":"$"},{"code":"IFPB6VFW","discount":25,"min":149,"currency":"$"},{"code":"IFPRBOY9","discount":45,"min":259,"currency":"$"},{"code":"IFPMRJS7","discount":60,"min":349,"currency":"$"},{"code":"IFPFWKQD","discount":80,"min":469,"currency":"$"},{"code":"IFPMGSEF","discount":100,"min":500,"currency":"$"},{"code":"IFPFEIGQ","discount":120,"min":600,"currency":"$"},{"code":"IFPKEVIS","discount":100,"min":500,"currency":"$"},{"code":"IFP7NWZS","discount":120,"min":600,"currency":"$"}],"altriEsclusiviProdigeek":[],"standardProdigeek":[],"generici":[{"code":"ITAFF03","discount":3,"min":18,"currency":"€"},{"code":"ITAFF06","discount":6,"min":39,"currency":"€"},{"code":"ITAFF14","discount":14,"min":79,"currency":"€"},{"code":"ITAFF25","discount":25,"min":149,"currency":"€"},{"code":"ITAFF45","discount":45,"min":259,"currency":"€"},{"code":"ITAFF60","discount":60,"min":349,"currency":"€"},{"code":"ITAFF80","discount":80,"min":469,"currency":"€"},{"code":"ITD11100","discount":100,"min":500,"currency":"€"},{"code":"ITD11120","discount":120,"min":600,"currency":"€"}]};
+const coupons = {"esclusiviProdigeek":[{"code":"IFPBKCOQ","discount":3,"min":18,"currency":"$"},{"code":"IFPWBJXE","discount":6,"min":39,"currency":"$"},{"code":"IFPT3ULS","discount":14,"min":79,"currency":"$"},{"code":"IFPB6VFW","discount":25,"min":149,"currency":"$"},{"code":"IFPRBOY9","discount":45,"min":259,"currency":"$"},{"code":"IFPMRJS7","discount":60,"min":349,"currency":"$"},{"code":"IFPFWKQD","discount":80,"min":469,"currency":"$"}],"altriEsclusiviProdigeek":[],"standardProdigeek":[],"generici":[{"code":"ITAFF03","discount":3,"min":18,"currency":"€"},{"code":"ITAFF06","discount":6,"min":39,"currency":"€"},{"code":"ITAFF14","discount":14,"min":79,"currency":"€"},{"code":"ITAFF25","discount":25,"min":149,"currency":"€"},{"code":"ITAFF45","discount":45,"min":259,"currency":"€"},{"code":"ITAFF60","discount":60,"min":349,"currency":"€"},{"code":"ITAFF80","discount":80,"min":469,"currency":"€"},{"code":"ITD11100","discount":100,"min":500,"currency":"€"},{"code":"ITD11120","discount":120,"min":600,"currency":"€"}]};
 <a href="https://s.click.aliexpress.com/e/_c3yNnO8F" class="squad-card"></a>
     </script>
     <!-- FINE DATI PER L'ESTENSIONE -->
@@ -757,7 +757,7 @@ const coupons = {"esclusiviProdigeek":[{"code":"IFPBKCOQ","discount":3,"min":18,
         }
         const SITE_URL = 'https://coupon.prodigeek.it/';
         const SITE_LASTMOD = '2026-10-31';
-        const coupons = PRODIGEEK.listeCoupon;
+        const coupons = PRODIGEEK.listeCoupon; // solo i coupon validi oggi (date dal/al in config.js)
 
         
         function showCopyFeedback(feedbackElement) {
@@ -1050,6 +1050,18 @@ const coupons = {"esclusiviProdigeek":[{"code":"IFPBKCOQ","discount":3,"min":18,
             renderCoupons();
             generateJsonLd();
             setupIntersectionObserver();
+
+            // Pagina lasciata aperta a cavallo della mezzanotte: i coupon che iniziano o scadono si aggiornano da soli.
+            PRODIGEEK.seCambianoICoupon(nuovi => {
+                for (const category in nuovi) {
+                    originalCoupons[category] = JSON.parse(JSON.stringify(nuovi[category]));
+                    coupons[category] = nuovi[category];
+                    if (isSortedByConvenience) coupons[category].sort((a, b) => (b.discount / b.min) - (a.discount / a.min));
+                }
+                renderCoupons();
+                generateJsonLd();
+                setupIntersectionObserver();
+            });
 
             const sortButton = document.getElementById('sort-button');
             sortButton.addEventListener('click', () => {

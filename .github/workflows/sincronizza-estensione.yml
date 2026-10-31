@@ -1,6 +1,8 @@
 # Copia da config.js a index.html i dati che l'estensione del browser legge dalla homepage
-# (coupon, link e stato della squadra). Parte quando cambia config.js e ogni ora, così la
-# squadra si spegne nell'estensione anche quando finisce l'evento. Fa un commit solo se qualcosa cambia.
+# (coupon validi oggi, link e stato della squadra). Parte quando cambia config.js e ogni ora, così la
+# squadra si spegne nell'estensione a fine evento e i coupon con dal/al compaiono e spariscono da soli.
+# Fa un commit solo se qualcosa cambia. Il commit tocca solo index.html e usa il token di GitHub Actions,
+# che non fa ripartire i workflow: niente giri a vuoto.
 name: Sincronizza i dati dell'estensione
 
 on:

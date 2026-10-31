@@ -46,7 +46,8 @@ generici: {
 - **`discount`**: lo sconto.
 - **`min`**: la spesa minima.
 - **`valuta`**: `'€'` oppure `'$'`, vale per tutto il blocco.
-- **`nota`** (facoltativa): una riga in più sotto il coupon in homepage, per esempio `nota: 'Solo l’11 e il 12 novembre'`. Serve per i coupon validi solo in certi giorni: il sito non li toglie da solo, a fine validità va svuotato il codice. L'estensione non la mostra.
+- **`dal`** e **`al`** (facoltativi): il primo e l'ultimo giorno in cui il coupon vale, vedi [Coupon validi solo in certi giorni](#coupon-validi-solo-in-certi-giorni).
+- **`nota`** (facoltativa): una riga in più sotto il coupon in homepage, in arancione. Con `dal` e `al` si scrive da sola; `nota` serve per un testo diverso, per esempio `nota: 'Solo nell’app'`. L'estensione non la mostra.
 
 Cosa fare:
 
@@ -56,6 +57,25 @@ Cosa fare:
 - **Servono più posti**: copia una riga `{ code: '', discount: 0, min: 0 },` sotto le altre.
 
 I coupon compaiono nell'ordine in cui sono scritti. In homepage si possono anche ordinare per convenienza con il pulsante apposito.
+
+### Coupon validi solo in certi giorni
+
+Basta aggiungere al coupon `dal` e `al`, in ora italiana, nella forma anno-mese-giorno:
+
+```js
+{ code: 'IFPMGSEF',   discount: 100,  min: 500, dal: '2026-11-01', al: '2026-11-03' },
+```
+
+- **Prima del giorno `dal`** il coupon non compare da nessuna parte: né in homepage, né nel calcolatore, né nell'estensione.
+- **Dalla mezzanotte del giorno `dal` fino alle 23:59:59 del giorno `al`** (compresi, ora italiana) compare ovunque, con sotto una riga come *Solo dall’1 al 3 novembre* o *Solo l’11 e il 12 novembre*.
+- **Dopo il giorno `al`** sparisce da solo. Non serve cancellarlo né svuotare il codice: può restare in `config.js` come promemoria, e quando lo si vuole togliere si svuota il posto come al solito.
+- Si può mettere solo `al` (vale da subito fino a quel giorno, con la riga *Fino al …*) oppure solo `dal` (compare da quel giorno, senza riga).
+- Un giorno solo: `dal` e `al` uguali, per esempio `dal: '2026-11-11', al: '2026-11-11'` (riga *Solo l’11 novembre*).
+- Se c'è anche `nota`, sotto il coupon compare la nota al posto della riga ricavata dalle date.
+
+Homepage e calcolatore controllano le date sul momento, anche se la pagina resta aperta a cavallo della mezzanotte (la aggiornano entro un minuto). L'estensione invece riceve i coupon dall'automazione oraria, quindi un coupon compare o sparisce nell'estensione entro un'ora circa dalla mezzanotte (GitHub a volte fa partire l'automazione con qualche minuto di ritardo).
+
+Una data scritta male (per esempio `'2026-11-31'`, oppure `dal` dopo `al`) nasconde quel coupon e fa fallire l'automazione, con il codice del coupon nel messaggio d'errore.
 
 ## Squadra cashback
 
@@ -131,7 +151,7 @@ L'estensione pubblicata (Firefox e Chrome, versione 1.1.5) non legge `config.js`
 L'automazione parte:
 
 - quando cambia `config.js`;
-- ogni ora, così a fine evento la squadra si spegne anche nell'estensione;
+- ogni ora, così a fine evento la squadra si spegne anche nell'estensione, e i coupon con `dal` e `al` compaiono e spariscono al giorno giusto;
 - a mano, dalla scheda *Actions* (*Run workflow*).
 
 Fa un commit su `main` solo se qualcosa è cambiato. Quel blocco di `index.html` non va modificato a mano: viene riscritto alla prossima esecuzione.
@@ -144,6 +164,8 @@ Quando l'estensione verrà aggiornata per leggere `config.js` direttamente, l'au
 python3 -m http.server 8000                # poi apri http://localhost:8000
 node scripts/sincronizza-estensione.mjs    # aggiorna il blocco per l'estensione in index.html
 ```
+
+Per vedere cosa riceverebbe l'estensione in un altro momento: `ORA_SIMULATA=2026-11-01T00:00:00+01:00 node scripts/sincronizza-estensione.mjs`. Lo script scrive quali coupon sono fuori dalle date (`futuro` o `scaduto`). Dopo la prova rilancialo senza `ORA_SIMULATA`, o annulla la modifica a `index.html`.
 
 Lo stesso script segnala un errore se `config.js` non è scritto bene: è un modo veloce per controllarlo prima di pubblicare.
 

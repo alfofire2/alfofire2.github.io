@@ -12,7 +12,11 @@ const PRODIGEEK = {
     // per aggiungere un coupon riempi un posto vuoto (code, discount = sconto, min = spesa minima),
     // per toglierlo svuota il codice (code: ''). I posti con il codice vuoto non compaiono da nessuna parte,
     // e un blocco senza codici nasconde la sua sezione in homepage. Servono più posti? Copia una riga.
-    // nota (facoltativa) è una riga in più sotto il coupon in homepage, per esempio nota: 'Solo l’11 e il 12 novembre'.
+    // dal e al (facoltativi) sono il primo e l'ultimo giorno di validità, in ora italiana, scritti 'AAAA-MM-GG'.
+    // Prima del giorno dal il coupon non compare; dopo la fine del giorno al sparisce da solo da homepage,
+    // calcolatore ed estensione. Non serve cancellarlo: può restare qui come promemoria.
+    // Con le date, sotto il coupon in homepage compare da sola una riga come 'Solo dall’1 al 3 novembre'.
+    // nota (facoltativa) sostituisce quella riga con un testo scelto da te, per esempio nota: 'Solo nell’app'.
     coupons: {
         // Coupon Esclusivi Prodigeek
         esclusiviProdigeek: {
@@ -25,10 +29,10 @@ const PRODIGEEK = {
                 { code: 'IFPRBOY9',   discount: 45,   min: 259 },
                 { code: 'IFPMRJS7',   discount: 60,   min: 349 },
                 { code: 'IFPFWKQD',   discount: 80,   min: 469 },
-                { code: 'IFPMGSEF',   discount: 100,  min: 500, nota: 'Solo dall’1 al 3 novembre' },
-                { code: 'IFPFEIGQ',   discount: 120,  min: 600, nota: 'Solo dall’1 al 3 novembre' },
-                { code: 'IFPKEVIS',   discount: 100,  min: 500, nota: 'Solo l’11 e il 12 novembre' },
-                { code: 'IFP7NWZS',   discount: 120,  min: 600, nota: 'Solo l’11 e il 12 novembre' },
+                { code: 'IFPMGSEF',   discount: 100,  min: 500, dal: '2026-11-01', al: '2026-11-03' },
+                { code: 'IFPFEIGQ',   discount: 120,  min: 600, dal: '2026-11-01', al: '2026-11-03' },
+                { code: 'IFPKEVIS',   discount: 100,  min: 500, dal: '2026-11-11', al: '2026-11-12' },
+                { code: 'IFP7NWZS',   discount: 120,  min: 600, dal: '2026-11-11', al: '2026-11-12' },
                 { code: '',           discount: 0,    min: 0 }
             ]
         },
@@ -116,10 +120,81 @@ const PRODIGEEK = {
 
 
 // Da qui in giù non serve modificare nulla.
-// Le liste di coupon come le usano homepage, calcolatore ed estensione: senza i posti vuoti e con la valuta su ogni coupon.
-PRODIGEEK.listeCoupon = Object.fromEntries(Object.entries(PRODIGEEK.coupons).map(([nome, blocco]) => [nome,
-    blocco.codici
-        .filter(c => String(c.code || '').trim() !== '')
-        .map(c => ({ code: String(c.code).trim(), discount: Number(c.discount), min: Number(c.min), currency: blocco.valuta || '€',
-            ...(String(c.nota || '').trim() ? { nota: String(c.nota).trim() } : {}) }))
-]));
+
+// Il giorno di oggi in Italia (fuso Europe/Rome) come 'AAAA-MM-GG', da confrontare con dal e al.
+PRODIGEEK.giornoItaliano = function (ora = Date.now()) {
+    try {
+        const parti = {};
+        new Intl.DateTimeFormat('en-US', { timeZone: 'Europe/Rome', year: 'numeric', month: '2-digit', day: '2-digit' })
+            .formatToParts(new Date(ora)).forEach(p => { parti[p.type] = p.value; });
+        return `${parti.year}-${parti.month}-${parti.day}`;
+    } catch (e) {
+        // Browser molto vecchi senza fusi orari: ora italiana d'inverno, al massimo un'ora di scarto d'estate.
+        return new Date(ora + 3600000).toISOString().slice(0, 10);
+    }
+};
+
+// Una data 'AAAA-MM-GG' che esiste davvero (niente 31 novembre).
+PRODIGEEK.dataValida = function (data) {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(data)) return false;
+    const [a, m, g] = data.split('-').map(Number), d = new Date(Date.UTC(a, m - 1, g));
+    return d.getUTCFullYear() === a && d.getUTCMonth() === m - 1 && d.getUTCDate() === g;
+};
+
+// 'futuro' prima del giorno dal, 'scaduto' dopo il giorno al, 'valido' in mezzo (dal e al compresi),
+// 'errore' se una data non è scritta bene: in quel caso il coupon non compare e l'automazione su GitHub fallisce.
+PRODIGEEK.statoCoupon = function (c, ora = Date.now()) {
+    const dal = String(c.dal || '').trim(), al = String(c.al || '').trim();
+    if ((dal && !PRODIGEEK.dataValida(dal)) || (al && !PRODIGEEK.dataValida(al)) || (dal && al && dal > al)) return 'errore';
+    const oggi = PRODIGEEK.giornoItaliano(ora);
+    if (dal && oggi < dal) return 'futuro';
+    if (al && oggi > al) return 'scaduto';
+    return 'valido';
+};
+
+// La riga sotto il coupon ricavata dalle date: 'Solo dall’1 al 3 novembre', 'Solo l’11 e il 12 novembre',
+// 'Solo il 5 novembre', 'Fino all’8 dicembre', 'Solo dal 30 novembre al 2 dicembre'.
+PRODIGEEK.notaDalleDate = function (dal, al) {
+    const MESI = ['gennaio', 'febbraio', 'marzo', 'aprile', 'maggio', 'giugno', 'luglio', 'agosto', 'settembre', 'ottobre', 'novembre', 'dicembre'];
+    const parti = data => data.split('-').map(Number);
+    const apostrofo = g => g === 1 || g === 8 || g === 11;   // l’1, l’8, l’11: si legge uno, otto, undici
+    const il = g => (apostrofo(g) ? 'l’' : 'il ') + g, dalG = g => (apostrofo(g) ? 'dall’' : 'dal ') + g, alG = g => (apostrofo(g) ? 'all’' : 'al ') + g;
+    if (!al) return '';
+    const [a2, m2, g2] = parti(al);
+    if (!dal) return `Fino ${alG(g2)} ${MESI[m2 - 1]}`;
+    const [a1, m1, g1] = parti(dal);
+    if (dal === al) return `Solo ${il(g1)} ${MESI[m1 - 1]}`;
+    if (a1 === a2 && m1 === m2) return g2 === g1 + 1 ? `Solo ${il(g1)} e ${il(g2)} ${MESI[m1 - 1]}` : `Solo ${dalG(g1)} ${alG(g2)} ${MESI[m1 - 1]}`;
+    const anno = a1 === a2 ? ['', ''] : [' ' + a1, ' ' + a2];
+    return `Solo ${dalG(g1)} ${MESI[m1 - 1]}${anno[0]} ${alG(g2)} ${MESI[m2 - 1]}${anno[1]}`;
+};
+
+// Le liste di coupon come le usano homepage, calcolatore ed estensione in un certo momento: senza i posti vuoti,
+// senza quelli fuori dalle date e con la valuta su ogni coupon.
+PRODIGEEK.listeCouponAl = function (ora = Date.now()) {
+    return Object.fromEntries(Object.entries(PRODIGEEK.coupons).map(([nome, blocco]) => [nome,
+        blocco.codici
+            .filter(c => String(c.code || '').trim() !== '' && PRODIGEEK.statoCoupon(c, ora) === 'valido')
+            .map(c => {
+                const dal = String(c.dal || '').trim(), al = String(c.al || '').trim();
+                const nota = String(c.nota || '').trim() || PRODIGEEK.notaDalleDate(dal, al);
+                return { code: String(c.code).trim(), discount: Number(c.discount), min: Number(c.min), currency: blocco.valuta || '€',
+                    ...(nota ? { nota } : {}), ...(dal ? { dal } : {}), ...(al ? { al } : {}) };
+            })
+    ]));
+};
+
+// Le liste valide adesso: ricalcolate ogni volta che si leggono.
+Object.defineProperty(PRODIGEEK, 'listeCoupon', { get: () => PRODIGEEK.listeCouponAl(Date.now()), enumerable: true });
+
+// Per le pagine lasciate aperte: ogni minuto, e quando si torna sulla scheda, controlla se a mezzanotte
+// qualche coupon è comparso o scaduto, e in quel caso chiama avvisa con le liste nuove.
+PRODIGEEK.seCambianoICoupon = function (avvisa) {
+    let prima = JSON.stringify(PRODIGEEK.listeCoupon);
+    const controlla = () => {
+        const liste = PRODIGEEK.listeCoupon, adesso = JSON.stringify(liste);
+        if (adesso !== prima) { prima = adesso; avvisa(liste); }
+    };
+    setInterval(controlla, 60000);
+    if (typeof document !== 'undefined') document.addEventListener('visibilitychange', () => { if (!document.hidden) controlla(); });
+};

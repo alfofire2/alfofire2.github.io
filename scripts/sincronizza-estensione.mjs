@@ -5,9 +5,11 @@
 //   <a href="..." class="squad-card">
 // Questo script le scrive in un blocco non eseguito nel <head>, tra i due commenti segnaposto.
 // Lo lancia .github/workflows/sincronizza-estensione.yml quando cambia config.js e ogni ora,
-// così la squadra si spegne nell'estensione anche quando finisce l'evento.
+// così la squadra si spegne nell'estensione anche quando finisce l'evento, e i coupon con le date
+// (dal, al) compaiono e spariscono da soli.
 //
 // Uso: node scripts/sincronizza-estensione.mjs
+// Per provare un altro momento: ORA_SIMULATA=2026-11-01T00:00:00+01:00 node scripts/sincronizza-estensione.mjs
 
 import { readFileSync, writeFileSync } from 'node:fs';
 import { runInNewContext } from 'node:vm';
@@ -15,13 +17,27 @@ import { runInNewContext } from 'node:vm';
 const root = new URL('../', import.meta.url);
 const config = runInNewContext(readFileSync(new URL('config.js', root), 'utf8') + '\n;PRODIGEEK');
 
+const ora = process.env.ORA_SIMULATA ? Date.parse(process.env.ORA_SIMULATA) : Date.now();
+if (Number.isNaN(ora)) throw new Error(`ORA_SIMULATA non è una data: ${process.env.ORA_SIMULATA}`);
+
+// Una data scritta male in dal o al ferma tutto, così l'errore si vede nella scheda Actions.
+const sbagliati = Object.values(config.coupons).flatMap(b => b.codici)
+    .filter(c => String(c.code || '').trim() !== '' && config.statoCoupon(c, ora) === 'errore');
+if (sbagliati.length) {
+    throw new Error('Date dal/al da correggere in config.js (scrivile \'AAAA-MM-GG\', con dal non dopo al): '
+        + sbagliati.map(c => `${c.code} (dal: ${c.dal || '-'}, al: ${c.al || '-'})`).join(', '));
+}
+
 const { squadra } = config;
-// Senza i posti vuoti, con la valuta su ogni coupon (vedi fondo di config.js). La nota resta solo in homepage:
+// Solo i coupon validi in questo momento (vedi fondo di config.js). Nota e date restano solo per il sito:
 // all'estensione arrivano code, discount, min e currency, come si aspetta.
-const coupons = Object.fromEntries(Object.entries(config.listeCoupon).map(([nome, lista]) => [nome,
+const coupons = Object.fromEntries(Object.entries(config.listeCouponAl(ora)).map(([nome, lista]) => [nome,
     lista.map(({ code, discount, min, currency }) => ({ code, discount, min, currency }))
 ]));
-const ora = Date.now();
+const fuori = Object.values(config.coupons).flatMap(b => b.codici)
+    .filter(c => String(c.code || '').trim() !== '' && config.statoCoupon(c, ora) !== 'valido')
+    .map(c => `${c.code} ${config.statoCoupon(c, ora)}`);
+console.log(`Giorno in Italia: ${config.giornoItaliano(ora)}. Coupon fuori dalle date: ${fuori.join(', ') || 'nessuno'}`);
 const squadraAttiva = squadra.attiva === true && ora >= Date.parse(squadra.inizio) && ora <= Date.parse(squadra.fine);
 
 const INIZIO = '<!-- DATI PER L\'ESTENSIONE -->';
