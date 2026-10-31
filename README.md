@@ -73,7 +73,7 @@ Basta aggiungere al coupon `dal` e `al`, in ora italiana, nella forma anno-mese-
 - Un giorno solo: `dal` e `al` uguali, per esempio `dal: '2026-11-11', al: '2026-11-11'` (riga *Solo l’11 novembre*).
 - Se c'è anche `nota`, sotto il coupon compare la nota al posto della riga ricavata dalle date.
 
-Homepage e calcolatore controllano le date sul momento, anche se la pagina resta aperta a cavallo della mezzanotte (la aggiornano entro un minuto). L'estensione invece riceve i coupon dall'automazione oraria, quindi un coupon compare o sparisce nell'estensione entro un'ora circa dalla mezzanotte (GitHub a volte fa partire l'automazione con qualche minuto di ritardo).
+Homepage e calcolatore controllano le date sul momento, anche se la pagina resta aperta a cavallo della mezzanotte (la aggiornano entro un minuto). L'estensione invece riceve i coupon dall'automazione, che parte ogni ora e qualche volta in più intorno alla mezzanotte italiana. Di solito un coupon compare o sparisce nell'estensione poco dopo la mezzanotte, ma GitHub non garantisce gli orari e a volte salta dei giri: nel caso peggiore il ritardo può essere di qualche ora. Per forzare l'aggiornamento c'è *Run workflow* nella scheda *Actions*.
 
 Una data scritta male (per esempio `'2026-11-31'`, oppure `dal` dopo `al`) nasconde quel coupon e fa fallire l'automazione, con il codice del coupon nel messaggio d'errore.
 

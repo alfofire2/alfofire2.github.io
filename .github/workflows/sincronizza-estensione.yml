@@ -11,6 +11,9 @@ on:
     paths: [config.js, scripts/sincronizza-estensione.mjs]
   schedule:
     - cron: '7 * * * *'
+    # Altri giri a cavallo della mezzanotte italiana (22 e 23 UTC = mezzanotte d'estate e d'inverno),
+    # quando i coupon con dal/al cambiano: GitHub salta spesso i giri orari, così c'è più di una possibilità.
+    - cron: '2,17,32,47 22,23 * * *'
   workflow_dispatch:
 
 permissions:
