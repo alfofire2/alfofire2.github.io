@@ -16,7 +16,11 @@ const root = new URL('../', import.meta.url);
 const config = runInNewContext(readFileSync(new URL('config.js', root), 'utf8') + '\n;PRODIGEEK');
 
 const { squadra } = config;
-const coupons = config.listeCoupon;  // senza i posti vuoti, con la valuta su ogni coupon (vedi fondo di config.js)
+// Senza i posti vuoti, con la valuta su ogni coupon (vedi fondo di config.js). La nota resta solo in homepage:
+// all'estensione arrivano code, discount, min e currency, come si aspetta.
+const coupons = Object.fromEntries(Object.entries(config.listeCoupon).map(([nome, lista]) => [nome,
+    lista.map(({ code, discount, min, currency }) => ({ code, discount, min, currency }))
+]));
 const ora = Date.now();
 const squadraAttiva = squadra.attiva === true && ora >= Date.parse(squadra.inizio) && ora <= Date.parse(squadra.fine);
 

@@ -304,6 +304,12 @@
             color: #7f8c8d;
             margin-bottom: 20px;
         }
+        .coupon-note {
+            margin: -10px 0 20px;
+            font-size: 0.85em;
+            font-weight: 700;
+            color: var(--orange);
+        }
         .coupon-code-container {
             display: flex;
             justify-content: space-between;
@@ -620,7 +626,7 @@
     <!-- Generati da config.js con scripts/sincronizza-estensione.mjs: non modificarli qui, cambia config.js. -->
     <script type="text/plain" id="dati-estensione">
 const enable_aliexpress_squad = true;
-const coupons = {"esclusiviProdigeek":[],"altriEsclusiviProdigeek":[],"standardProdigeek":[],"generici":[{"code":"ITAFF03","discount":3,"min":18,"currency":"€"},{"code":"ITAFF06","discount":6,"min":39,"currency":"€"},{"code":"ITAFF14","discount":14,"min":79,"currency":"€"},{"code":"ITAFF25","discount":25,"min":149,"currency":"€"},{"code":"ITAFF45","discount":45,"min":259,"currency":"€"},{"code":"ITAFF60","discount":60,"min":349,"currency":"€"},{"code":"ITAFF80","discount":80,"min":469,"currency":"€"},{"code":"ITD11100","discount":100,"min":500,"currency":"€"},{"code":"ITD11120","discount":120,"min":600,"currency":"€"}]};
+const coupons = {"esclusiviProdigeek":[{"code":"IFPBKCOQ","discount":3,"min":18,"currency":"$"},{"code":"IFPWBJXE","discount":6,"min":39,"currency":"$"},{"code":"IFPT3ULS","discount":14,"min":79,"currency":"$"},{"code":"IFPB6VFW","discount":25,"min":149,"currency":"$"},{"code":"IFPRBOY9","discount":45,"min":259,"currency":"$"},{"code":"IFPMRJS7","discount":60,"min":349,"currency":"$"},{"code":"IFPFWKQD","discount":80,"min":469,"currency":"$"},{"code":"IFPMGSEF","discount":100,"min":500,"currency":"$"},{"code":"IFPFEIGQ","discount":120,"min":600,"currency":"$"},{"code":"IFPKEVIS","discount":100,"min":500,"currency":"$"},{"code":"IFP7NWZS","discount":120,"min":600,"currency":"$"}],"altriEsclusiviProdigeek":[],"standardProdigeek":[],"generici":[{"code":"ITAFF03","discount":3,"min":18,"currency":"€"},{"code":"ITAFF06","discount":6,"min":39,"currency":"€"},{"code":"ITAFF14","discount":14,"min":79,"currency":"€"},{"code":"ITAFF25","discount":25,"min":149,"currency":"€"},{"code":"ITAFF45","discount":45,"min":259,"currency":"€"},{"code":"ITAFF60","discount":60,"min":349,"currency":"€"},{"code":"ITAFF80","discount":80,"min":469,"currency":"€"},{"code":"ITD11100","discount":100,"min":500,"currency":"€"},{"code":"ITD11120","discount":120,"min":600,"currency":"€"}]};
 <a href="https://s.click.aliexpress.com/e/_c3yNnO8F" class="squad-card"></a>
     </script>
     <!-- FINE DATI PER L'ESTENSIONE -->
@@ -750,7 +756,7 @@ const coupons = {"esclusiviProdigeek":[],"altriEsclusiviProdigeek":[],"standardP
             document.write('<style>#squad-backdrop, #squad-strip { display: none !important; }</style>');
         }
         const SITE_URL = 'https://coupon.prodigeek.it/';
-        const SITE_LASTMOD = '2026-10-27';
+        const SITE_LASTMOD = '2026-10-31';
         const coupons = PRODIGEEK.listeCoupon;
 
         
@@ -813,6 +819,7 @@ const coupons = {"esclusiviProdigeek":[],"altriEsclusiviProdigeek":[],"standardP
                 <div class="coupon-details">
                     Sconto su spesa minima di ${coupon.min}${coupon.currency}
                 </div>
+                ${coupon.nota ? `<div class="coupon-note">${coupon.nota}</div>` : ''}
                 <div class="coupon-code-container" title="Copia il codice">
                     <span class="coupon-code">${coupon.code}</span>
                     <div class="copy-feedback" style="display: none;">Copiato!</div>

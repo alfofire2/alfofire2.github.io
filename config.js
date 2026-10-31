@@ -12,20 +12,23 @@ const PRODIGEEK = {
     // per aggiungere un coupon riempi un posto vuoto (code, discount = sconto, min = spesa minima),
     // per toglierlo svuota il codice (code: ''). I posti con il codice vuoto non compaiono da nessuna parte,
     // e un blocco senza codici nasconde la sua sezione in homepage. Servono più posti? Copia una riga.
+    // nota (facoltativa) è una riga in più sotto il coupon in homepage, per esempio nota: 'Solo l’11 e il 12 novembre'.
     coupons: {
         // Coupon Esclusivi Prodigeek
         esclusiviProdigeek: {
             valuta: '$',
             codici: [
-                { code: '',           discount: 0,    min: 0 },
-                { code: '',           discount: 0,    min: 0 },
-                { code: '',           discount: 0,    min: 0 },
-                { code: '',           discount: 0,    min: 0 },
-                { code: '',           discount: 0,    min: 0 },
-                { code: '',           discount: 0,    min: 0 },
-                { code: '',           discount: 0,    min: 0 },
-                { code: '',           discount: 0,    min: 0 },
-                { code: '',           discount: 0,    min: 0 },
+                { code: 'IFPBKCOQ',   discount: 3,    min: 18 },
+                { code: 'IFPWBJXE',   discount: 6,    min: 39 },
+                { code: 'IFPT3ULS',   discount: 14,   min: 79 },
+                { code: 'IFPB6VFW',   discount: 25,   min: 149 },
+                { code: 'IFPRBOY9',   discount: 45,   min: 259 },
+                { code: 'IFPMRJS7',   discount: 60,   min: 349 },
+                { code: 'IFPFWKQD',   discount: 80,   min: 469 },
+                { code: 'IFPMGSEF',   discount: 100,  min: 500, nota: 'Solo dall’1 al 3 novembre' },
+                { code: 'IFPFEIGQ',   discount: 120,  min: 600, nota: 'Solo dall’1 al 3 novembre' },
+                { code: 'IFPKEVIS',   discount: 100,  min: 500, nota: 'Solo l’11 e il 12 novembre' },
+                { code: 'IFP7NWZS',   discount: 120,  min: 600, nota: 'Solo l’11 e il 12 novembre' },
                 { code: '',           discount: 0,    min: 0 }
             ]
         },
@@ -117,5 +120,6 @@ const PRODIGEEK = {
 PRODIGEEK.listeCoupon = Object.fromEntries(Object.entries(PRODIGEEK.coupons).map(([nome, blocco]) => [nome,
     blocco.codici
         .filter(c => String(c.code || '').trim() !== '')
-        .map(c => ({ code: String(c.code).trim(), discount: Number(c.discount), min: Number(c.min), currency: blocco.valuta || '€' }))
+        .map(c => ({ code: String(c.code).trim(), discount: Number(c.discount), min: Number(c.min), currency: blocco.valuta || '€',
+            ...(String(c.nota || '').trim() ? { nota: String(c.nota).trim() } : {}) }))
 ]));

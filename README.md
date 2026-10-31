@@ -46,6 +46,7 @@ generici: {
 - **`discount`**: lo sconto.
 - **`min`**: la spesa minima.
 - **`valuta`**: `'€'` oppure `'$'`, vale per tutto il blocco.
+- **`nota`** (facoltativa): una riga in più sotto il coupon in homepage, per esempio `nota: 'Solo l’11 e il 12 novembre'`. Serve per i coupon validi solo in certi giorni: il sito non li toglie da solo, a fine validità va svuotato il codice. L'estensione non la mostra.
 
 Cosa fare:
 
