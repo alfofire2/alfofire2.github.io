@@ -110,6 +110,11 @@
         .pdg-is-capturing .whitespace-nowrap {
             white-space: nowrap !important;
         }
+
+        /* Carrello: nella foto niente pulsanti di modifica e niente righe vuote */
+        .pdg-is-capturing .pdg-no-capture, .pdg-is-capturing .pdg-riga-vuota {
+            display: none !important;
+        }
     </style>
 </head>
 <body class="min-h-screen p-4 md:p-8">
@@ -136,9 +141,16 @@
                 </button>
             </div>
         </div>
-        <div class="flex justify-center md:justify-end">
+        <div class="flex items-center justify-between gap-2">
+            <div id="pdg-modo" role="group" aria-label="Modalità di calcolo"
+                 class="inline-flex p-1 rounded-full bg-white border border-gray-200 text-xs md:text-sm font-bold">
+                <button type="button" data-modo="singolo" aria-pressed="true"
+                        class="px-3 md:px-4 py-1 rounded-full transition-colors brand-gradient text-white shadow-sm">Singolo</button>
+                <button type="button" data-modo="carrello" aria-pressed="false"
+                        class="px-3 md:px-4 py-1 rounded-full transition-colors text-gray-500 hover:text-orange-600">Carrello</button>
+            </div>
             <a href="/"
-               class="px-6 py-2 rounded-full bg-white border border-gray-200 text-xs md:text-sm font-bold text-gray-500 hover:text-orange-600 flex items-center gap-2">
+               class="px-4 md:px-6 py-2 rounded-full bg-white border border-gray-200 text-xs md:text-sm font-bold text-gray-500 hover:text-orange-600 flex items-center gap-2">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                 </svg>
@@ -151,7 +163,7 @@
         <div id="pdg-capture-wrapper" class="p-4 md:p-8 bg-[#faf9f6] rounded-[40px]">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
                 <div class="lg:col-span-7 flex flex-col gap-6">
-                    <section class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                    <section data-solo-singolo class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
                         <label for="pdg-calc-price"
                                class="block text-sm font-bold text-gray-500 uppercase tracking-wider mb-2">Prezzo
                             Originale Prodotto</label>
@@ -161,7 +173,7 @@
                             <span class="absolute right-4 top-1/2 -translate-y-1/2 text-3xl font-bold text-gray-400">€</span>
                         </div>
                     </section>
-                    <section class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex-grow">
+                    <section data-solo-singolo class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex-grow">
                         <h3 class="text-lg font-bold mb-4 flex items-center gap-2"><span
                                 class="w-2 h-6 bg-turquoise rounded-full"></span> Dettaglio Risparmio</h3>
                         <div class="space-y-4">
@@ -192,9 +204,29 @@
                             </div>
                         </div>
                     </section>
+                    <section data-solo-carrello hidden class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="block text-sm font-bold text-gray-500 uppercase tracking-wider whitespace-nowrap">Articoli nel carrello</span>
+                            <span id="pdg-cart-count" class="pdg-no-capture text-xs font-bold text-gray-400"></span>
+                        </div>
+                        <div id="pdg-cart-rows" class="space-y-2"></div>
+                        <button type="button" id="pdg-cart-add"
+                                class="pdg-no-capture mt-3 w-full py-2 rounded-xl border-2 border-dashed border-orange-200 text-orange-600 text-sm font-bold hover:bg-orange-50 transition-colors">
+                            + Aggiungi articolo
+                        </button>
+                        <p id="pdg-cart-limit" hidden class="pdg-no-capture mt-3 text-[11px] text-gray-400 text-center">Massimo 12 articoli, così il calcolo resta istantaneo.</p>
+                    </section>
+                    <section data-solo-carrello hidden class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex-grow">
+                        <h3 class="text-lg font-bold mb-4 flex items-center gap-2"><span
+                                class="w-2 h-6 bg-turquoise rounded-full"></span> Miglior combo</h3>
+                        <div id="pdg-cart-orders" class="space-y-3"></div>
+                        <p id="pdg-cart-confronto" hidden class="mt-4 p-3 rounded-lg bg-emerald-50/60 text-sm font-bold text-emerald-700"></p>
+                        <p class="mt-3 text-[10px] text-gray-400 leading-tight">Spedizione non considerata: può cambiare da un ordine all’altro.
+                            Ogni codice vale per un ordine solo.</p>
+                    </section>
                 </div>
                 <div class="lg:col-span-5">
-                    <div class="h-full bg-white rounded-3xl p-8 shadow-xl border border-gray-100 brand-gradient text-white flex flex-col justify-between">
+                    <div data-solo-singolo class="h-full bg-white rounded-3xl p-8 shadow-xl border border-gray-100 brand-gradient text-white flex flex-col justify-between">
                         <div>
                             <h3 class="text-xl font-bold mb-6 opacity-90">Riepilogo Finale</h3>
                             <div class="space-y-4">
@@ -235,6 +267,59 @@
 
                         <div class="mt-4 space-y-4 pdg-action-buttons">
                             <button onclick="copyTextSummary(this)"
+                                    class="flex items-center justify-center gap-2 w-full bg-white/10 hover:bg-white/20 text-white font-bold py-3 rounded-2xl transition-all border border-white/10">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path>
+                                </svg>
+                                COPIA RIEPILOGO TESTO
+                            </button>
+                            <a href="/"
+                               class="block w-full text-center bg-white text-orange-600 font-black py-4 rounded-2xl shadow-lg hover:bg-orange-50 transition-all transform hover:-translate-y-1">SCOPRI
+                                TUTTI I CODICI</a>
+                        </div>
+                    </div>
+                    <div data-solo-carrello hidden class="h-full bg-white rounded-3xl p-8 shadow-xl border border-gray-100 brand-gradient text-white flex flex-col justify-between">
+                        <div>
+                            <h3 class="text-xl font-bold mb-6 opacity-90">Riepilogo Carrello</h3>
+                            <div class="space-y-4">
+                                <div class="flex justify-between items-baseline border-b border-white/20 pb-2"><span
+                                        id="pdg-cart-sum-tot-label" class="text-xs font-medium opacity-80 uppercase tracking-tighter whitespace-nowrap">Totale Articoli</span><span
+                                        id="pdg-cart-sum-tot" class="text-lg font-bold">0,00 €</span></div>
+                                <div class="flex justify-between items-baseline border-b border-white/20 pb-2"><span
+                                        class="text-xs font-medium opacity-80 uppercase tracking-tighter whitespace-nowrap">Ordini Consigliati</span><span
+                                        id="pdg-cart-sum-ordini" class="text-lg font-bold">0</span></div>
+                                <div class="flex justify-between items-baseline border-b border-white/20 pb-2"><span
+                                        class="text-xs font-medium opacity-80 uppercase tracking-tighter whitespace-nowrap">Dopo Coupon</span><span
+                                        id="pdg-cart-sum-after-coupon" class="text-lg font-bold">0,00 €</span></div>
+                                <div class="flex justify-between items-baseline border-b border-white/20 pb-2"><span
+                                        class="text-xs font-medium opacity-80 uppercase tracking-tighter whitespace-nowrap">Dopo <span data-pagamento-nome>PayPal</span></span><span
+                                        id="pdg-cart-sum-after-pp" class="text-lg font-bold">0,00 €</span></div>
+                                <div class="pt-2 overflow-hidden">
+                                    <span class="block text-[10px] font-bold opacity-80 mb-1 uppercase tracking-tighter whitespace-nowrap">Prezzo Finale<span data-cashback> (con Cashback)</span></span>
+                                    <div class="flex items-baseline min-w-0">
+                                        <div id="pdg-cart-sum-final"
+                                             class="text-6xl font-black tracking-tighter leading-none mb-2">0,00 €
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-wrap justify-between items-center gap-x-2 gap-y-1 mt-2">
+                                        <span id="pdg-cart-sum-save-val"
+                                              class="text-xl font-black text-yellow-300 uppercase tracking-tight whitespace-nowrap">0,00 € RISPARMIATI</span>
+                                        <span id="pdg-cart-sum-save-perc"
+                                              class="text-xs font-bold px-2 py-0.5 rounded bg-white/20 whitespace-nowrap">0% Sconto</span>
+                                    </div>
+                                    <p id="pdg-cart-sum-extra" hidden class="mt-4 text-sm font-bold bg-white/15 rounded-xl px-3 py-2 leading-snug"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pt-4 border-t border-white/10 mt-8">
+                            <p class="text-[10px] opacity-70 leading-tight">Coupon e sconto <span data-pagamento-nome>PayPal</span> sono
+                                calcolati ordine per ordine<span data-cashback>; il cashback non supera <span data-squadra="giorno">8</span> € al
+                                giorno in tutto, anche con più ordini nello stesso giorno</span>. Spedizione non considerata.
+                                I prezzi possono cambiare e i coupon finiscono.</p>
+                        </div>
+
+                        <div class="mt-4 space-y-4 pdg-action-buttons">
+                            <button onclick="copyCartSummary(this)"
                                     class="flex items-center justify-center gap-2 w-full bg-white/10 hover:bg-white/20 text-white font-bold py-3 rounded-2xl transition-all border border-white/10">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path>
@@ -298,6 +383,7 @@
 </div>
 
 <script src="config.js"></script>
+<script src="carrello.js"></script>
 <script>
     // Coupon, cashback della squadra e sconto del pagamento arrivano da config.js.
     // Fuori dal periodo della squadra il calcolatore toglie il cashback da solo,
@@ -400,8 +486,8 @@
     }
 
     // Dynamic Font Scaling for Final Price
-    function adjustFinalPriceFontSize() {
-        const text = document.getElementById('pdg-calc-summary-final');
+    function adjustFinalPriceFontSize(id = 'pdg-calc-summary-final') {
+        const text = document.getElementById(id);
         const container = text?.parentElement;
         if (!container || !text) return;
 
@@ -540,8 +626,254 @@
         PRODIGEEK.seCambianoICoupon(async () => {
             dynamicCoupons = await fetchCoupons();
             calcolaTutto();
+            calcolaCarrello();
         });
+        avviaCarrello();
     });
+
+    // Modalità carrello: più articoli; carrello.js sceglie come dividerli in ordini e quale coupon usare in ognuno.
+    // Regole (dettagli in carrello.js): un coupon per ordine, ogni codice una volta sola, sconto del pagamento
+    // per ogni ordine, tetto del cashback unico per tutta la combo, a parità di risparmio meno ordini.
+    const CARRELLO_MAX = PRODIGEEK_CARRELLO.MAX_ARTICOLI;
+    let modo = 'singolo', carrello = ['', ''], risultatoCarrello = null, timerCarrello;
+
+    const leggiPrezzo = v => parseFloat(String(v || '').replace(',', '.')) || 0;
+    const esc = s => String(s).replace(/[&<>"']/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[c]));
+
+    function leggiImpostazioni() {
+        const soglie = [...document.querySelectorAll('#pdg-calc-conf-pp-soglie > div')].map(r => ({
+            min: parseFloat(r.querySelector('.pdg-calc-conf-pp-min').value),
+            sconto: parseFloat(r.querySelector('.pdg-calc-conf-pp-disc').value)
+        })).filter(t => !isNaN(t.min) && !isNaN(t.sconto));
+        return {
+            soglie,
+            cashPerc: CASHBACK_ATTIVO ? parseFloat(document.getElementById('pdg-calc-conf-cash-perc').value) / 100 : 0,
+            cashCap: CASHBACK_ATTIVO ? parseFloat(document.getElementById('pdg-calc-conf-cash-cap').value) : 0
+        };
+    }
+
+    function salvaCarrello() {
+        try { localStorage.setItem('pdg_calc_carrello', JSON.stringify({modo, prezzi: carrello})); } catch (e) {}
+    }
+
+    function impostaModo(nuovo) {
+        modo = nuovo === 'carrello' ? 'carrello' : 'singolo';
+        const inCarrello = modo === 'carrello';
+        document.querySelectorAll('[data-solo-singolo]').forEach(el => el.hidden = inCarrello);
+        document.querySelectorAll('[data-solo-carrello]').forEach(el => el.hidden = !inCarrello);
+        document.querySelectorAll('#pdg-modo [data-modo]').forEach(b => {
+            const attivo = b.dataset.modo === modo;
+            b.setAttribute('aria-pressed', attivo);
+            b.classList.toggle('brand-gradient', attivo);
+            b.classList.toggle('text-white', attivo);
+            b.classList.toggle('shadow-sm', attivo);
+            b.classList.toggle('text-gray-500', !attivo);
+            b.classList.toggle('hover:text-orange-600', !attivo);
+        });
+        if (inCarrello) {
+            renderRighe();
+            calcolaCarrello();
+        } else {
+            setTimeout(adjustFinalPriceFontSize, 50);
+        }
+        salvaCarrello();
+    }
+
+    function renderRighe() {
+        document.getElementById('pdg-cart-rows').innerHTML = carrello.map((v, i) => `
+                <div class="flex items-center gap-2${leggiPrezzo(v) > 0 ? '' : ' pdg-riga-vuota'}" data-riga="${i}">
+                    <span class="w-7 flex-shrink-0 text-xs font-black text-gray-400">#${i + 1}</span>
+                    <div class="relative flex-1 min-w-0 pdg-input-wrapper">
+                        <input type="text" inputmode="decimal" autocomplete="off" placeholder="0,00" value="${esc(v)}"
+                               aria-label="Prezzo articolo ${i + 1}" data-indice="${i}"
+                               class="pdg-cart-price w-full text-xl font-black py-2 pl-3 pr-9 rounded-xl bg-gray-50 border-2 border-transparent focus:border-orange-400 outline-none">
+                        <span class="absolute right-3 top-1/2 -translate-y-1/2 text-lg font-bold text-gray-400">€</span>
+                    </div>
+                    <button type="button" data-togli="${i}" aria-label="Togli articolo ${i + 1}" title="Togli"
+                            class="pdg-no-capture w-9 h-9 flex-shrink-0 rounded-full text-xl leading-none text-gray-300 hover:text-red-500 hover:bg-red-50 transition-colors">&times;</button>
+                </div>`).join('');
+        const pieno = carrello.length >= CARRELLO_MAX;
+        document.getElementById('pdg-cart-add').hidden = pieno;
+        document.getElementById('pdg-cart-limit').hidden = !pieno;
+        document.getElementById('pdg-cart-count').textContent = `${carrello.length}/${CARRELLO_MAX}`;
+    }
+
+    function aggiungiRiga() {
+        if (carrello.length >= CARRELLO_MAX) return;
+        if (document.activeElement && document.activeElement.classList.contains('pdg-cart-price')) document.activeElement.blur();
+        carrello.push('');
+        renderRighe();
+        salvaCarrello();
+        const campi = document.querySelectorAll('.pdg-cart-price');
+        campi[campi.length - 1].focus();
+    }
+
+    function calcolaCarrello() {
+        if (modo !== 'carrello') return;
+        const articoli = carrello.map((v, i) => ({numero: i + 1, prezzo: leggiPrezzo(v)})).filter(a => a.prezzo > 0);
+        const r = articoli.length ? PRODIGEEK_CARRELLO.ottimizza(articoli.map(a => a.prezzo), dynamicCoupons, leggiImpostazioni()) : null;
+        risultatoCarrello = r ? {...r, numeri: articoli.map(a => a.numero), prezzi: articoli.map(a => a.prezzo)} : null;
+        renderRisultatoCarrello();
+        clearTimeout(timerCarrello);
+        if (r) timerCarrello = setTimeout(() => saveToHistory({
+            orig: r.migliore.totale, final: r.migliore.finale,
+            couponCode: r.migliore.ordini.length === 1 ? 'Carrello' : `${r.migliore.ordini.length} ordini`
+        }), 2000);
+    }
+
+    function rigaImporto(nome, valore, colore) {
+        return `<div class="flex justify-between items-center gap-2"><span class="text-gray-500 min-w-0">${nome}</span><span class="font-bold ${colore} whitespace-nowrap">-${formatEuro(valore)}</span></div>`;
+    }
+
+    function renderRisultatoCarrello() {
+        const r = risultatoCarrello, box = document.getElementById('pdg-cart-orders'),
+            confronto = document.getElementById('pdg-cart-confronto'), extra = document.getElementById('pdg-cart-sum-extra');
+        const set = (id, testo) => document.getElementById(id).textContent = testo;
+        if (!r) {
+            box.innerHTML = '<p class="text-sm text-gray-400">Scrivi i prezzi degli articoli: qui compare come dividerli in ordini, e con quali coupon, per risparmiare di più.</p>';
+            confronto.hidden = extra.hidden = true;
+            set('pdg-cart-sum-tot-label', 'Totale Articoli');
+            ['pdg-cart-sum-tot', 'pdg-cart-sum-after-coupon', 'pdg-cart-sum-after-pp', 'pdg-cart-sum-final'].forEach(id => set(id, formatEuro(0)));
+            set('pdg-cart-sum-ordini', '0');
+            set('pdg-cart-sum-save-val', `${formatEuro(0)} RISPARMIATI`);
+            set('pdg-cart-sum-save-perc', '0.0% Sconto');
+            setTimeout(() => adjustFinalPriceFontSize('pdg-cart-sum-final'), 50);
+            return;
+        }
+        const m = r.migliore, molti = m.ordini.length > 1;
+        box.innerHTML = m.ordini.map((o, k) => `
+                <div class="rounded-xl border border-orange-100 bg-orange-50/40 p-3">
+                    <div class="flex justify-between items-center gap-2 mb-2">
+                        <span class="text-xs font-black text-orange-500 uppercase whitespace-nowrap">${molti ? `Ordine ${k + 1}` : 'Un solo ordine'}</span>
+                        <span class="text-xs font-bold text-gray-400 whitespace-nowrap">${formatEuro(o.subtotale)}</span>
+                    </div>
+                    <div class="flex flex-wrap gap-1 mb-2">${o.articoli.map(i => `<span class="text-[11px] font-bold text-gray-600 bg-white px-2 py-0.5 rounded border border-gray-200 whitespace-nowrap">#${r.numeri[i]} · ${formatEuro(r.prezzi[i])}</span>`).join('')}</div>
+                    <div class="space-y-1 text-xs">
+                        ${o.coupon
+                            ? `<div class="flex justify-between items-center gap-2"><span class="min-w-0"><span class="text-gray-500">Coupon </span><span class="font-bold text-gray-800 bg-white/60 px-1.5 rounded border border-orange-200">${esc(o.coupon.codice)}</span></span><span class="font-bold text-orange-600 whitespace-nowrap">-${formatEuro(o.scontoCoupon)}</span></div>`
+                            : '<div class="text-gray-400">Nessun coupon</div>'}
+                        ${o.scontoPagamento > 0 ? rigaImporto(`Sconto ${esc(pagamento.nome)}`, o.scontoPagamento, 'text-blue-600') : ''}
+                        ${o.cashback > 0 ? rigaImporto('Cashback squadra', o.cashback, 'text-emerald-600') : ''}
+                    </div>
+                    <div class="flex justify-between items-baseline border-t border-orange-100 mt-2 pt-2">
+                        <span class="text-[11px] font-bold uppercase text-gray-500 whitespace-nowrap">Totale ordine</span>
+                        <span class="text-lg font-black text-gray-800">${formatEuro(o.finale)}</span>
+                    </div>
+                </div>`).join('');
+        const unico = r.unico, cu = unico.ordini[0].coupon;
+        confronto.hidden = false;
+        if (r.coincide || r.inPiu < 0.005) {
+            confronto.textContent = 'Un solo ordine è già la scelta migliore.';
+            extra.hidden = true;
+        } else {
+            confronto.textContent = `Rispetto a un solo ordine (${cu ? 'coupon ' + cu.codice : 'senza coupon'}, ${formatEuro(unico.finale)}) risparmi ${formatEuro(r.inPiu)} in più.`;
+            extra.hidden = false;
+            extra.textContent = `+${formatEuro(r.inPiu)} rispetto a un solo ordine (${formatEuro(unico.finale)})`;
+        }
+        const n = r.numeri.length;
+        set('pdg-cart-sum-tot-label', `Totale ${n} ${n === 1 ? 'articolo' : 'articoli'}`);
+        set('pdg-cart-sum-tot', formatEuro(m.totale));
+        set('pdg-cart-sum-ordini', String(m.ordini.length));
+        set('pdg-cart-sum-after-coupon', formatEuro(m.dopoCoupon));
+        set('pdg-cart-sum-after-pp', formatEuro(m.dopoPagamento));
+        set('pdg-cart-sum-final', formatEuro(m.finale));
+        set('pdg-cart-sum-save-val', `${formatEuro(m.risparmio)} RISPARMIATI`);
+        set('pdg-cart-sum-save-perc', `${(m.totale > 0 ? m.risparmio / m.totale * 100 : 0).toFixed(1)}% Sconto`);
+        setTimeout(() => adjustFinalPriceFontSize('pdg-cart-sum-final'), 50);
+    }
+
+    function copyCartSummary(btn) {
+        const r = risultatoCarrello;
+        if (!r) return;
+        const m = r.migliore;
+        let text = `🛒 CARRELLO ALIEXPRESS 🛒\n\n`;
+        text += `📦 ${r.numeri.length} ${r.numeri.length === 1 ? 'articolo' : 'articoli'}, totale ${formatEuro(m.totale)}\n`;
+        text += m.ordini.length > 1 ? `✅ Miglior combo: ${m.ordini.length} ordini\n` : `✅ Miglior combo: un solo ordine\n`;
+        m.ordini.forEach((o, k) => {
+            text += `\n${m.ordini.length > 1 ? `Ordine ${k + 1}` : 'Ordine'}: ${o.articoli.map(i => `#${r.numeri[i]} (${formatEuro(r.prezzi[i])})`).join(', ')}\n`;
+            text += o.coupon ? `🎟️ Coupon: ${o.coupon.codice} (-${formatEuro(o.scontoCoupon)})\n` : `🎟️ Coupon: Nessuno\n`;
+            if (o.scontoPagamento > 0) text += `💳 Sconto ${pagamento.nome}: -${formatEuro(o.scontoPagamento)}\n`;
+            if (o.cashback > 0) text += `💰 Cashback Squadra: -${formatEuro(o.cashback)}\n`;
+            text += `👉 Totale ordine: ${formatEuro(o.finale)}\n`;
+        });
+        text += `\n---------------------------\n`;
+        text += `✨ PREZZO FINALE: ${formatEuro(m.finale)}\n`;
+        text += `🎁 RISPARMIO TOTALE: ${formatEuro(m.risparmio)}\n`;
+        if (!r.coincide && r.inPiu >= 0.005) text += `📊 Con un solo ordine: ${formatEuro(r.unico.finale)} (così risparmi ${formatEuro(r.inPiu)} in più)\n`;
+        text += `---------------------------\n`;
+        text += `Spedizione non considerata.\n\n`;
+        text += `Calcola anche tu il tuo sconto qui:\nhttps://coupon.prodigeek.it/calculator`;
+
+        navigator.clipboard.writeText(text).then(() => {
+            const originalContent = btn.innerHTML;
+            btn.innerHTML = '✨ COPIATO!';
+            btn.classList.add('bg-green-600', 'text-white');
+            setTimeout(() => {
+                btn.innerHTML = originalContent;
+                btn.classList.remove('bg-green-600', 'text-white');
+            }, 2000);
+        }).catch(err => {
+            console.error("Errore copia:", err);
+        });
+    }
+
+    function avviaCarrello() {
+        let salvato = {};
+        try { salvato = JSON.parse(localStorage.getItem('pdg_calc_carrello') || '{}') || {}; } catch (e) {}
+        if (Array.isArray(salvato.prezzi) && salvato.prezzi.length)
+            carrello = salvato.prezzi.slice(0, CARRELLO_MAX).map(v => String(v || '').replace(/[^0-9,]/g, ''));
+        const righe = document.getElementById('pdg-cart-rows');
+        righe.addEventListener('input', (e) => {
+            const campo = e.target.closest('.pdg-cart-price');
+            if (!campo) return;
+            const s = campo.selectionStart, v = campo.value.replace(/\./g, ','), nv = v.replace(/[^0-9,]/g, '');
+            if (campo.value !== nv) {
+                campo.value = nv;
+                const pos = Math.max(0, s - (v.length - nv.length));
+                campo.setSelectionRange(pos, pos);
+            }
+            carrello[+campo.dataset.indice] = nv;
+            campo.closest('[data-riga]').classList.toggle('pdg-riga-vuota', !(leggiPrezzo(nv) > 0));
+            salvaCarrello();
+            calcolaCarrello();
+        });
+        righe.addEventListener('focusout', (e) => {
+            const campo = e.target.closest('.pdg-cart-price');
+            if (!campo || !campo.value || !campo.isConnected) return;
+            const n = leggiPrezzo(campo.value);
+            if (n > 0) campo.value = carrello[+campo.dataset.indice] = n.toLocaleString('it-IT', {minimumFractionDigits: 2, maximumFractionDigits: 2, useGrouping: false});
+            salvaCarrello();
+        });
+        righe.addEventListener('keydown', (e) => {
+            const campo = e.target.closest('.pdg-cart-price');
+            if (e.key !== 'Enter' || !campo) return;
+            e.preventDefault();
+            const i = +campo.dataset.indice, campi = document.querySelectorAll('.pdg-cart-price');
+            if (i < campi.length - 1) campi[i + 1].focus(); else if (campo.value) aggiungiRiga();
+        });
+        righe.addEventListener('click', (e) => {
+            const b = e.target.closest('[data-togli]');
+            if (!b) return;
+            const i = +b.dataset.togli;
+            if (carrello.length > 1) carrello.splice(i, 1); else carrello[0] = '';
+            renderRighe();
+            salvaCarrello();
+            calcolaCarrello();
+        });
+        document.getElementById('pdg-cart-add').addEventListener('click', aggiungiRiga);
+        const impostazioni = document.getElementById('pdg-calc-settings');
+        impostazioni.addEventListener('change', calcolaCarrello);
+        impostazioni.addEventListener('input', calcolaCarrello);
+        document.querySelectorAll('#pdg-modo [data-modo]').forEach(b => b.addEventListener('click', () => {
+            if (b.dataset.modo === modo) return;
+            // Primo passaggio al carrello con un prezzo già scritto: diventa il primo articolo.
+            const prezzoSingolo = document.getElementById('pdg-calc-price').value;
+            if (b.dataset.modo === 'carrello' && leggiPrezzo(prezzoSingolo) > 0 && carrello.every(v => !(leggiPrezzo(v) > 0)))
+                carrello[0] = leggiPrezzo(prezzoSingolo.replace(/\./g, '')).toLocaleString('it-IT', {minimumFractionDigits: 2, maximumFractionDigits: 2, useGrouping: false});
+            impostaModo(b.dataset.modo);
+        }));
+        impostaModo(salvato.modo === 'carrello' ? 'carrello' : 'singolo');
+    }
 
     async function shareScreenshot() {
         const area = document.getElementById('pdg-capture-wrapper'),
@@ -556,7 +888,7 @@
 
         // 2. Forza ricalcolo font basato sul NUOVO layout (800px)
         void area.offsetWidth;
-        adjustFinalPriceFontSize();
+        adjustFinalPriceFontSize(modo === 'carrello' ? 'pdg-cart-sum-final' : undefined);
 
         // 3. Aspetta che il layout si stabilizzi
         await new Promise(r => setTimeout(r, 500));
@@ -569,9 +901,10 @@
             for (let i = 0; i < fData.length; i++) u8arr[i] = fData.charCodeAt(i);
 
             // Formatta il nome file: Sconto-Prodigeek-PrezzoOriginale-Data
-            const prezzoOrig = currentValues.orig.toFixed(2).replace('.', ',');
+            const inCarrello = modo === 'carrello' && risultatoCarrello;
+            const prezzoOrig = (inCarrello ? risultatoCarrello.migliore.totale : currentValues.orig).toFixed(2).replace('.', ',');
             const dateStr = new Date().toISOString().slice(0, 10).replace(/-/g, ''); // YYYYMMDD
-            const fileName = `Sconto-Prodigeek-${prezzoOrig}eur-${dateStr}.jpg`;
+            const fileName = `${inCarrello ? 'Carrello' : 'Sconto'}-Prodigeek-${prezzoOrig}eur-${dateStr}.jpg`;
 
             const f = new File([u8arr], fileName, {type: 'image/jpeg'});
             const sD = {
@@ -591,6 +924,7 @@
         } finally {
             if (wm) wm.classList.add('hidden');
             area.classList.remove('pdg-is-capturing');
+            if (modo === 'carrello') adjustFinalPriceFontSize('pdg-cart-sum-final');
             btn.innerHTML = old;
             btn.disabled = false;
         }
