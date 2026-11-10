@@ -191,7 +191,7 @@
                             <div class="flex justify-between items-center p-3 rounded-lg bg-blue-50/50">
                                 <div class="min-w-0 flex-1 pr-2">
                                     <span class="block text-xs font-bold text-blue-400 uppercase whitespace-nowrap">Sconto <span data-pagamento-nome>PayPal</span></span>
-                                    <span class="font-bold text-gray-700 text-sm whitespace-nowrap">Automatico al checkout</span>
+                                    <span id="pdg-calc-res-paypal-nota" class="font-bold text-gray-700 text-sm whitespace-nowrap">Automatico al checkout</span>
                                 </div>
                                 <span id="pdg-calc-res-paypal-value"
                                       class="text-xl font-bold text-blue-600 whitespace-nowrap">0,00 €</span>
@@ -459,7 +459,7 @@
     // Coupon in euro. Quelli in dollari sono convertiti: sconto per difetto e spesa minima per eccesso al centesimo,
     // così il calcolatore non promette mai più di quanto dà AliExpress, che al checkout usa il suo cambio.
     async function fetchCoupons() {
-        return Object.values(PRODIGEEK.listeCoupon).flat().map(c => {
+        return Object.entries(PRODIGEEK.listeCoupon).filter(([nome]) => nome !== pagamento.blocco).flatMap(([, lista]) => lista).map(c => {
             const inDollari = c.currency === '$';
             return {
                 codice: c.code,
@@ -468,6 +468,43 @@
                 dollari: inDollari ? parseFloat(c.discount) : null
             };
         });
+    }
+
+    // Soglie dello sconto del metodo di pagamento: i coupon validi oggi del blocco pagamento.blocco (per esempio
+    // i codici PayPal), altrimenti quelle scritte in pagamento.soglie.
+    function soglieDiOggi() {
+        const lista = (pagamento.blocco && PRODIGEEK.listeCoupon[pagamento.blocco]) || [];
+        return lista.length ? lista.map(c => ({min: c.min, sconto: c.discount, codice: c.code})) : pagamento.soglie;
+    }
+
+    function renderSoglie() {
+        const campo = 'w-full p-2 rounded-lg bg-gray-50 border border-gray-200 font-bold outline-none';
+        document.getElementById('pdg-calc-conf-pp-soglie').innerHTML = soglieDiOggi().map((t, i) => `
+                    <div class="grid grid-cols-2 gap-4 items-center" data-codice="${esc(t.codice || '')}">
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs font-bold text-gray-400 whitespace-nowrap">${esc(t.codice || `#${i + 1}`)}</span>
+                            <input type="number" value="${t.min}" class="pdg-calc-conf-pp-min ${campo}">
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs font-bold text-gray-400">→ -€</span>
+                            <input type="number" value="${t.sconto}" class="pdg-calc-conf-pp-disc ${campo}">
+                        </div>
+                    </div>`).join('');
+    }
+
+    // Le soglie come sono adesso nelle impostazioni (chi usa la pagina le può cambiare), dalla più alta.
+    function soglieImpostate() {
+        return [...document.querySelectorAll('#pdg-calc-conf-pp-soglie > div')].map(r => ({
+            min: parseFloat(r.querySelector('.pdg-calc-conf-pp-min').value),
+            sconto: parseFloat(r.querySelector('.pdg-calc-conf-pp-disc').value),
+            codice: r.dataset.codice || ''
+        })).filter(t => !isNaN(t.min) && !isNaN(t.sconto)).sort((a, b) => b.min - a.min);
+    }
+
+    // Il codice del pagamento da usare per un importo dopo il coupon, se la soglia raggiunta ne ha uno.
+    function codicePagamento(importo) {
+        const t = soglieImpostate().find(t => importo >= t.min);
+        return t && t.codice ? t.codice : '';
     }
 
     function testoDollari(n) {
@@ -512,7 +549,8 @@
         let text = `🛒 RISPARMIO ALIEXPRESS 🛒\n\n`;
         text += `💰 Prezzo Prodotto: ${formatEuro(c.orig)}\n`;
         text += `🎟️ Coupon: ${coupon} (-${formatEuro(c.orig - c.afterCoupon)})\n`;
-        if (ppSconto > 0) text += `💳 Sconto ${pagamento.nome}: -${formatEuro(ppSconto)}\n`;
+        const codicePag = codicePagamento(c.afterCoupon);
+        if (ppSconto > 0) text += `💳 Sconto ${pagamento.nome}${codicePag ? ` (${codicePag})` : ''}: -${formatEuro(ppSconto)}\n`;
         if (c.cashback > 0) text += `💰 Cashback Squadra: -${formatEuro(c.cashback)}\n`;
         text += `\n---------------------------\n`;
         text += `✨ PREZZO FINALE: ${formatEuro(c.final)}\n`;
@@ -568,13 +606,9 @@
         });
         if (bestCoupons.length === 0) bestCoupons = [{codice: "Nessuno", sconto: 0}];
         const prezzoDopoCoupon = Math.max(0, prezzoOrig - maxDiscount);
-        const ppT = [...document.querySelectorAll('#pdg-calc-conf-pp-soglie > div')].map(r => ({
-            min: parseFloat(r.querySelector('.pdg-calc-conf-pp-min').value),
-            disc: parseFloat(r.querySelector('.pdg-calc-conf-pp-disc').value)
-        })).filter(t => !isNaN(t.min) && !isNaN(t.disc)).sort((a, b) => b.min - a.min);
         let ppSconto = 0;
-        const activePP = ppT.find(t => prezzoDopoCoupon >= t.min);
-        if (activePP) ppSconto = activePP.disc;
+        const activePP = soglieImpostate().find(t => prezzoDopoCoupon >= t.min);
+        if (activePP) ppSconto = Math.min(activePP.sconto, prezzoDopoCoupon);
         const prezzoDopoPP = Math.max(0, prezzoDopoCoupon - ppSconto);
         const cashPerc = CASHBACK_ATTIVO ? parseFloat(document.getElementById('pdg-calc-conf-cash-perc').value) / 100 : 0,
             cashCap = CASHBACK_ATTIVO ? parseFloat(document.getElementById('pdg-calc-conf-cash-cap').value) : 0;
@@ -598,6 +632,7 @@
         if (inDollari) notaCambio.textContent = `${testoDollari(inDollari.dollari)} ${testoCambio()}: 1 € = ${dollariPerEuro.toLocaleString('it-IT', {maximumFractionDigits: 4})} $`;
         animateValue('pdg-calc-res-coupon-value', old.afterCoupon ? old.orig - old.afterCoupon : 0, maxDiscount, 400);
         animateValue('pdg-calc-res-paypal-value', old.afterCoupon - old.afterPP || 0, ppSconto, 400);
+        document.getElementById('pdg-calc-res-paypal-nota').textContent = activePP && activePP.codice ? `Codice ${activePP.codice}` : 'Automatico al checkout';
         if (CASHBACK_ATTIVO) {
             animateValue('pdg-calc-res-cashback-value', old.cashback || 0, cashSconto, 400);
             document.getElementById('pdg-calc-res-cashback-perc').textContent = `Accumulo previsto (${(cashPerc * 100).toFixed(0)}%, max ${formatEuro(cashCap)} al giorno)`;
@@ -629,18 +664,7 @@
             document.getElementById('pdg-calc-conf-cash-cap').value = squadra.massimoAlGiorno;
         }
         document.querySelectorAll('[data-pagamento-nome]').forEach(el => el.textContent = pagamento.nome);
-        const campo = 'w-full p-2 rounded-lg bg-gray-50 border border-gray-200 font-bold outline-none';
-        document.getElementById('pdg-calc-conf-pp-soglie').innerHTML = pagamento.soglie.map((t, i) => `
-                    <div class="grid grid-cols-2 gap-4 items-center">
-                        <div class="flex items-center gap-2">
-                            <span class="text-xs font-bold text-gray-400">#${i + 1}</span>
-                            <input type="number" value="${t.min}" class="pdg-calc-conf-pp-min ${campo}">
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <span class="text-xs font-bold text-gray-400">→ -€</span>
-                            <input type="number" value="${t.sconto}" class="pdg-calc-conf-pp-disc ${campo}">
-                        </div>
-                    </div>`).join('');
+        renderSoglie();
         dynamicCoupons = await fetchCoupons();
         // Il cambio del giorno arriva dopo: quando c'è, i coupon in dollari si ricalcolano. Se la pagina resta
         // aperta fino al giorno dopo, lo richiede quando si torna a guardarla.
@@ -688,6 +712,7 @@
         // Pagina lasciata aperta a cavallo della mezzanotte: i coupon che iniziano o scadono si aggiornano da soli.
         PRODIGEEK.seCambianoICoupon(async () => {
             dynamicCoupons = await fetchCoupons();
+            renderSoglie();
             calcolaTutto();
             calcolaCarrello();
         });
@@ -704,10 +729,7 @@
     const esc = s => String(s).replace(/[&<>"']/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[c]));
 
     function leggiImpostazioni() {
-        const soglie = [...document.querySelectorAll('#pdg-calc-conf-pp-soglie > div')].map(r => ({
-            min: parseFloat(r.querySelector('.pdg-calc-conf-pp-min').value),
-            sconto: parseFloat(r.querySelector('.pdg-calc-conf-pp-disc').value)
-        })).filter(t => !isNaN(t.min) && !isNaN(t.sconto));
+        const soglie = soglieImpostate().map(({min, sconto}) => ({min, sconto}));
         return {
             soglie,
             cashPerc: CASHBACK_ATTIVO ? parseFloat(document.getElementById('pdg-calc-conf-cash-perc').value) / 100 : 0,
@@ -821,7 +843,7 @@
                         ${o.coupon
                             ? `<div class="flex justify-between items-center gap-2"><span class="min-w-0"><span class="text-gray-500">Coupon </span><span class="font-bold text-gray-800 bg-white/60 px-1.5 rounded border border-orange-200">${esc(o.coupon.codice)}</span>${dollariDi(o.coupon.codice)}</span><span class="font-bold text-orange-600 whitespace-nowrap">-${formatEuro(o.scontoCoupon)}</span></div>`
                             : '<div class="text-gray-400">Nessun coupon</div>'}
-                        ${o.scontoPagamento > 0 ? rigaImporto(`Sconto ${esc(pagamento.nome)}`, o.scontoPagamento, 'text-blue-600') : ''}
+                        ${o.scontoPagamento > 0 ? rigaImporto(`Sconto ${esc(pagamento.nome)}${codicePagamento(o.dopoCoupon) ? ` · ${esc(codicePagamento(o.dopoCoupon))}` : ''}`, o.scontoPagamento, 'text-blue-600') : ''}
                         ${o.cashback > 0 ? rigaImporto('Cashback squadra', o.cashback, 'text-emerald-600') : ''}
                     </div>
                     <div class="flex justify-between items-baseline border-t border-orange-100 mt-2 pt-2">
@@ -861,7 +883,8 @@
         m.ordini.forEach((o, k) => {
             text += `\n${m.ordini.length > 1 ? `Ordine ${k + 1}` : 'Ordine'}: ${o.articoli.map(i => `#${r.numeri[i]} (${formatEuro(r.prezzi[i])})`).join(', ')}\n`;
             text += o.coupon ? `🎟️ Coupon: ${o.coupon.codice} (-${formatEuro(o.scontoCoupon)})\n` : `🎟️ Coupon: Nessuno\n`;
-            if (o.scontoPagamento > 0) text += `💳 Sconto ${pagamento.nome}: -${formatEuro(o.scontoPagamento)}\n`;
+            const codicePag = codicePagamento(o.dopoCoupon);
+            if (o.scontoPagamento > 0) text += `💳 Sconto ${pagamento.nome}${codicePag ? ` (${codicePag})` : ''}: -${formatEuro(o.scontoPagamento)}\n`;
             if (o.cashback > 0) text += `💰 Cashback Squadra: -${formatEuro(o.cashback)}\n`;
             text += `👉 Totale ordine: ${formatEuro(o.finale)}\n`;
         });

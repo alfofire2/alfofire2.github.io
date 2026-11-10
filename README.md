@@ -25,7 +25,7 @@ I coupon sono divisi in quattro blocchi, uno per sezione della homepage:
 |---|---|
 | `esclusiviProdigeek` | Coupon Esclusivi Prodigeek |
 | `generici` | Coupon Generici |
-| `standardProdigeek` | Altri Coupon Generici |
+| `standardProdigeek` | Coupon PayPal (le soglie dello sconto PayPal, vedi sotto) |
 | `altriEsclusiviProdigeek` | Altri Coupon Esclusivi Prodigeek |
 
 Ogni blocco ha la sua valuta e una serie di posti già pronti:
@@ -121,16 +121,16 @@ Se il regolamento dà le date in ora del Pacifico, conviene copiarle così come 
 ```js
 pagamento: {
     nome: 'PayPal',
-    soglie: [
-        { min: 99, sconto: 10 },
-        { min: 199, sconto: 20 },
-        { min: 299, sconto: 45 }
-    ]
+    blocco: 'standardProdigeek',
+    soglie: []
 }
 ```
 
 - **`nome`**: compare nel calcolatore ("Sconto PayPal", "Dopo PayPal"…). Si può cambiare, per esempio in `'Klarna'`.
-- **`soglie`**: per ogni soglia, la spesa minima dopo il coupon (`min`) e lo sconto in euro (`sconto`). Il calcolatore applica la soglia più alta raggiunta. Se ne possono aggiungere o togliere; con `soglie: []` non c'è nessuno sconto.
+- **`blocco`**: il blocco di coupon che fa da soglie, oggi `standardProdigeek` (Coupon PayPal). Ogni suo coupon valido oggi è una soglia: spesa minima dopo il coupon (`min`) e sconto in euro (`discount`). Il calcolatore applica la soglia più alta raggiunta e mostra il codice da usare ("Codice ITD1114"). Quei codici non vengono confrontati con gli altri coupon e non arrivano all'estensione, che li applicherebbe anche a chi non paga con PayPal.
+- **`soglie`**: soglie scritte a mano, usate solo se nel blocco non c'è nessun coupon valido oggi, per esempio `soglie: [{ min: 99, sconto: 10 }, { min: 199, sconto: 20 }]`. Con `soglie: []` e il blocco vuoto non c'è nessuno sconto.
+
+Il blocco dei coupon PayPal ha anche `nota: 'Solo con PayPal'`: un blocco può avere la sua nota, che in homepage compare sotto ogni coupon prima di quella delle date ("Solo con PayPal · Fino al 18 novembre").
 
 Chi usa il calcolatore può cambiare soglie e cashback dalle impostazioni della pagina, ma solo per sé e finché la tiene aperta: i valori di partenza sono sempre quelli di `config.js`.
 
