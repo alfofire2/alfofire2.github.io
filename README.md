@@ -134,6 +134,20 @@ pagamento: {
 
 Chi usa il calcolatore può cambiare soglie e cashback dalle impostazioni della pagina, ma solo per sé e finché la tiene aperta: i valori di partenza sono sempre quelli di `config.js`.
 
+## Coupon in dollari nel calcolatore
+
+Il calcolatore lavora in euro. Per i coupon in dollari converte sconto e spesa minima al cambio del giorno, scaricato da `api.frankfurter.dev` (dati della Banca centrale europea) e conservato nel browser fino a fine giornata. Arrotonda lo sconto per difetto e la spesa minima per eccesso, al centesimo, così non promette più di quanto dà AliExpress, che al checkout usa il suo cambio. Sotto il coupon migliore mostra l'importo in dollari e il cambio usato.
+
+Se il cambio del giorno non si scarica, il calcolatore usa quello di riserva in `config.js`:
+
+```js
+cambio: {
+    dollariPerEuro: 1.12
+}
+```
+
+Conviene aggiornarlo ogni tanto, anche se serve solo in quel caso.
+
 ## Errori comuni
 
 `config.js` è codice JavaScript: un apice o una virgola fuori posto fermano homepage e calcolatore. Attenzione a:

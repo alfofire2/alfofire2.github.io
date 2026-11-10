@@ -182,6 +182,8 @@
                                     <span class="block text-xs font-bold text-orange-400 uppercase whitespace-nowrap">Coupon Migliore</span>
                                     <div id="pdg-calc-coupon-container"
                                          class="flex flex-wrap items-center gap-2 mt-0.5"></div>
+                                    <span id="pdg-calc-coupon-cambio" hidden
+                                          class="block text-[11px] font-bold text-gray-500 mt-1"></span>
                                 </div>
                                 <span id="pdg-calc-res-coupon-value"
                                       class="text-xl font-bold text-orange-600 whitespace-nowrap">0,00 €</span>
@@ -418,12 +420,50 @@
         window.requestAnimationFrame(step);
     }
 
+    // Cambio per i coupon in dollari: quanti dollari vale un euro. Parte da quello salvato oggi o da quello
+    // di riserva in config.js; caricaCambio scarica quello del giorno (api.frankfurter.dev, dati BCE).
+    let dollariPerEuro = PRODIGEEK.cambio.dollariPerEuro, cambioDelGiorno = false;
+    try {
+        const salvato = JSON.parse(localStorage.getItem('pdg_calc_cambio') || 'null');
+        if (salvato && salvato.giorno === PRODIGEEK.giornoItaliano() && salvato.usd > 0) {
+            dollariPerEuro = salvato.usd;
+            cambioDelGiorno = true;
+        }
+    } catch (e) {}
+
+    async function caricaCambio() {
+        if (cambioDelGiorno) return false;
+        try {
+            const ctrl = new AbortController(), timer = setTimeout(() => ctrl.abort(), 5000);
+            const risposta = await fetch('https://api.frankfurter.dev/v1/latest?symbols=USD', {signal: ctrl.signal});
+            clearTimeout(timer);
+            const usd = (await risposta.json())?.rates?.USD;
+            if (!(usd > 0)) return false;
+            dollariPerEuro = usd;
+            cambioDelGiorno = true;
+            try { localStorage.setItem('pdg_calc_cambio', JSON.stringify({giorno: PRODIGEEK.giornoItaliano(), usd})); } catch (e) {}
+            return true;
+        } catch (e) {
+            return false;
+        }
+    }
+
+    // Coupon in euro. Quelli in dollari sono convertiti: sconto per difetto e spesa minima per eccesso al centesimo,
+    // così il calcolatore non promette mai più di quanto dà AliExpress, che al checkout usa il suo cambio.
     async function fetchCoupons() {
-        return Object.values(PRODIGEEK.listeCoupon).flat().map(c => ({
-            codice: c.code,
-            sconto: parseFloat(c.discount),
-            minSpesa: parseFloat(c.min)
-        }));
+        return Object.values(PRODIGEEK.listeCoupon).flat().map(c => {
+            const inDollari = c.currency === '$';
+            return {
+                codice: c.code,
+                sconto: inDollari ? Math.floor(c.discount / dollariPerEuro * 100) / 100 : parseFloat(c.discount),
+                minSpesa: inDollari ? Math.ceil(c.min / dollariPerEuro * 100) / 100 : parseFloat(c.min),
+                dollari: inDollari ? parseFloat(c.discount) : null
+            };
+        });
+    }
+
+    function testoDollari(n) {
+        return `${n.toLocaleString('it-IT', {maximumFractionDigits: 2})} $`;
     }
 
     function saveToHistory(data) {
@@ -545,6 +585,9 @@
             couponCode: bestCoupons[0].codice
         };
         document.getElementById('pdg-calc-coupon-container').innerHTML = bestCoupons.map(c => `<span class="font-bold text-gray-800 bg-white/60 px-2 py-0.5 rounded border border-orange-200">${c.codice}</span>`).join('');
+        const inDollari = bestCoupons.find(c => c.dollari), notaCambio = document.getElementById('pdg-calc-coupon-cambio');
+        notaCambio.hidden = !inDollari;
+        if (inDollari) notaCambio.textContent = `${testoDollari(inDollari.dollari)} al cambio ${cambioDelGiorno ? 'di oggi' : 'indicativo'}: 1 € = ${dollariPerEuro.toLocaleString('it-IT', {maximumFractionDigits: 4})} $`;
         animateValue('pdg-calc-res-coupon-value', old.afterCoupon ? old.orig - old.afterCoupon : 0, maxDiscount, 400);
         animateValue('pdg-calc-res-paypal-value', old.afterCoupon - old.afterPP || 0, ppSconto, 400);
         if (CASHBACK_ATTIVO) {
@@ -591,6 +634,13 @@
                         </div>
                     </div>`).join('');
         dynamicCoupons = await fetchCoupons();
+        // Il cambio del giorno arriva dopo: quando c'è, i coupon in dollari si ricalcolano.
+        caricaCambio().then(async nuovo => {
+            if (!nuovo) return;
+            dynamicCoupons = await fetchCoupons();
+            calcolaTutto();
+            calcolaCarrello();
+        });
         renderHistory();
         const pI = document.getElementById('pdg-calc-price');
         pI.addEventListener('input', (e) => {
@@ -721,6 +771,12 @@
         }), 2000);
     }
 
+    // Per un coupon in dollari, l'importo originale accanto al codice.
+    function dollariDi(codice) {
+        const c = dynamicCoupons.find(x => x.codice === codice);
+        return c && c.dollari ? ` <span class="text-gray-400 whitespace-nowrap">(${testoDollari(c.dollari)})</span>` : '';
+    }
+
     function rigaImporto(nome, valore, colore) {
         return `<div class="flex justify-between items-center gap-2"><span class="text-gray-500 min-w-0">${nome}</span><span class="font-bold ${colore} whitespace-nowrap">-${formatEuro(valore)}</span></div>`;
     }
@@ -750,7 +806,7 @@
                     <div class="flex flex-wrap gap-1 mb-2">${o.articoli.map(i => `<span class="text-[11px] font-bold text-gray-600 bg-white px-2 py-0.5 rounded border border-gray-200 whitespace-nowrap">#${r.numeri[i]} · ${formatEuro(r.prezzi[i])}</span>`).join('')}</div>
                     <div class="space-y-1 text-xs">
                         ${o.coupon
-                            ? `<div class="flex justify-between items-center gap-2"><span class="min-w-0"><span class="text-gray-500">Coupon </span><span class="font-bold text-gray-800 bg-white/60 px-1.5 rounded border border-orange-200">${esc(o.coupon.codice)}</span></span><span class="font-bold text-orange-600 whitespace-nowrap">-${formatEuro(o.scontoCoupon)}</span></div>`
+                            ? `<div class="flex justify-between items-center gap-2"><span class="min-w-0"><span class="text-gray-500">Coupon </span><span class="font-bold text-gray-800 bg-white/60 px-1.5 rounded border border-orange-200">${esc(o.coupon.codice)}</span>${dollariDi(o.coupon.codice)}</span><span class="font-bold text-orange-600 whitespace-nowrap">-${formatEuro(o.scontoCoupon)}</span></div>`
                             : '<div class="text-gray-400">Nessun coupon</div>'}
                         ${o.scontoPagamento > 0 ? rigaImporto(`Sconto ${esc(pagamento.nome)}`, o.scontoPagamento, 'text-blue-600') : ''}
                         ${o.cashback > 0 ? rigaImporto('Cashback squadra', o.cashback, 'text-emerald-600') : ''}
