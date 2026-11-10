@@ -29,8 +29,8 @@ const PRODIGEEK = {
                 { code: 'OTD1136',    discount: 36,   min: 215 },
                 { code: 'OTD1153',    discount: 53,   min: 315 },
                 { code: 'OTD1170',    discount: 70,   min: 419 },
-                { code: '',           discount: 0,    min: 0 },
-                { code: '',           discount: 0,    min: 0 },
+                { code: 'IFPKEVIS',   discount: 100,  min: 500, dal: '2026-11-11', al: '2026-11-12' },
+                { code: 'IFP7NWZS',   discount: 120,  min: 600, dal: '2026-11-11', al: '2026-11-12' },
                 { code: '',           discount: 0,    min: 0 },
                 { code: '',           discount: 0,    min: 0 },
                 { code: '',           discount: 0,    min: 0 },
@@ -44,8 +44,6 @@ const PRODIGEEK = {
                 // { code: 'IFPFWKQD',   discount: 80,   min: 469 },
                 // { code: 'IFPMGSEF',   discount: 100,  min: 500, dal: '2026-11-01', al: '2026-11-03' },
                 // { code: 'IFPFEIGQ',   discount: 120,  min: 600, dal: '2026-11-01', al: '2026-11-03' },
-                // { code: 'IFPKEVIS',   discount: 100,  min: 500, dal: '2026-11-11', al: '2026-11-12' },
-                // { code: 'IFP7NWZS',   discount: 120,  min: 600, dal: '2026-11-11', al: '2026-11-12' },
             ]
         },
 
