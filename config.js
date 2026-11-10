@@ -85,8 +85,8 @@ const PRODIGEEK = {
         generici: {
             valuta: '€',
             codici: [
-                { code: '',           discount: 0,    min: 0 },
-                { code: '',           discount: 0,    min: 0 },
+                { code: 'ITD11100',   discount: 100,  min: 500, al: '2026-11-18' },
+                { code: 'ITD11120',   discount: 120,  min: 600, al: '2026-11-18' },
                 { code: '',           discount: 0,    min: 0 },
                 { code: '',           discount: 0,    min: 0 },
                 { code: '',           discount: 0,    min: 0 },
@@ -105,8 +105,6 @@ const PRODIGEEK = {
                 // { code: 'ITAFF45',    discount: 45,   min: 259 },
                 // { code: 'ITAFF60',    discount: 60,   min: 349 },
                 // { code: 'ITAFF80',    discount: 80,   min: 469 },
-                // { code: 'ITD11100',   discount: 100,  min: 500 },
-                // { code: 'ITD11120',   discount: 120,  min: 600 },
             ]
         }
     },
@@ -139,7 +137,7 @@ const PRODIGEEK = {
 
     // Coupon in dollari nel calcolatore: sconto e spesa minima vengono convertiti in euro al cambio del giorno
     // (scaricato da api.frankfurter.dev, dati della Banca centrale europea). Questo valore serve solo
-    // se il cambio del giorno non si riesce a scaricare: quanti dollari vale un euro.
+    // la prima volta che qualcuno apre il calcolatore, se il cambio non si riesce a scaricare: quanti dollari vale un euro.
     cambio: {
         dollariPerEuro: 1.12
     }

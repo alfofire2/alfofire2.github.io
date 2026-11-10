@@ -420,19 +420,27 @@
         window.requestAnimationFrame(step);
     }
 
-    // Cambio per i coupon in dollari: quanti dollari vale un euro. Parte da quello salvato oggi o da quello
-    // di riserva in config.js; caricaCambio scarica quello del giorno (api.frankfurter.dev, dati BCE).
-    let dollariPerEuro = PRODIGEEK.cambio.dollariPerEuro, cambioDelGiorno = false;
+    // Cambio per i coupon in dollari: quanti dollari vale un euro. Il browser lo chiede ogni giorno ad
+    // api.frankfurter.dev (dati BCE) e lo salva in localStorage. Finché quello di oggi non arriva si usa l'ultimo
+    // salvato, anche di un altro giorno; quello di riserva in config.js serve solo se non ce n'è nessuno.
+    let dollariPerEuro = PRODIGEEK.cambio.dollariPerEuro, giornoCambio = null;
     try {
         const salvato = JSON.parse(localStorage.getItem('pdg_calc_cambio') || 'null');
-        if (salvato && salvato.giorno === PRODIGEEK.giornoItaliano() && salvato.usd > 0) {
+        if (salvato && salvato.usd > 0) {
             dollariPerEuro = salvato.usd;
-            cambioDelGiorno = true;
+            giornoCambio = salvato.giorno;
         }
     } catch (e) {}
+    const cambioDiOggi = () => giornoCambio === PRODIGEEK.giornoItaliano();
+
+    function testoCambio() {
+        if (cambioDiOggi()) return 'al cambio di oggi';
+        if (giornoCambio) return `al cambio del ${giornoCambio.slice(8, 10)}/${giornoCambio.slice(5, 7)}`;
+        return 'al cambio indicativo';
+    }
 
     async function caricaCambio() {
-        if (cambioDelGiorno) return false;
+        if (cambioDiOggi()) return false;
         try {
             const ctrl = new AbortController(), timer = setTimeout(() => ctrl.abort(), 5000);
             const risposta = await fetch('https://api.frankfurter.dev/v1/latest?symbols=USD', {signal: ctrl.signal});
@@ -440,8 +448,8 @@
             const usd = (await risposta.json())?.rates?.USD;
             if (!(usd > 0)) return false;
             dollariPerEuro = usd;
-            cambioDelGiorno = true;
-            try { localStorage.setItem('pdg_calc_cambio', JSON.stringify({giorno: PRODIGEEK.giornoItaliano(), usd})); } catch (e) {}
+            giornoCambio = PRODIGEEK.giornoItaliano();
+            try { localStorage.setItem('pdg_calc_cambio', JSON.stringify({giorno: giornoCambio, usd})); } catch (e) {}
             return true;
         } catch (e) {
             return false;
@@ -587,7 +595,7 @@
         document.getElementById('pdg-calc-coupon-container').innerHTML = bestCoupons.map(c => `<span class="font-bold text-gray-800 bg-white/60 px-2 py-0.5 rounded border border-orange-200">${c.codice}</span>`).join('');
         const inDollari = bestCoupons.find(c => c.dollari), notaCambio = document.getElementById('pdg-calc-coupon-cambio');
         notaCambio.hidden = !inDollari;
-        if (inDollari) notaCambio.textContent = `${testoDollari(inDollari.dollari)} al cambio ${cambioDelGiorno ? 'di oggi' : 'indicativo'}: 1 € = ${dollariPerEuro.toLocaleString('it-IT', {maximumFractionDigits: 4})} $`;
+        if (inDollari) notaCambio.textContent = `${testoDollari(inDollari.dollari)} ${testoCambio()}: 1 € = ${dollariPerEuro.toLocaleString('it-IT', {maximumFractionDigits: 4})} $`;
         animateValue('pdg-calc-res-coupon-value', old.afterCoupon ? old.orig - old.afterCoupon : 0, maxDiscount, 400);
         animateValue('pdg-calc-res-paypal-value', old.afterCoupon - old.afterPP || 0, ppSconto, 400);
         if (CASHBACK_ATTIVO) {
@@ -634,12 +642,17 @@
                         </div>
                     </div>`).join('');
         dynamicCoupons = await fetchCoupons();
-        // Il cambio del giorno arriva dopo: quando c'è, i coupon in dollari si ricalcolano.
-        caricaCambio().then(async nuovo => {
+        // Il cambio del giorno arriva dopo: quando c'è, i coupon in dollari si ricalcolano. Se la pagina resta
+        // aperta fino al giorno dopo, lo richiede quando si torna a guardarla.
+        const aggiornaCambio = () => caricaCambio().then(async nuovo => {
             if (!nuovo) return;
             dynamicCoupons = await fetchCoupons();
             calcolaTutto();
             calcolaCarrello();
+        });
+        aggiornaCambio();
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'visible' && !cambioDiOggi()) aggiornaCambio();
         });
         renderHistory();
         const pI = document.getElementById('pdg-calc-price');
