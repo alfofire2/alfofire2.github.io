@@ -85,26 +85,18 @@ const PRODIGEEK = {
         generici: {
             valuta: '€',
             codici: [
+                { code: 'ITAFF03',    discount: 3,    min: 18, al: '2026-11-18' },
+                { code: 'ITAFF06',    discount: 6,    min: 39, al: '2026-11-18' },
+                { code: 'ITAFF14',    discount: 14,   min: 79, al: '2026-11-18' },
+                { code: 'ITAFF25',    discount: 25,   min: 149, al: '2026-11-18' },
+                { code: 'ITAFF45',    discount: 45,   min: 259, al: '2026-11-18' },
+                { code: 'ITAFF60',    discount: 60,   min: 349, al: '2026-11-18' },
+                { code: 'ITAFF80',    discount: 80,   min: 469, al: '2026-11-18' },
                 { code: 'ITD11100',   discount: 100,  min: 500, al: '2026-11-18' },
                 { code: 'ITD11120',   discount: 120,  min: 600, al: '2026-11-18' },
                 { code: '',           discount: 0,    min: 0 },
                 { code: '',           discount: 0,    min: 0 },
                 { code: '',           discount: 0,    min: 0 },
-                { code: '',           discount: 0,    min: 0 },
-                { code: '',           discount: 0,    min: 0 },
-                { code: '',           discount: 0,    min: 0 },
-                { code: '',           discount: 0,    min: 0 },
-                { code: '',           discount: 0,    min: 0 },
-                { code: '',           discount: 0,    min: 0 },
-                { code: '',           discount: 0,    min: 0 },
-                // Tolti per ora: per rimetterne uno basta togliere // all'inizio della riga.
-                // { code: 'ITAFF03',    discount: 3,    min: 18 },
-                // { code: 'ITAFF06',    discount: 6,    min: 39 },
-                // { code: 'ITAFF14',    discount: 14,   min: 79 },
-                // { code: 'ITAFF25',    discount: 25,   min: 149 },
-                // { code: 'ITAFF45',    discount: 45,   min: 259 },
-                // { code: 'ITAFF60',    discount: 60,   min: 349 },
-                // { code: 'ITAFF80',    discount: 80,   min: 469 },
             ]
         }
     },
@@ -113,7 +105,7 @@ const PRODIGEEK = {
     // Fuori dalle date, o con attiva: false, spariscono da soli il popup e il banner in homepage,
     // il cashback nel calcolatore e la squadra nell'estensione.
     squadra: {
-        attiva: true,
+        attiva: false,                        // spenta: il budget del cashback è finito
         link: 'https://s.click.aliexpress.com/e/_c3yNnO8F',
         inizio: '2026-10-28T16:00:00-07:00',  // 28/10 alle 16:00 ora del Pacifico
         fine: '2026-11-18T14:59:59-08:00',    // 18/11 alle 23:59:59 ora italiana
