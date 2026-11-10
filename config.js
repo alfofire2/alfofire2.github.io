@@ -135,6 +135,13 @@ const PRODIGEEK = {
             { min: 199, sconto: 20 },
             { min: 299, sconto: 45 }
         ]
+    },
+
+    // Coupon in dollari nel calcolatore: sconto e spesa minima vengono convertiti in euro al cambio del giorno
+    // (scaricato da api.frankfurter.dev, dati della Banca centrale europea). Questo valore serve solo
+    // se il cambio del giorno non si riesce a scaricare: quanti dollari vale un euro.
+    cambio: {
+        dollariPerEuro: 1.12
     }
 };
 
