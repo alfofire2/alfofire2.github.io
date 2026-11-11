@@ -31,8 +31,10 @@ if (sbagliati.length) {
 const { squadra } = config;
 // Solo i coupon validi in questo momento (vedi fondo di config.js). Nota e date restano solo per il sito:
 // all'estensione arrivano code, discount, min e currency, come si aspetta.
+// I coupon del metodo di pagamento (pagamento.blocco, per esempio quelli PayPal) non arrivano: l'estensione
+// li applicherebbe come un coupon qualsiasi anche a chi non paga con PayPal.
 const coupons = Object.fromEntries(Object.entries(config.listeCouponAl(ora)).map(([nome, lista]) => [nome,
-    lista.map(({ code, discount, min, currency }) => ({ code, discount, min, currency }))
+    nome === config.pagamento.blocco ? [] : lista.map(({ code, discount, min, currency }) => ({ code, discount, min, currency }))
 ]));
 const fuori = Object.values(config.coupons).flatMap(b => b.codici)
     .filter(c => String(c.code || '').trim() !== '' && config.statoCoupon(c, ora) !== 'valido')

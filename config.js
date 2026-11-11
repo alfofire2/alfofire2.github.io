@@ -17,6 +17,7 @@ const PRODIGEEK = {
     // calcolatore ed estensione. Non serve cancellarlo: può restare qui come promemoria.
     // Con le date, sotto il coupon in homepage compare da sola una riga come 'Solo dall’1 al 3 novembre'.
     // nota (facoltativa) sostituisce quella riga con un testo scelto da te, per esempio nota: 'Solo nell’app'.
+    // Un blocco può avere la sua nota (per esempio nota: 'Solo con PayPal'), che compare prima di quella delle date.
     coupons: {
         // Coupon Esclusivi Prodigeek
         esclusiviProdigeek: {
@@ -35,13 +36,6 @@ const PRODIGEEK = {
                 { code: '',           discount: 0,    min: 0 },
                 { code: '',           discount: 0,    min: 0 },
                 // Tolti per ora: per rimetterne uno basta togliere // all'inizio della riga.
-                // { code: 'IFPBKCOQ',   discount: 3,    min: 18 },
-                // { code: 'IFPWBJXE',   discount: 6,    min: 39 },
-                // { code: 'IFPT3ULS',   discount: 14,   min: 79 },
-                // { code: 'IFPB6VFW',   discount: 25,   min: 149 },
-                // { code: 'IFPRBOY9',   discount: 45,   min: 259 },
-                // { code: 'IFPMRJS7',   discount: 60,   min: 349 },
-                // { code: 'IFPFWKQD',   discount: 80,   min: 469 },
                 // { code: 'IFPMGSEF',   discount: 100,  min: 500, dal: '2026-11-01', al: '2026-11-03' },
                 // { code: 'IFPFEIGQ',   discount: 120,  min: 600, dal: '2026-11-01', al: '2026-11-03' },
             ]
@@ -49,32 +43,34 @@ const PRODIGEEK = {
 
         // Altri Coupon Esclusivi Prodigeek
         altriEsclusiviProdigeek: {
-            valuta: '$',
+            valuta: '€',
             codici: [
-                { code: '',           discount: 0,    min: 0 },
-                { code: '',           discount: 0,    min: 0 },
-                { code: '',           discount: 0,    min: 0 },
-                { code: '',           discount: 0,    min: 0 },
-                { code: '',           discount: 0,    min: 0 },
-                { code: '',           discount: 0,    min: 0 },
-                { code: '',           discount: 0,    min: 0 },
+                { code: 'IFPBKCOQ',   discount: 3,    min: 18, al: '2026-11-18' },
+                { code: 'IFPWBJXE',   discount: 6,    min: 39, al: '2026-11-18' },
+                { code: 'IFPT3ULS',   discount: 14,   min: 79, al: '2026-11-18' },
+                { code: 'IFPB6VFW',   discount: 25,   min: 149, al: '2026-11-18' },
+                { code: 'IFPRBOY9',   discount: 45,   min: 259, al: '2026-11-18' },
+                { code: 'IFPMRJS7',   discount: 60,   min: 349, al: '2026-11-18' },
+                { code: 'IFPFWKQD',   discount: 80,   min: 469, al: '2026-11-18' },
                 { code: '',           discount: 0,    min: 0 },
                 { code: '',           discount: 0,    min: 0 },
                 { code: '',           discount: 0,    min: 0 }
             ]
         },
 
-        // Altri Coupon Generici
+        // Coupon PayPal: valgono solo pagando con PayPal. In homepage hanno la loro sezione, con la nota del blocco;
+        // nel calcolatore sono le soglie dello sconto PayPal (vedi pagamento più sotto); all'estensione non arrivano.
         standardProdigeek: {
             valuta: '€',
+            nota: 'Solo con PayPal',
             codici: [
-                { code: '',           discount: 0,    min: 0 },
-                { code: '',           discount: 0,    min: 0 },
-                { code: '',           discount: 0,    min: 0 },
-                { code: '',           discount: 0,    min: 0 },
-                { code: '',           discount: 0,    min: 0 },
-                { code: '',           discount: 0,    min: 0 },
-                { code: '',           discount: 0,    min: 0 },
+                { code: 'ITD1103',    discount: 3,    min: 18, al: '2026-11-18' },
+                { code: 'ITD1106',    discount: 6,    min: 39, al: '2026-11-18' },
+                { code: 'ITD1114',    discount: 14,   min: 79, al: '2026-11-18' },
+                { code: 'ITD1125',    discount: 25,   min: 149, al: '2026-11-18' },
+                { code: 'ITD1145',    discount: 45,   min: 259, al: '2026-11-18' },
+                { code: 'ITD1160',    discount: 60,   min: 349, al: '2026-11-18' },
+                { code: 'ITD1180',    discount: 80,   min: 469, al: '2026-11-18' },
                 { code: '',           discount: 0,    min: 0 },
                 { code: '',           discount: 0,    min: 0 },
                 { code: '',           discount: 0,    min: 0 }
@@ -118,13 +114,12 @@ const PRODIGEEK = {
 
     // Sconto per metodo di pagamento al checkout (PayPal, Klarna...).
     // Il calcolatore applica la soglia più alta che il prezzo dopo il coupon raggiunge.
+    // blocco: il blocco di coupon che fa da soglie (codice, sconto = discount, spesa minima = min, con le loro date);
+    // se non ce ne sono di validi oggi, valgono le soglie scritte qui sotto, per esempio { min: 99, sconto: 10 }.
     pagamento: {
         nome: 'PayPal',
-        soglie: [
-            { min: 99, sconto: 10 },
-            { min: 199, sconto: 20 },
-            { min: 299, sconto: 45 }
-        ]
+        blocco: 'standardProdigeek',
+        soglie: []
     },
 
     // Coupon in dollari nel calcolatore: sconto e spesa minima vengono convertiti in euro al cambio del giorno
@@ -194,7 +189,8 @@ PRODIGEEK.listeCouponAl = function (ora = Date.now()) {
             .filter(c => String(c.code || '').trim() !== '' && PRODIGEEK.statoCoupon(c, ora) === 'valido')
             .map(c => {
                 const dal = String(c.dal || '').trim(), al = String(c.al || '').trim();
-                const nota = String(c.nota || '').trim() || PRODIGEEK.notaDalleDate(dal, al);
+                const nota = String(c.nota || '').trim()
+                    || [String(blocco.nota || '').trim(), PRODIGEEK.notaDalleDate(dal, al)].filter(Boolean).join(' · ');
                 return { code: String(c.code).trim(), discount: Number(c.discount), min: Number(c.min), currency: blocco.valuta || '€',
                     ...(nota ? { nota } : {}), ...(dal ? { dal } : {}), ...(al ? { al } : {}) };
             })
