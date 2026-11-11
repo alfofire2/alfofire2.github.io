@@ -36,13 +36,6 @@ const PRODIGEEK = {
                 { code: '',           discount: 0,    min: 0 },
                 { code: '',           discount: 0,    min: 0 },
                 // Tolti per ora: per rimetterne uno basta togliere // all'inizio della riga.
-                // { code: 'IFPBKCOQ',   discount: 3,    min: 18 },
-                // { code: 'IFPWBJXE',   discount: 6,    min: 39 },
-                // { code: 'IFPT3ULS',   discount: 14,   min: 79 },
-                // { code: 'IFPB6VFW',   discount: 25,   min: 149 },
-                // { code: 'IFPRBOY9',   discount: 45,   min: 259 },
-                // { code: 'IFPMRJS7',   discount: 60,   min: 349 },
-                // { code: 'IFPFWKQD',   discount: 80,   min: 469 },
                 // { code: 'IFPMGSEF',   discount: 100,  min: 500, dal: '2026-11-01', al: '2026-11-03' },
                 // { code: 'IFPFEIGQ',   discount: 120,  min: 600, dal: '2026-11-01', al: '2026-11-03' },
             ]
@@ -50,15 +43,15 @@ const PRODIGEEK = {
 
         // Altri Coupon Esclusivi Prodigeek
         altriEsclusiviProdigeek: {
-            valuta: '$',
+            valuta: '€',
             codici: [
-                { code: '',           discount: 0,    min: 0 },
-                { code: '',           discount: 0,    min: 0 },
-                { code: '',           discount: 0,    min: 0 },
-                { code: '',           discount: 0,    min: 0 },
-                { code: '',           discount: 0,    min: 0 },
-                { code: '',           discount: 0,    min: 0 },
-                { code: '',           discount: 0,    min: 0 },
+                { code: 'IFPBKCOQ',   discount: 3,    min: 18, al: '2026-11-18' },
+                { code: 'IFPWBJXE',   discount: 6,    min: 39, al: '2026-11-18' },
+                { code: 'IFPT3ULS',   discount: 14,   min: 79, al: '2026-11-18' },
+                { code: 'IFPB6VFW',   discount: 25,   min: 149, al: '2026-11-18' },
+                { code: 'IFPRBOY9',   discount: 45,   min: 259, al: '2026-11-18' },
+                { code: 'IFPMRJS7',   discount: 60,   min: 349, al: '2026-11-18' },
+                { code: 'IFPFWKQD',   discount: 80,   min: 469, al: '2026-11-18' },
                 { code: '',           discount: 0,    min: 0 },
                 { code: '',           discount: 0,    min: 0 },
                 { code: '',           discount: 0,    min: 0 }
