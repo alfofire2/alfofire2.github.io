@@ -56,6 +56,14 @@ Cosa fare:
 - **Svuotare una sezione**: svuota tutti i codici del blocco. La sezione sparisce dalla homepage.
 - **Servono più posti**: copia una riga `{ code: '', discount: 0, min: 0 },` sotto le altre.
 
+### Coupon in arrivo
+
+```js
+anteprimaGiorni: 7,
+```
+
+I coupon (e le soglie dello sconto PayPal) che partono entro `anteprimaGiorni` giorni si vedono già prima, in homepage e nel calcolatore, con una riga come "⏳ Dal 19 novembre". Il calcolatore li conta già e dice da quando valgono ("ITBF20: dal 19 novembre"). Il giorno in cui partono la riga sparisce da sola. All'estensione del browser arrivano solo da quel giorno, e nei dati per i motori di ricerca ci sono solo quelli già validi. Con `anteprimaGiorni: 0` non c'è anteprima.
+
 I coupon compaiono nell'ordine in cui sono scritti. In homepage si possono anche ordinare per convenienza con il pulsante apposito.
 
 ### Coupon validi solo in certi giorni
