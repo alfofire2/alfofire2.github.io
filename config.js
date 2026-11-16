@@ -52,6 +52,13 @@ const PRODIGEEK = {
                 { code: 'IFPRBOY9',   discount: 45,   min: 259, al: '2026-11-18' },
                 { code: 'IFPMRJS7',   discount: 60,   min: 349, al: '2026-11-18' },
                 { code: 'IFPFWKQD',   discount: 80,   min: 469, al: '2026-11-18' },
+                { code: 'IFP7LBUM',   discount: 3,    min: 18, dal: '2026-11-19', nota: 'Nuovi clienti: 6 € di sconto' },
+                { code: 'IFP2BMWI',   discount: 8,    min: 45, dal: '2026-11-19' },
+                { code: 'IFPEIENH',   discount: 13,   min: 79, dal: '2026-11-19' },
+                { code: 'IFP59VVR',   discount: 24,   min: 139, dal: '2026-11-19' },
+                { code: 'IFPRAKLK',   discount: 40,   min: 229, dal: '2026-11-19' },
+                { code: 'IFPAMNLD',   discount: 60,   min: 349, dal: '2026-11-19' },
+                { code: 'IFPZVTEV',   discount: 80,   min: 469, dal: '2026-11-19' },
                 { code: '',           discount: 0,    min: 0 },
                 { code: '',           discount: 0,    min: 0 },
                 { code: '',           discount: 0,    min: 0 }
