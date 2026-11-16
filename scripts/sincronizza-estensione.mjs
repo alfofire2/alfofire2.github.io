@@ -21,7 +21,7 @@ const ora = process.env.ORA_SIMULATA ? Date.parse(process.env.ORA_SIMULATA) : Da
 if (Number.isNaN(ora)) throw new Error(`ORA_SIMULATA non è una data: ${process.env.ORA_SIMULATA}`);
 
 // Una data scritta male in dal o al ferma tutto, così l'errore si vede nella scheda Actions.
-const sbagliati = Object.values(config.coupons).flatMap(b => b.codici)
+const sbagliati = [...Object.values(config.coupons).flatMap(b => b.codici), ...(config.pagamento.soglie || []).map(t => ({...t, code: `soglia ${t.min}`}))]
     .filter(c => String(c.code || '').trim() !== '' && config.statoCoupon(c, ora) === 'errore');
 if (sbagliati.length) {
     throw new Error('Date dal/al da correggere in config.js (scrivile \'AAAA-MM-GG\', con dal non dopo al): '

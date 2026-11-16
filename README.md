@@ -128,7 +128,7 @@ pagamento: {
 
 - **`nome`**: compare nel calcolatore ("Sconto PayPal", "Dopo PayPal"…). Si può cambiare, per esempio in `'Klarna'`.
 - **`blocco`**: il blocco di coupon che fa da soglie, oggi `standardProdigeek` (Coupon PayPal). Ogni suo coupon valido oggi è una soglia: spesa minima dopo il coupon (`min`) e sconto in euro (`discount`). Il calcolatore applica la soglia più alta raggiunta e mostra il codice da usare ("Codice ITD1114"). Quei codici non vengono confrontati con gli altri coupon e non arrivano all'estensione, che li applicherebbe anche a chi non paga con PayPal.
-- **`soglie`**: soglie scritte a mano, usate solo se nel blocco non c'è nessun coupon valido oggi, per esempio `soglie: [{ min: 99, sconto: 10 }, { min: 199, sconto: 20 }]`. Con `soglie: []` e il blocco vuoto non c'è nessuno sconto.
+- **`soglie`**: soglie scritte a mano, usate solo se nel blocco non c'è nessun coupon valido oggi, per esempio `soglie: [{ min: 99, sconto: 10 }, { min: 199, sconto: 20 }]`. Come i coupon possono avere `dal` e `al` (per esempio `{ min: 99, sconto: 10, dal: '2026-11-19', al: '2026-11-19' }` per un solo giorno): fuori da quei giorni non contano. Con `soglie: []` e il blocco vuoto non c'è nessuno sconto.
 
 Il blocco dei coupon PayPal ha anche `nota: 'Solo con PayPal'`: un blocco può avere la sua nota, che in homepage compare sotto ogni coupon prima di quella delle date ("Solo con PayPal · Fino al 18 novembre").
 

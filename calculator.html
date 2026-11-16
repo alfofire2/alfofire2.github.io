@@ -474,7 +474,8 @@
     // i codici PayPal), altrimenti quelle scritte in pagamento.soglie.
     function soglieDiOggi() {
         const lista = (pagamento.blocco && PRODIGEEK.listeCoupon[pagamento.blocco]) || [];
-        return lista.length ? lista.map(c => ({min: c.min, sconto: c.discount, codice: c.code})) : pagamento.soglie;
+        return lista.length ? lista.map(c => ({min: c.min, sconto: c.discount, codice: c.code}))
+            : pagamento.soglie.filter(t => PRODIGEEK.statoCoupon(t) === 'valido');
     }
 
     function renderSoglie() {
@@ -710,8 +711,21 @@
         document.querySelectorAll('select, input:not(#pdg-calc-price)').forEach(i => i.addEventListener('change', calcolaTutto));
         calcolaTutto();
         // Pagina lasciata aperta a cavallo della mezzanotte: i coupon che iniziano o scadono si aggiornano da soli.
+        // Le soglie del pagamento possono cambiare a mezzanotte anche quando i coupon restano uguali.
+        let soglieMostrate = JSON.stringify(soglieDiOggi());
+        const controllaSoglie = () => {
+            const adesso = JSON.stringify(soglieDiOggi());
+            if (adesso === soglieMostrate) return;
+            soglieMostrate = adesso;
+            renderSoglie();
+            calcolaTutto();
+            calcolaCarrello();
+        };
+        setInterval(controllaSoglie, 60000);
+        document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') controllaSoglie(); });
         PRODIGEEK.seCambianoICoupon(async () => {
             dynamicCoupons = await fetchCoupons();
+            soglieMostrate = JSON.stringify(soglieDiOggi());
             renderSoglie();
             calcolaTutto();
             calcolaCarrello();

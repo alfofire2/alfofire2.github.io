@@ -97,9 +97,23 @@ const PRODIGEEK = {
                 { code: 'ITAFF80',    discount: 80,   min: 469, al: '2026-11-18' },
                 { code: 'ITD11100',   discount: 100,  min: 500, al: '2026-11-18' },
                 { code: 'ITD11120',   discount: 120,  min: 600, al: '2026-11-18' },
+                { code: 'ITBF03',     discount: 3,    min: 18, dal: '2026-11-19', nota: 'Riscatto limitato' },
+                { code: 'BFIT03',     discount: 3,    min: 18, dal: '2026-11-19', nota: 'Riscatto limitato' },
+                { code: 'ITBF05',     discount: 5,    min: 37, dal: '2026-11-19', nota: 'Riscatto limitato' },
+                { code: 'BFIT05',     discount: 5,    min: 37, dal: '2026-11-19', nota: 'Riscatto limitato' },
+                { code: 'ITBF13',     discount: 13,   min: 79, dal: '2026-11-19', nota: 'Riscatto limitato' },
+                { code: 'BFIT13',     discount: 13,   min: 79, dal: '2026-11-19', nota: 'Riscatto limitato' },
+                { code: 'ITBF20',     discount: 20,   min: 125, dal: '2026-11-19', nota: 'Riscatto limitato' },
+                { code: 'BFIT20',     discount: 20,   min: 125, dal: '2026-11-19', nota: 'Riscatto limitato' },
+                { code: 'ITBF40',     discount: 40,   min: 245, dal: '2026-11-19', nota: 'Riscatto limitato' },
+                { code: 'BFIT40',     discount: 40,   min: 245, dal: '2026-11-19', nota: 'Riscatto limitato' },
+                { code: 'ITBF55',     discount: 55,   min: 335, dal: '2026-11-19', nota: 'Riscatto limitato' },
+                { code: 'BFIT55',     discount: 55,   min: 335, dal: '2026-11-19', nota: 'Riscatto limitato' },
+                { code: 'ITBF70',     discount: 70,   min: 435, dal: '2026-11-19', nota: 'Riscatto limitato' },
+                { code: 'BFIT70',     discount: 70,   min: 435, dal: '2026-11-19', nota: 'Riscatto limitato' },
                 { code: '',           discount: 0,    min: 0 },
                 { code: '',           discount: 0,    min: 0 },
-                { code: '',           discount: 0,    min: 0 },
+                { code: '',           discount: 0,    min: 0 }
             ]
         }
     },
@@ -123,10 +137,20 @@ const PRODIGEEK = {
     // Il calcolatore applica la soglia più alta che il prezzo dopo il coupon raggiunge.
     // blocco: il blocco di coupon che fa da soglie (codice, sconto = discount, spesa minima = min, con le loro date);
     // se non ce ne sono di validi oggi, valgono le soglie scritte qui sotto, per esempio { min: 99, sconto: 10 }.
+    // Anche le soglie possono avere dal e al, come i coupon: fuori da quei giorni non contano.
     pagamento: {
         nome: 'PayPal',
         blocco: 'standardProdigeek',
-        soglie: []
+        soglie: [
+            // Primo round: 19 novembre
+            { min: 99,  sconto: 10, dal: '2026-11-19', al: '2026-11-19' },
+            { min: 159, sconto: 18, dal: '2026-11-19', al: '2026-11-19' },
+            { min: 239, sconto: 28, dal: '2026-11-19', al: '2026-11-19' },
+            // Secondo round: 26 novembre
+            { min: 99,  sconto: 10, dal: '2026-11-26', al: '2026-11-26' },
+            { min: 159, sconto: 18, dal: '2026-11-26', al: '2026-11-26' },
+            { min: 239, sconto: 28, dal: '2026-11-26', al: '2026-11-26' }
+        ]
     },
 
     // Coupon in dollari nel calcolatore: sconto e spesa minima vengono convertiti in euro al cambio del giorno
