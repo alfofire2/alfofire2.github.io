@@ -310,6 +310,9 @@
             font-weight: 700;
             color: var(--orange);
         }
+        .coupon-card.in-arrivo .coupon-note::before {
+            content: '⏳ ';
+        }
         .coupon-code-container {
             display: flex;
             justify-content: space-between;
@@ -757,7 +760,7 @@ const coupons = {"esclusiviProdigeek":[{"code":"OTD1103","discount":3,"min":15,"
         }
         const SITE_URL = 'https://coupon.prodigeek.it/';
         const SITE_LASTMOD = '2026-10-31';
-        const coupons = PRODIGEEK.listeCoupon; // solo i coupon validi oggi (date dal/al in config.js)
+        const coupons = PRODIGEEK.listeCouponConAnteprima; // i coupon validi oggi e quelli in arrivo (date dal/al e anteprimaGiorni in config.js)
 
         
         function showCopyFeedback(feedbackElement) {
@@ -809,7 +812,7 @@ const coupons = {"esclusiviProdigeek":[{"code":"OTD1103","discount":3,"min":15,"
         function createCouponCard(coupon) {
             const percentage = Math.round((coupon.discount / coupon.min) * 100);
             const card = document.createElement('div');
-            card.className = 'coupon-card';
+            card.className = coupon.inArrivo ? 'coupon-card in-arrivo' : 'coupon-card';
             
             card.innerHTML = `
                 <div class="coupon-header">
@@ -879,7 +882,7 @@ const coupons = {"esclusiviProdigeek":[{"code":"OTD1103","discount":3,"min":15,"
 
             const couponEntries = [];
             categoryMap.forEach(category => {
-                const list = coupons[category.key] || [];
+                const list = (coupons[category.key] || []).filter(c => !c.inArrivo); // nei dati per i motori di ricerca solo quelli validi oggi
                 list.forEach(coupon => {
                     couponEntries.push({
                         coupon,

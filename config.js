@@ -7,6 +7,11 @@
 
 const PRODIGEEK = {
 
+    // Coupon e soglie del pagamento che partono entro questi giorni si vedono già prima in homepage e nel calcolatore,
+    // con una riga che dice da quando valgono (per esempio "Dal 19 novembre"): il giorno in cui partono la riga sparisce.
+    // All'estensione del browser arrivano solo da quel giorno. 0 = niente anteprima.
+    anteprimaGiorni: 7,
+
     // Coupon mostrati in homepage, usati dal calcolatore e dall'estensione.
     // Ogni blocco ha la sua valuta ('€' oppure '$') e una serie di posti già pronti:
     // per aggiungere un coupon riempi un posto vuoto (code, discount = sconto, min = spesa minima),
@@ -52,6 +57,13 @@ const PRODIGEEK = {
                 { code: 'IFPRBOY9',   discount: 45,   min: 259, al: '2026-11-18' },
                 { code: 'IFPMRJS7',   discount: 60,   min: 349, al: '2026-11-18' },
                 { code: 'IFPFWKQD',   discount: 80,   min: 469, al: '2026-11-18' },
+                { code: 'IFP7LBUM',   discount: 3,    min: 18, dal: '2026-11-19', nota: 'Nuovi clienti: 6 € di sconto' },
+                { code: 'IFP2BMWI',   discount: 8,    min: 45, dal: '2026-11-19' },
+                { code: 'IFPEIENH',   discount: 13,   min: 79, dal: '2026-11-19' },
+                { code: 'IFP59VVR',   discount: 24,   min: 139, dal: '2026-11-19' },
+                { code: 'IFPRAKLK',   discount: 40,   min: 229, dal: '2026-11-19' },
+                { code: 'IFPAMNLD',   discount: 60,   min: 349, dal: '2026-11-19' },
+                { code: 'IFPZVTEV',   discount: 80,   min: 469, dal: '2026-11-19' },
                 { code: '',           discount: 0,    min: 0 },
                 { code: '',           discount: 0,    min: 0 },
                 { code: '',           discount: 0,    min: 0 }
@@ -90,9 +102,23 @@ const PRODIGEEK = {
                 { code: 'ITAFF80',    discount: 80,   min: 469, al: '2026-11-18' },
                 { code: 'ITD11100',   discount: 100,  min: 500, al: '2026-11-18' },
                 { code: 'ITD11120',   discount: 120,  min: 600, al: '2026-11-18' },
+                { code: 'ITBF03',     discount: 3,    min: 18, dal: '2026-11-19', nota: 'Riscatto limitato' },
+                { code: 'BFIT03',     discount: 3,    min: 18, dal: '2026-11-19', nota: 'Riscatto limitato' },
+                { code: 'ITBF05',     discount: 5,    min: 37, dal: '2026-11-19', nota: 'Riscatto limitato' },
+                { code: 'BFIT05',     discount: 5,    min: 37, dal: '2026-11-19', nota: 'Riscatto limitato' },
+                { code: 'ITBF13',     discount: 13,   min: 79, dal: '2026-11-19', nota: 'Riscatto limitato' },
+                { code: 'BFIT13',     discount: 13,   min: 79, dal: '2026-11-19', nota: 'Riscatto limitato' },
+                { code: 'ITBF20',     discount: 20,   min: 125, dal: '2026-11-19', nota: 'Riscatto limitato' },
+                { code: 'BFIT20',     discount: 20,   min: 125, dal: '2026-11-19', nota: 'Riscatto limitato' },
+                { code: 'ITBF40',     discount: 40,   min: 245, dal: '2026-11-19', nota: 'Riscatto limitato' },
+                { code: 'BFIT40',     discount: 40,   min: 245, dal: '2026-11-19', nota: 'Riscatto limitato' },
+                { code: 'ITBF55',     discount: 55,   min: 335, dal: '2026-11-19', nota: 'Riscatto limitato' },
+                { code: 'BFIT55',     discount: 55,   min: 335, dal: '2026-11-19', nota: 'Riscatto limitato' },
+                { code: 'ITBF70',     discount: 70,   min: 435, dal: '2026-11-19', nota: 'Riscatto limitato' },
+                { code: 'BFIT70',     discount: 70,   min: 435, dal: '2026-11-19', nota: 'Riscatto limitato' },
                 { code: '',           discount: 0,    min: 0 },
                 { code: '',           discount: 0,    min: 0 },
-                { code: '',           discount: 0,    min: 0 },
+                { code: '',           discount: 0,    min: 0 }
             ]
         }
     },
@@ -116,10 +142,20 @@ const PRODIGEEK = {
     // Il calcolatore applica la soglia più alta che il prezzo dopo il coupon raggiunge.
     // blocco: il blocco di coupon che fa da soglie (codice, sconto = discount, spesa minima = min, con le loro date);
     // se non ce ne sono di validi oggi, valgono le soglie scritte qui sotto, per esempio { min: 99, sconto: 10 }.
+    // Anche le soglie possono avere dal e al, come i coupon: fuori da quei giorni non contano.
     pagamento: {
         nome: 'PayPal',
         blocco: 'standardProdigeek',
-        soglie: []
+        soglie: [
+            // Primo round: 19 novembre
+            { min: 99,  sconto: 10, dal: '2026-11-19', al: '2026-11-19' },
+            { min: 159, sconto: 18, dal: '2026-11-19', al: '2026-11-19' },
+            { min: 239, sconto: 28, dal: '2026-11-19', al: '2026-11-19' },
+            // Secondo round: 26 novembre
+            { min: 99,  sconto: 10, dal: '2026-11-26', al: '2026-11-26' },
+            { min: 159, sconto: 18, dal: '2026-11-26', al: '2026-11-26' },
+            { min: 239, sconto: 28, dal: '2026-11-26', al: '2026-11-26' }
+        ]
     },
 
     // Coupon in dollari nel calcolatore: sconto e spesa minima vengono convertiti in euro al cambio del giorno
@@ -166,12 +202,17 @@ PRODIGEEK.statoCoupon = function (c, ora = Date.now()) {
 
 // La riga sotto il coupon ricavata dalle date: 'Solo dall’1 al 3 novembre', 'Solo l’11 e il 12 novembre',
 // 'Solo il 5 novembre', 'Fino all’8 dicembre', 'Solo dal 30 novembre al 2 dicembre'.
-PRODIGEEK.notaDalleDate = function (dal, al) {
+PRODIGEEK.notaDalleDate = function (dal, al, inArrivo = false) {
     const MESI = ['gennaio', 'febbraio', 'marzo', 'aprile', 'maggio', 'giugno', 'luglio', 'agosto', 'settembre', 'ottobre', 'novembre', 'dicembre'];
     const parti = data => data.split('-').map(Number);
     const apostrofo = g => g === 1 || g === 8 || g === 11;   // l’1, l’8, l’11: si legge uno, otto, undici
     const il = g => (apostrofo(g) ? 'l’' : 'il ') + g, dalG = g => (apostrofo(g) ? 'dall’' : 'dal ') + g, alG = g => (apostrofo(g) ? 'all’' : 'al ') + g;
-    if (!al) return '';
+    if (!al) {
+        // Solo dal: la riga serve solo prima che il coupon parta ("Dal 19 novembre").
+        if (!inArrivo || !dal) return '';
+        const [, m1, g1] = parti(dal), t = dalG(g1);
+        return `${t[0].toUpperCase()}${t.slice(1)} ${MESI[m1 - 1]}`;
+    }
     const [a2, m2, g2] = parti(al);
     if (!dal) return `Fino ${alG(g2)} ${MESI[m2 - 1]}`;
     const [a1, m1, g1] = parti(dal);
@@ -181,31 +222,59 @@ PRODIGEEK.notaDalleDate = function (dal, al) {
     return `Solo ${dalG(g1)} ${MESI[m1 - 1]}${anno[0]} ${alG(g2)} ${MESI[m2 - 1]}${anno[1]}`;
 };
 
+// Un coupon (o una soglia) che non vale ancora ma parte entro anteprimaGiorni.
+PRODIGEEK.inArrivo = function (c, ora = Date.now()) {
+    if (PRODIGEEK.statoCoupon(c, ora) !== 'futuro') return false;
+    const giorni = (a, b) => (Date.UTC(...b.split('-').map((n, i) => +n - (i === 1))) - Date.UTC(...a.split('-').map((n, i) => +n - (i === 1)))) / 86400000;
+    return giorni(PRODIGEEK.giornoItaliano(ora), String(c.dal).trim()) <= (Number(PRODIGEEK.anteprimaGiorni) || 0);
+};
+
 // Le liste di coupon come le usano homepage, calcolatore ed estensione in un certo momento: senza i posti vuoti,
-// senza quelli fuori dalle date e con la valuta su ogni coupon.
-PRODIGEEK.listeCouponAl = function (ora = Date.now()) {
+// senza quelli fuori dalle date e con la valuta su ogni coupon. Con anteprima ci sono anche quelli in arrivo,
+// con inArrivo: true e notaArrivo ("Dal 19 novembre") in testa alla nota.
+PRODIGEEK.listeCouponAl = function (ora = Date.now(), anteprima = false) {
     return Object.fromEntries(Object.entries(PRODIGEEK.coupons).map(([nome, blocco]) => [nome,
         blocco.codici
-            .filter(c => String(c.code || '').trim() !== '' && PRODIGEEK.statoCoupon(c, ora) === 'valido')
+            .filter(c => String(c.code || '').trim() !== ''
+                && (PRODIGEEK.statoCoupon(c, ora) === 'valido' || (anteprima && PRODIGEEK.inArrivo(c, ora))))
             .map(c => {
                 const dal = String(c.dal || '').trim(), al = String(c.al || '').trim();
-                const nota = String(c.nota || '').trim()
-                    || [String(blocco.nota || '').trim(), PRODIGEEK.notaDalleDate(dal, al)].filter(Boolean).join(' · ');
+                const arriva = PRODIGEEK.statoCoupon(c, ora) === 'futuro';
+                const notaArrivo = arriva ? PRODIGEEK.notaDalleDate(dal, al, true) : '';
+                const nota = arriva
+                    ? [notaArrivo, String(c.nota || '').trim(), String(blocco.nota || '').trim()].filter(Boolean).join(' · ')
+                    : String(c.nota || '').trim()
+                        || [String(blocco.nota || '').trim(), PRODIGEEK.notaDalleDate(dal, al)].filter(Boolean).join(' · ');
                 return { code: String(c.code).trim(), discount: Number(c.discount), min: Number(c.min), currency: blocco.valuta || '€',
-                    ...(nota ? { nota } : {}), ...(dal ? { dal } : {}), ...(al ? { al } : {}) };
+                    ...(nota ? { nota } : {}), ...(dal ? { dal } : {}), ...(al ? { al } : {}),
+                    ...(arriva ? { inArrivo: true, notaArrivo } : {}) };
             })
     ]));
 };
 
-// Le liste valide adesso: ricalcolate ogni volta che si leggono.
+// Le liste valide adesso, e con anche quelli in arrivo: ricalcolate ogni volta che si leggono.
 Object.defineProperty(PRODIGEEK, 'listeCoupon', { get: () => PRODIGEEK.listeCouponAl(Date.now()), enumerable: true });
+Object.defineProperty(PRODIGEEK, 'listeCouponConAnteprima', { get: () => PRODIGEEK.listeCouponAl(Date.now(), true), enumerable: true });
+
+// Le soglie del pagamento scritte in pagamento.soglie per adesso: quelle valide oggi; se non ce ne sono, quelle in arrivo
+// che partono per prime (con notaArrivo, per esempio "Solo il 19 novembre").
+PRODIGEEK.soglieScritteAl = function (ora = Date.now()) {
+    const soglie = PRODIGEEK.pagamento.soglie || [];
+    const valide = soglie.filter(t => PRODIGEEK.statoCoupon(t, ora) === 'valido');
+    if (valide.length) return valide.map(t => ({ min: t.min, sconto: t.sconto }));
+    const inArrivo = soglie.filter(t => PRODIGEEK.inArrivo(t, ora));
+    if (!inArrivo.length) return [];
+    const primo = inArrivo.map(t => String(t.dal).trim()).sort()[0];
+    return inArrivo.filter(t => String(t.dal).trim() === primo)
+        .map(t => ({ min: t.min, sconto: t.sconto, notaArrivo: PRODIGEEK.notaDalleDate(String(t.dal).trim(), String(t.al || '').trim(), true) }));
+};
 
 // Per le pagine lasciate aperte: ogni minuto, e quando si torna sulla scheda, controlla se a mezzanotte
 // qualche coupon è comparso o scaduto, e in quel caso chiama avvisa con le liste nuove.
 PRODIGEEK.seCambianoICoupon = function (avvisa) {
-    let prima = JSON.stringify(PRODIGEEK.listeCoupon);
+    let prima = JSON.stringify(PRODIGEEK.listeCouponConAnteprima);
     const controlla = () => {
-        const liste = PRODIGEEK.listeCoupon, adesso = JSON.stringify(liste);
+        const liste = PRODIGEEK.listeCouponConAnteprima, adesso = JSON.stringify(liste);
         if (adesso !== prima) { prima = adesso; avvisa(liste); }
     };
     setInterval(controlla, 60000);
