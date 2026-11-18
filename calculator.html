@@ -462,7 +462,8 @@
     // così il calcolatore non promette mai più di quanto dà AliExpress, che al checkout usa il suo cambio.
     // Ci sono anche quelli in arrivo (anteprimaGiorni in config.js), con notaArrivo per dire da quando valgono.
     async function fetchCoupons() {
-        return Object.entries(PRODIGEEK.listeCouponConAnteprima).filter(([nome]) => nome !== pagamento.blocco).flatMap(([, lista]) => lista).map(c => {
+        // Quelli solo per i nuovi clienti (nuoviClienti: true) non contano: a chi ha già comprato non valgono.
+        return Object.entries(PRODIGEEK.listeCouponConAnteprima).filter(([nome]) => nome !== pagamento.blocco).flatMap(([, lista]) => lista).filter(c => !c.nuoviClienti).map(c => {
             const inDollari = c.currency === '$';
             return {
                 codice: c.code,

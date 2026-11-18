@@ -23,12 +23,72 @@ const PRODIGEEK = {
     // Con le date, sotto il coupon in homepage compare da sola una riga come 'Solo dall’1 al 3 novembre'.
     // nota (facoltativa) sostituisce quella riga con un testo scelto da te, per esempio nota: 'Solo nell’app'.
     // Un blocco può avere la sua nota (per esempio nota: 'Riscatto limitato'), che compare prima di quella delle date.
-    // Il 18/11 sono stati tolti tutti i coupon: sono le righe che iniziano con //. Per rimetterne uno basta togliere //.
+    // I quattro blocchi, nell'ordine in cui compaiono in homepage (i titoli delle sezioni sono in index.html).
     coupons: {
+        // Coupon Black Friday ITBF (in homepage la prima sezione)
+        generici: {
+            valuta: '€',
+            nota: 'Riscatto limitato',
+            codici: [
+                { code: 'ITBF03',     discount: 3,    min: 18, dal: '2026-11-19' },
+                { code: 'ITBF05',     discount: 5,    min: 37, dal: '2026-11-19' },
+                { code: 'ITBF13',     discount: 13,   min: 79, dal: '2026-11-19' },
+                { code: 'ITBF20',     discount: 20,   min: 125, dal: '2026-11-19' },
+                { code: 'ITBF40',     discount: 40,   min: 245, dal: '2026-11-19' },
+                { code: 'ITBF55',     discount: 55,   min: 335, dal: '2026-11-19' },
+                { code: 'ITBF70',     discount: 70,   min: 435, dal: '2026-11-19' },
+                { code: '',           discount: 0,    min: 0 },
+                { code: '',           discount: 0,    min: 0 },
+                { code: '',           discount: 0,    min: 0 },
+            ]
+        },
+
+        // Coupon Black Friday BFIT
+        standardProdigeek: {
+            valuta: '€',
+            nota: 'Riscatto limitato',
+            codici: [
+                { code: 'BFIT03',     discount: 3,    min: 18, dal: '2026-11-19' },
+                { code: 'BFIT05',     discount: 5,    min: 37, dal: '2026-11-19' },
+                { code: 'BFIT13',     discount: 13,   min: 79, dal: '2026-11-19' },
+                { code: 'BFIT20',     discount: 20,   min: 125, dal: '2026-11-19' },
+                { code: 'BFIT40',     discount: 40,   min: 245, dal: '2026-11-19' },
+                { code: 'BFIT55',     discount: 55,   min: 335, dal: '2026-11-19' },
+                { code: 'BFIT70',     discount: 70,   min: 435, dal: '2026-11-19' },
+                { code: '',           discount: 0,    min: 0 },
+                { code: '',           discount: 0,    min: 0 },
+                { code: '',           discount: 0,    min: 0 },
+            ]
+        },
+
+        // Coupon Nuovi Clienti. nuoviClienti: true = solo per chi non ha mai comprato su AliExpress: in homepage c'è,
+        // ma il calcolatore e l'estensione lo ignorano, perché a tutti gli altri non vale.
+        altriEsclusiviProdigeek: {
+            valuta: '€',
+            codici: [
+                { code: 'IFP7LBUM',   discount: 3,    min: 18, dal: '2026-11-19' },
+                { code: 'IFP7LBUM',   discount: 6,    min: 18, dal: '2026-11-19', nuoviClienti: true, nota: 'Solo per i nuovi clienti' },
+                { code: '',           discount: 0,    min: 0 },
+                { code: '',           discount: 0,    min: 0 },
+                { code: '',           discount: 0,    min: 0 },
+            ]
+        },
+
         // Coupon Esclusivi Prodigeek
         esclusiviProdigeek: {
-            valuta: '$',
+            valuta: '€',
             codici: [
+                { code: 'IFP2BMWI',   discount: 8,    min: 45, dal: '2026-11-19' },
+                { code: 'IFPEIENH',   discount: 13,   min: 79, dal: '2026-11-19' },
+                { code: 'IFP59VVR',   discount: 24,   min: 139, dal: '2026-11-19' },
+                { code: 'IFPRAKLK',   discount: 40,   min: 229, dal: '2026-11-19' },
+                { code: 'IFPAMNLD',   discount: 60,   min: 349, dal: '2026-11-19' },
+                { code: 'IFPZVTEV',   discount: 80,   min: 469, dal: '2026-11-19' },
+                { code: '',           discount: 0,    min: 0 },
+                { code: '',           discount: 0,    min: 0 },
+                { code: '',           discount: 0,    min: 0 },
+                { code: '',           discount: 0,    min: 0 },
+                // Tolti il 18/11, erano in dollari: per rimetterli togli // e cambia valuta in '$' (o mettili in un blocco in dollari).
                 // { code: 'OTD1103',    discount: 3,    min: 15 },
                 // { code: 'OTD1104',    discount: 4,    min: 25 },
                 // { code: 'OTD1111',    discount: 11,   min: 65 },
@@ -36,88 +96,6 @@ const PRODIGEEK = {
                 // { code: 'OTD1136',    discount: 36,   min: 215 },
                 // { code: 'OTD1153',    discount: 53,   min: 315 },
                 // { code: 'OTD1170',    discount: 70,   min: 419 },
-                // { code: 'IFPKEVIS',   discount: 100,  min: 500, dal: '2026-11-11', al: '2026-11-12' },
-                // { code: 'IFP7NWZS',   discount: 120,  min: 600, dal: '2026-11-11', al: '2026-11-12' },
-                { code: '',           discount: 0,    min: 0 },
-                { code: '',           discount: 0,    min: 0 },
-                { code: '',           discount: 0,    min: 0 },
-                // Tolti per ora: per rimetterne uno basta togliere // all'inizio della riga.
-                // { code: 'IFPMGSEF',   discount: 100,  min: 500, dal: '2026-11-01', al: '2026-11-03' },
-                // { code: 'IFPFEIGQ',   discount: 120,  min: 600, dal: '2026-11-01', al: '2026-11-03' },
-            ]
-        },
-
-        // Altri Coupon Esclusivi Prodigeek
-        altriEsclusiviProdigeek: {
-            valuta: '€',
-            codici: [
-                // { code: 'IFPBKCOQ',   discount: 3,    min: 18, al: '2026-11-18' },
-                // { code: 'IFPWBJXE',   discount: 6,    min: 39, al: '2026-11-18' },
-                // { code: 'IFPT3ULS',   discount: 14,   min: 79, al: '2026-11-18' },
-                // { code: 'IFPB6VFW',   discount: 25,   min: 149, al: '2026-11-18' },
-                // { code: 'IFPRBOY9',   discount: 45,   min: 259, al: '2026-11-18' },
-                // { code: 'IFPMRJS7',   discount: 60,   min: 349, al: '2026-11-18' },
-                // { code: 'IFPFWKQD',   discount: 80,   min: 469, al: '2026-11-18' },
-                // { code: 'IFP7LBUM',   discount: 3,    min: 18, dal: '2026-11-19', nota: 'Nuovi clienti: 6 € di sconto' },
-                // { code: 'IFP2BMWI',   discount: 8,    min: 45, dal: '2026-11-19' },
-                // { code: 'IFPEIENH',   discount: 13,   min: 79, dal: '2026-11-19' },
-                // { code: 'IFP59VVR',   discount: 24,   min: 139, dal: '2026-11-19' },
-                // { code: 'IFPRAKLK',   discount: 40,   min: 229, dal: '2026-11-19' },
-                // { code: 'IFPAMNLD',   discount: 60,   min: 349, dal: '2026-11-19' },
-                // { code: 'IFPZVTEV',   discount: 80,   min: 469, dal: '2026-11-19' },
-                { code: '',           discount: 0,    min: 0 },
-                { code: '',           discount: 0,    min: 0 },
-                { code: '',           discount: 0,    min: 0 }
-            ]
-        },
-
-        // Altri Coupon Generici
-        standardProdigeek: {
-            valuta: '€',
-            codici: [
-                // { code: 'ITD1103',    discount: 3,    min: 18, al: '2026-11-18' },
-                // { code: 'ITD1106',    discount: 6,    min: 39, al: '2026-11-18' },
-                // { code: 'ITD1114',    discount: 14,   min: 79, al: '2026-11-18' },
-                // { code: 'ITD1125',    discount: 25,   min: 149, al: '2026-11-18' },
-                // { code: 'ITD1145',    discount: 45,   min: 259, al: '2026-11-18' },
-                // { code: 'ITD1160',    discount: 60,   min: 349, al: '2026-11-18' },
-                // { code: 'ITD1180',    discount: 80,   min: 469, al: '2026-11-18' },
-                { code: '',           discount: 0,    min: 0 },
-                { code: '',           discount: 0,    min: 0 },
-                { code: '',           discount: 0,    min: 0 }
-            ]
-        },
-
-        // Coupon Generici
-        generici: {
-            valuta: '€',
-            codici: [
-                // { code: 'ITAFF03',    discount: 3,    min: 18, al: '2026-11-18' },
-                // { code: 'ITAFF06',    discount: 6,    min: 39, al: '2026-11-18' },
-                // { code: 'ITAFF14',    discount: 14,   min: 79, al: '2026-11-18' },
-                // { code: 'ITAFF25',    discount: 25,   min: 149, al: '2026-11-18' },
-                // { code: 'ITAFF45',    discount: 45,   min: 259, al: '2026-11-18' },
-                // { code: 'ITAFF60',    discount: 60,   min: 349, al: '2026-11-18' },
-                // { code: 'ITAFF80',    discount: 80,   min: 469, al: '2026-11-18' },
-                // { code: 'ITD11100',   discount: 100,  min: 500, al: '2026-11-18' },
-                // { code: 'ITD11120',   discount: 120,  min: 600, al: '2026-11-18' },
-                // { code: 'ITBF03',     discount: 3,    min: 18, dal: '2026-11-19', nota: 'Riscatto limitato' },
-                // { code: 'BFIT03',     discount: 3,    min: 18, dal: '2026-11-19', nota: 'Riscatto limitato' },
-                // { code: 'ITBF05',     discount: 5,    min: 37, dal: '2026-11-19', nota: 'Riscatto limitato' },
-                // { code: 'BFIT05',     discount: 5,    min: 37, dal: '2026-11-19', nota: 'Riscatto limitato' },
-                // { code: 'ITBF13',     discount: 13,   min: 79, dal: '2026-11-19', nota: 'Riscatto limitato' },
-                // { code: 'BFIT13',     discount: 13,   min: 79, dal: '2026-11-19', nota: 'Riscatto limitato' },
-                // { code: 'ITBF20',     discount: 20,   min: 125, dal: '2026-11-19', nota: 'Riscatto limitato' },
-                // { code: 'BFIT20',     discount: 20,   min: 125, dal: '2026-11-19', nota: 'Riscatto limitato' },
-                // { code: 'ITBF40',     discount: 40,   min: 245, dal: '2026-11-19', nota: 'Riscatto limitato' },
-                // { code: 'BFIT40',     discount: 40,   min: 245, dal: '2026-11-19', nota: 'Riscatto limitato' },
-                // { code: 'ITBF55',     discount: 55,   min: 335, dal: '2026-11-19', nota: 'Riscatto limitato' },
-                // { code: 'BFIT55',     discount: 55,   min: 335, dal: '2026-11-19', nota: 'Riscatto limitato' },
-                // { code: 'ITBF70',     discount: 70,   min: 435, dal: '2026-11-19', nota: 'Riscatto limitato' },
-                // { code: 'BFIT70',     discount: 70,   min: 435, dal: '2026-11-19', nota: 'Riscatto limitato' },
-                { code: '',           discount: 0,    min: 0 },
-                { code: '',           discount: 0,    min: 0 },
-                { code: '',           discount: 0,    min: 0 }
             ]
         }
     },
@@ -247,7 +225,7 @@ PRODIGEEK.listeCouponAl = function (ora = Date.now(), anteprima = false) {
                         || [String(blocco.nota || '').trim(), PRODIGEEK.notaDalleDate(dal, al)].filter(Boolean).join(' · ');
                 return { code: String(c.code).trim(), discount: Number(c.discount), min: Number(c.min), currency: blocco.valuta || '€',
                     ...(nota ? { nota } : {}), ...(dal ? { dal } : {}), ...(al ? { al } : {}),
-                    ...(arriva ? { inArrivo: true, notaArrivo } : {}) };
+                    ...(arriva ? { inArrivo: true, notaArrivo } : {}), ...(c.nuoviClienti ? { nuoviClienti: true } : {}) };
             })
     ]));
 };
