@@ -19,14 +19,16 @@ Ogni valore in `config.js` ha accanto un commento che spiega a cosa serve. Le ri
 
 ## Coupon
 
-I coupon sono divisi in quattro blocchi, uno per sezione della homepage:
+I coupon sono divisi in quattro blocchi, uno per sezione della homepage. I titoli delle sezioni e il loro ordine sono in `index.html`:
 
 | Blocco in `config.js` | Sezione in homepage |
 |---|---|
+| `generici` | Coupon Black Friday ITBF |
+| `standardProdigeek` | Coupon Black Friday BFIT |
+| `altriEsclusiviProdigeek` | Coupon Nuovi Clienti |
 | `esclusiviProdigeek` | Coupon Esclusivi Prodigeek |
-| `generici` | Coupon Generici |
-| `standardProdigeek` | Altri Coupon Generici |
-| `altriEsclusiviProdigeek` | Altri Coupon Esclusivi Prodigeek |
+
+Un coupon con `nuoviClienti: true` vale solo per chi non ha mai comprato su AliExpress: compare in homepage, ma il calcolatore e l'estensione lo ignorano. Lo stesso codice può stare su due righe con soglie diverse (per esempio 3 € per tutti e 6 € per i nuovi clienti).
 
 Ogni blocco ha la sua valuta e una serie di posti già pronti:
 

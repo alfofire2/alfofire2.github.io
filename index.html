@@ -629,7 +629,7 @@
     <!-- Generati da config.js con scripts/sincronizza-estensione.mjs: non modificarli qui, cambia config.js. -->
     <script type="text/plain" id="dati-estensione">
 const enable_aliexpress_squad = false;
-const coupons = {"esclusiviProdigeek":[],"altriEsclusiviProdigeek":[],"standardProdigeek":[],"generici":[]};
+const coupons = {"generici":[],"standardProdigeek":[],"altriEsclusiviProdigeek":[],"esclusiviProdigeek":[]};
 <a href="https://s.click.aliexpress.com/e/_c3yNnO8F" class="squad-card"></a>
     </script>
     <!-- FINE DATI PER L'ESTENSIONE -->
@@ -682,24 +682,24 @@ const coupons = {"esclusiviProdigeek":[],"altriEsclusiviProdigeek":[],"standardP
             <button id="sort-button">Ordina per convenienza</button>
         </div>
         <div id="coupon-sections">
-            <section id="esclusivi-prodigeek-coupons">
-                <h2>Coupon Esclusivi Prodigeek</h2>
-                <div class="coupon-list" id="esclusivi-prodigeek-list"></div>
-            </section>
-
             <section id="generici-coupons">
-                <h2>Coupon Generici</h2>
+                <h2>Coupon Black Friday ITBF</h2>
                 <div class="coupon-list" id="generici-list"></div>
             </section>
 
             <section id="standard-prodigeek-coupons">
-                <h2>Altri Coupon Generici</h2>
+                <h2>Coupon Black Friday BFIT</h2>
                 <div class="coupon-list" id="standard-prodigeek-list"></div>
             </section>
 
             <section id="altri-esclusivi-prodigeek-coupons">
-                <h2>Altri Coupon Esclusivi Prodigeek</h2>
+                <h2>Coupon Nuovi Clienti</h2>
                 <div class="coupon-list" id="altri-esclusivi-prodigeek-list"></div>
+            </section>
+
+            <section id="esclusivi-prodigeek-coupons">
+                <h2>Coupon Esclusivi Prodigeek</h2>
+                <div class="coupon-list" id="esclusivi-prodigeek-list"></div>
             </section>
         </div>
 
@@ -875,9 +875,9 @@ const coupons = {"esclusiviProdigeek":[],"altriEsclusiviProdigeek":[],"standardP
         function generateJsonLd() {
             const categoryMap = [
                 { key: 'esclusiviProdigeek', label: 'Coupon Prodigeek', anchor: '#esclusivi-prodigeek-coupons' },
-                { key: 'generici', label: 'Coupon Generici', anchor: '#generici-coupons' },
-                { key: 'standardProdigeek', label: 'Altri Coupon Generici', anchor: '#standard-prodigeek-coupons' },
-                { key: 'altriEsclusiviProdigeek', label: 'Altri Coupon Prodigeek', anchor: '#altri-esclusivi-prodigeek-coupons' }
+                { key: 'generici', label: 'Coupon Black Friday ITBF', anchor: '#generici-coupons' },
+                { key: 'standardProdigeek', label: 'Coupon Black Friday BFIT', anchor: '#standard-prodigeek-coupons' },
+                { key: 'altriEsclusiviProdigeek', label: 'Coupon Nuovi Clienti', anchor: '#altri-esclusivi-prodigeek-coupons' }
             ];
 
             const couponEntries = [];
