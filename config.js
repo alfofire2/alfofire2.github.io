@@ -22,7 +22,7 @@ const PRODIGEEK = {
     // calcolatore ed estensione. Non serve cancellarlo: può restare qui come promemoria.
     // Con le date, sotto il coupon in homepage compare da sola una riga come 'Solo dall’1 al 3 novembre'.
     // nota (facoltativa) sostituisce quella riga con un testo scelto da te, per esempio nota: 'Solo nell’app'.
-    // Un blocco può avere la sua nota (per esempio nota: 'Solo con PayPal'), che compare prima di quella delle date.
+    // Un blocco può avere la sua nota (per esempio nota: 'Riscatto limitato'), che compare prima di quella delle date.
     coupons: {
         // Coupon Esclusivi Prodigeek
         esclusiviProdigeek: {
@@ -70,11 +70,9 @@ const PRODIGEEK = {
             ]
         },
 
-        // Coupon PayPal: valgono solo pagando con PayPal. In homepage hanno la loro sezione, con la nota del blocco;
-        // nel calcolatore sono le soglie dello sconto PayPal (vedi pagamento più sotto); all'estensione non arrivano.
+        // Altri Coupon Generici
         standardProdigeek: {
             valuta: '€',
-            nota: 'Solo con PayPal',
             codici: [
                 { code: 'ITD1103',    discount: 3,    min: 18, al: '2026-11-18' },
                 { code: 'ITD1106',    discount: 6,    min: 39, al: '2026-11-18' },
@@ -140,12 +138,13 @@ const PRODIGEEK = {
 
     // Sconto per metodo di pagamento al checkout (PayPal, Klarna...).
     // Il calcolatore applica la soglia più alta che il prezzo dopo il coupon raggiunge.
-    // blocco: il blocco di coupon che fa da soglie (codice, sconto = discount, spesa minima = min, con le loro date);
-    // se non ce ne sono di validi oggi, valgono le soglie scritte qui sotto, per esempio { min: 99, sconto: 10 }.
+    // blocco (facoltativo): il nome di un blocco di coupon che vale solo pagando così (per esempio codici PayPal):
+    // i suoi coupon diventano le soglie, con il loro codice, e non arrivano all'estensione. Vuoto ('') = nessun blocco.
+    // Senza blocco, o se il blocco non ha coupon validi oggi, valgono le soglie scritte qui sotto, per esempio { min: 99, sconto: 10 }.
     // Anche le soglie possono avere dal e al, come i coupon: fuori da quei giorni non contano.
     pagamento: {
         nome: 'PayPal',
-        blocco: 'standardProdigeek',
+        blocco: '',
         soglie: [
             // Primo round: 19 novembre
             { min: 99,  sconto: 10, dal: '2026-11-19', al: '2026-11-19' },
