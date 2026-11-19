@@ -19,10 +19,11 @@ Ogni valore in `config.js` ha accanto un commento che spiega a cosa serve. Le ri
 
 ## Coupon
 
-I coupon sono divisi in quattro blocchi, uno per sezione della homepage. I titoli delle sezioni e il loro ordine sono in `index.html`:
+I coupon sono divisi in cinque blocchi, uno per sezione della homepage. I titoli delle sezioni e il loro ordine sono in `index.html`:
 
 | Blocco in `config.js` | Sezione in homepage |
 |---|---|
+| `prodigeek` | Coupon Black Friday PRODIGEEK |
 | `generici` | Coupon Black Friday ITBF |
 | `standardProdigeek` | Coupon Black Friday BFIT |
 | `altriEsclusiviProdigeek` | Coupon Nuovi Clienti |
