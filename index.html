@@ -629,7 +629,7 @@
     <!-- Generati da config.js con scripts/sincronizza-estensione.mjs: non modificarli qui, cambia config.js. -->
     <script type="text/plain" id="dati-estensione">
 const enable_aliexpress_squad = false;
-const coupons = {"generici":[],"standardProdigeek":[],"altriEsclusiviProdigeek":[],"esclusiviProdigeek":[]};
+const coupons = {"prodigeek":[{"code":"PRODIGEEK03","discount":3,"min":18,"currency":"€"},{"code":"PRODIGEEK05","discount":5,"min":37,"currency":"€"},{"code":"PRODIGEEK13","discount":13,"min":79,"currency":"€"},{"code":"PRODIGEEK20","discount":20,"min":125,"currency":"€"},{"code":"PRODIGEEK40","discount":40,"min":245,"currency":"€"},{"code":"PRODIGEEK55","discount":55,"min":335,"currency":"€"},{"code":"PRODIGEEK70","discount":70,"min":435,"currency":"€"}],"generici":[{"code":"ITBF03","discount":3,"min":18,"currency":"€"},{"code":"ITBF05","discount":5,"min":37,"currency":"€"},{"code":"ITBF13","discount":13,"min":79,"currency":"€"},{"code":"ITBF20","discount":20,"min":125,"currency":"€"},{"code":"ITBF40","discount":40,"min":245,"currency":"€"},{"code":"ITBF55","discount":55,"min":335,"currency":"€"},{"code":"ITBF70","discount":70,"min":435,"currency":"€"}],"standardProdigeek":[{"code":"BFIT03","discount":3,"min":18,"currency":"€"},{"code":"BFIT05","discount":5,"min":37,"currency":"€"},{"code":"BFIT13","discount":13,"min":79,"currency":"€"},{"code":"BFIT20","discount":20,"min":125,"currency":"€"},{"code":"BFIT40","discount":40,"min":245,"currency":"€"},{"code":"BFIT55","discount":55,"min":335,"currency":"€"},{"code":"BFIT70","discount":70,"min":435,"currency":"€"}],"altriEsclusiviProdigeek":[{"code":"IFP7LBUM","discount":3,"min":18,"currency":"€"}],"esclusiviProdigeek":[{"code":"IFP2BMWI","discount":8,"min":45,"currency":"€"},{"code":"IFPEIENH","discount":13,"min":79,"currency":"€"},{"code":"IFP59VVR","discount":24,"min":139,"currency":"€"},{"code":"IFPRAKLK","discount":40,"min":229,"currency":"€"},{"code":"IFPAMNLD","discount":60,"min":349,"currency":"€"},{"code":"IFPZVTEV","discount":80,"min":469,"currency":"€"}]};
 <a href="https://s.click.aliexpress.com/e/_c3yNnO8F" class="squad-card"></a>
     </script>
     <!-- FINE DATI PER L'ESTENSIONE -->
@@ -682,6 +682,11 @@ const coupons = {"generici":[],"standardProdigeek":[],"altriEsclusiviProdigeek":
             <button id="sort-button">Ordina per convenienza</button>
         </div>
         <div id="coupon-sections">
+            <section id="prodigeek-coupons">
+                <h2>Coupon Black Friday PRODIGEEK</h2>
+                <div class="coupon-list" id="prodigeek-list"></div>
+            </section>
+
             <section id="generici-coupons">
                 <h2>Coupon Black Friday ITBF</h2>
                 <div class="coupon-list" id="generici-list"></div>
@@ -848,6 +853,7 @@ const coupons = {"generici":[],"standardProdigeek":[],"altriEsclusiviProdigeek":
                 'esclusivi-prodigeek-list': coupons.esclusiviProdigeek,
                 'altri-esclusivi-prodigeek-list': coupons.altriEsclusiviProdigeek,
                 'standard-prodigeek-list': coupons.standardProdigeek,
+                'prodigeek-list': coupons.prodigeek,
                 'generici-list': coupons.generici
             };
 
@@ -876,6 +882,7 @@ const coupons = {"generici":[],"standardProdigeek":[],"altriEsclusiviProdigeek":
             const categoryMap = [
                 { key: 'esclusiviProdigeek', label: 'Coupon Prodigeek', anchor: '#esclusivi-prodigeek-coupons' },
                 { key: 'generici', label: 'Coupon Black Friday ITBF', anchor: '#generici-coupons' },
+                { key: 'prodigeek', label: 'Coupon Black Friday PRODIGEEK', anchor: '#prodigeek-coupons' },
                 { key: 'standardProdigeek', label: 'Coupon Black Friday BFIT', anchor: '#standard-prodigeek-coupons' },
                 { key: 'altriEsclusiviProdigeek', label: 'Coupon Nuovi Clienti', anchor: '#altri-esclusivi-prodigeek-coupons' }
             ];
@@ -1083,6 +1090,7 @@ const coupons = {"generici":[],"standardProdigeek":[],"altriEsclusiviProdigeek":
                         'esclusivi-prodigeek-coupons': 'esclusiviProdigeek',
                         'altri-esclusivi-prodigeek-coupons': 'altriEsclusiviProdigeek',
                         'standard-prodigeek-coupons': 'standardProdigeek',
+                        'prodigeek-coupons': 'prodigeek',
                         'generici-coupons': 'generici'
                     };
                     

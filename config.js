@@ -23,9 +23,27 @@ const PRODIGEEK = {
     // Con le date, sotto il coupon in homepage compare da sola una riga come 'Solo dall’1 al 3 novembre'.
     // nota (facoltativa) sostituisce quella riga con un testo scelto da te, per esempio nota: 'Solo nell’app'.
     // Un blocco può avere la sua nota (per esempio nota: 'Riscatto limitato'), che compare prima di quella delle date.
-    // I quattro blocchi, nell'ordine in cui compaiono in homepage (i titoli delle sezioni sono in index.html).
+    // I blocchi, nell'ordine in cui compaiono in homepage (i titoli delle sezioni sono in index.html).
     coupons: {
-        // Coupon Black Friday ITBF (in homepage la prima sezione)
+        // Coupon Black Friday PRODIGEEK (in homepage la prima sezione)
+        prodigeek: {
+            valuta: '€',
+            nota: 'Riscatto limitato',
+            codici: [
+                { code: 'PRODIGEEK03', discount: 3,    min: 18 },
+                { code: 'PRODIGEEK05', discount: 5,    min: 37 },
+                { code: 'PRODIGEEK13', discount: 13,   min: 79 },
+                { code: 'PRODIGEEK20', discount: 20,   min: 125 },
+                { code: 'PRODIGEEK40', discount: 40,   min: 245 },
+                { code: 'PRODIGEEK55', discount: 55,   min: 335 },
+                { code: 'PRODIGEEK70', discount: 70,   min: 435 },
+                { code: '',           discount: 0,    min: 0 },
+                { code: '',           discount: 0,    min: 0 },
+                { code: '',           discount: 0,    min: 0 },
+            ]
+        },
+
+        // Coupon Black Friday ITBF
         generici: {
             valuta: '€',
             nota: 'Riscatto limitato',
