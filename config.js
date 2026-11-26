@@ -48,13 +48,13 @@ const PRODIGEEK = {
             valuta: '€',
             nota: 'Riscatto limitato',
             codici: [
-                { code: 'ITBF03',     discount: 3,    min: 18, dal: '2026-11-19' },
-                { code: 'ITBF05',     discount: 5,    min: 37, dal: '2026-11-19' },
-                { code: 'ITBF13',     discount: 13,   min: 79, dal: '2026-11-19' },
-                { code: 'ITBF20',     discount: 20,   min: 125, dal: '2026-11-19' },
-                { code: 'ITBF40',     discount: 40,   min: 245, dal: '2026-11-19' },
-                { code: 'ITBF55',     discount: 55,   min: 335, dal: '2026-11-19' },
-                { code: 'ITBF70',     discount: 70,   min: 435, dal: '2026-11-19' },
+                { code: 'ITBF03',     discount: 3,    min: 18, dal: '2026-11-19', al: '2026-12-03' },
+                { code: 'ITBF05',     discount: 5,    min: 37, dal: '2026-11-19', al: '2026-12-03' },
+                { code: 'ITBF13',     discount: 13,   min: 79, dal: '2026-11-19', al: '2026-12-03' },
+                { code: 'ITBF20',     discount: 20,   min: 125, dal: '2026-11-19', al: '2026-12-03' },
+                { code: 'ITBF40',     discount: 40,   min: 245, dal: '2026-11-19', al: '2026-12-03' },
+                { code: 'ITBF55',     discount: 55,   min: 335, dal: '2026-11-19', al: '2026-12-03' },
+                { code: 'ITBF70',     discount: 70,   min: 435, dal: '2026-11-19', al: '2026-12-03' },
                 { code: '',           discount: 0,    min: 0 },
                 { code: '',           discount: 0,    min: 0 },
                 { code: '',           discount: 0,    min: 0 },
@@ -66,13 +66,13 @@ const PRODIGEEK = {
             valuta: '€',
             nota: 'Riscatto limitato',
             codici: [
-                { code: 'BFIT03',     discount: 3,    min: 18, dal: '2026-11-19' },
-                { code: 'BFIT05',     discount: 5,    min: 37, dal: '2026-11-19' },
-                { code: 'BFIT13',     discount: 13,   min: 79, dal: '2026-11-19' },
-                { code: 'BFIT20',     discount: 20,   min: 125, dal: '2026-11-19' },
-                { code: 'BFIT40',     discount: 40,   min: 245, dal: '2026-11-19' },
-                { code: 'BFIT55',     discount: 55,   min: 335, dal: '2026-11-19' },
-                { code: 'BFIT70',     discount: 70,   min: 435, dal: '2026-11-19' },
+                { code: 'BFIT03',     discount: 3,    min: 18, dal: '2026-11-19', al: '2026-12-03' },
+                { code: 'BFIT05',     discount: 5,    min: 37, dal: '2026-11-19', al: '2026-12-03' },
+                { code: 'BFIT13',     discount: 13,   min: 79, dal: '2026-11-19', al: '2026-12-03' },
+                { code: 'BFIT20',     discount: 20,   min: 125, dal: '2026-11-19', al: '2026-12-03' },
+                { code: 'BFIT40',     discount: 40,   min: 245, dal: '2026-11-19', al: '2026-12-03' },
+                { code: 'BFIT55',     discount: 55,   min: 335, dal: '2026-11-19', al: '2026-12-03' },
+                { code: 'BFIT70',     discount: 70,   min: 435, dal: '2026-11-19', al: '2026-12-03' },
                 { code: '',           discount: 0,    min: 0 },
                 { code: '',           discount: 0,    min: 0 },
                 { code: '',           discount: 0,    min: 0 },
@@ -147,10 +147,10 @@ const PRODIGEEK = {
             { min: 99,  sconto: 10, dal: '2026-11-19', al: '2026-11-19' },
             { min: 159, sconto: 18, dal: '2026-11-19', al: '2026-11-19' },
             { min: 239, sconto: 28, dal: '2026-11-19', al: '2026-11-19' },
-            // Secondo round: 26 novembre
-            { min: 99,  sconto: 10, dal: '2026-11-26', al: '2026-11-26' },
-            { min: 159, sconto: 18, dal: '2026-11-26', al: '2026-11-26' },
-            { min: 239, sconto: 28, dal: '2026-11-26', al: '2026-11-26' }
+            // Secondo round: 27 novembre (restock di PayPal e codici alle 00:00 del 27)
+            { min: 99,  sconto: 10, dal: '2026-11-27', al: '2026-11-27' },
+            { min: 159, sconto: 18, dal: '2026-11-27', al: '2026-11-27' },
+            { min: 239, sconto: 28, dal: '2026-11-27', al: '2026-11-27' }
         ]
     },
 
